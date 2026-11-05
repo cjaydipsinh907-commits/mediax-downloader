@@ -10,216 +10,142 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
 body {
   background: #090914;
   color: white;
-  font-family: Arial, sans-serif;
+  min-height: 100vh;
 }
 
 header {
+  padding: 24px 8%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 22px 7%;
-  border-bottom: 1px solid #24243a;
+  border-bottom: 1px solid #292943;
 }
 
 .logo {
-  font-size: 27px;
+  font-size: 28px;
   font-weight: bold;
   color: #a78bfa;
 }
 
-nav a {
-  color: #ddd;
-  text-decoration: none;
-  margin-left: 20px;
-  font-size: 14px;
-}
-
 .hero {
   text-align: center;
-  padding: 85px 20px 45px;
+  padding: 75px 20px 35px;
 }
 
-.badge {
-  display: inline-block;
-  background: #21183c;
-  color: #c4b5fd;
-  padding: 9px 18px;
-  border-radius: 30px;
-  font-size: 13px;
-  margin-bottom: 25px;
+.hero h1 {
+  font-size: 42px;
+  margin-bottom: 15px;
 }
 
-h1 {
-  font-size: clamp(36px, 7vw, 65px);
-  margin-bottom: 20px;
-}
-
-h1 span {
+.hero h1 span {
   color: #a78bfa;
 }
 
 .hero p {
   color: #aaa;
   line-height: 1.7;
-  max-width: 550px;
-  margin: auto;
 }
 
-.download-box {
+.container {
   max-width: 650px;
-  margin: 35px auto;
+  margin: 25px auto;
+  padding: 25px;
+}
+
+.input-box {
+  background: #17172b;
   padding: 10px;
-  background: #171728;
-  border: 1px solid #383456;
-  border-radius: 15px;
+  border: 1px solid #44446b;
+  border-radius: 12px;
   display: flex;
   gap: 10px;
 }
 
-.download-box input {
+input {
   flex: 1;
   min-width: 0;
-  padding: 15px;
+  padding: 14px;
   background: transparent;
   border: none;
   outline: none;
   color: white;
-  font-size: 14px;
+  font-size: 15px;
 }
 
-.download-box button {
+button {
   background: #8b5cf6;
   color: white;
   border: none;
-  padding: 15px 22px;
-  border-radius: 10px;
+  padding: 14px 22px;
+  border-radius: 9px;
   font-weight: bold;
   cursor: pointer;
 }
 
-#message {
-  color: #c4b5fd;
-  margin: 15px auto;
-  min-height: 25px;
-  max-width: 600px;
-  line-height: 1.5;
+button:hover {
+  background: #7041d8;
 }
 
 .platforms {
-  padding: 55px 7%;
-  text-align: center;
-}
-
-.platforms h2 {
-  font-size: 34px;
-  margin-bottom: 12px;
-}
-
-.subtitle {
-  color: #999;
-  margin-bottom: 35px;
-}
-
-.grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
-}
-
-.card {
-  background: #151525;
-  border: 1px solid #292943;
-  padding: 30px 12px;
-  border-radius: 17px;
-  transition: 0.3s;
-}
-
-.card:hover {
-  transform: translateY(-7px);
-  border-color: #8b5cf6;
-}
-
-.icon {
-  font-size: 38px;
-  margin-bottom: 18px;
-}
-
-.card h3 {
-  margin-bottom: 10px;
-}
-
-.card p {
-  color: #999;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.features {
-  padding: 55px 7%;
-  text-align: center;
-}
-
-.feature-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
   margin-top: 30px;
 }
 
-.feature {
-  background: #151525;
-  border: 1px solid #292943;
-  padding: 25px;
-  border-radius: 15px;
+.card {
+  background: #17172b;
+  border: 1px solid #30304d;
+  border-radius: 12px;
+  padding: 24px 12px;
+  text-align: center;
 }
 
-.feature h3 {
-  margin: 12px 0;
+.card h3 {
+  margin-bottom: 8px;
 }
 
-.feature p {
-  color: #999;
+.card p {
+  font-size: 13px;
+  color: #aaa;
+}
+
+#result {
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 10px;
+  background: #17172b;
+  display: none;
   line-height: 1.6;
-  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.notice {
+  color: #aaa;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.7;
+  margin-top: 25px;
 }
 
 footer {
   text-align: center;
-  padding: 35px 15px;
-  border-top: 1px solid #292943;
   color: #888;
-  line-height: 2;
+  padding: 40px 15px;
+  margin-top: 40px;
+  border-top: 1px solid #292943;
 }
 
-@media(max-width:700px) {
-  nav {
-    display: none;
-  }
-
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .feature-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .download-box {
-    flex-direction: column;
-  }
-
-  .download-box button {
-    width: 100%;
-  }
-
-  .hero {
-    padding-top: 60px;
-  }
+@media(max-width: 500px) {
+  .hero h1 { font-size: 32px; }
+  .input-box { flex-direction: column; }
+  button { width: 100%; }
 }
 </style>
 </head>
@@ -227,142 +153,145 @@ footer {
 <body>
 
 <header>
-  <div class="logo">MEDIAX.</div>
-  <nav>
-    <a href="#home">Home</a>
-    <a href="#platforms">Platforms</a>
-    <a href="#features">Features</a>
-  </nav>
+  <div class="logo">MEDIAX</div>
+  <div>Media Saver</div>
 </header>
 
-<section class="hero" id="home">
-
-  <div class="badge">✦ ALL-IN-ONE MEDIA SAVER</div>
-
-  <h1>Save Your Media.<br>
-  <span>Your Way.</span></h1>
-
+<section class="hero">
+  <h1>Save Your <span>Media</span></h1>
   <p>
-    One simple place for managing your favorite media.
-    Fast, simple and mobile-friendly.
+    One place for your permitted media links.<br>
+    Simple, fast and easy to use.
   </p>
+</section>
 
-  <div class="download-box">
+<div class="container">
+
+  <div class="input-box">
     <input
       type="url"
-      id="mediaUrl"
-      placeholder="Paste your media link here..."
-      aria-label="Media URL"
+      id="mediaURL"
+      placeholder="Paste your media URL here..."
     >
-
-    <button onclick="checkLink()">Continue →</button>
+    <button onclick="detectMedia()">Continue</button>
   </div>
 
-  <div id="message" aria-live="polite"></div>
+  <div id="result"></div>
 
-</section>
-
-<section class="platforms" id="platforms">
-
-  <h2>Supported Platforms</h2>
-
-  <p class="subtitle">
-    Choose your preferred platform
-  </p>
-
-  <div class="grid">
+  <div class="platforms">
 
     <div class="card">
-      <div class="icon">📸</div>
-      <h3>Instagram</h3>
-      <p>Public media and authorized content</p>
+      <h3>📸 Instagram</h3>
+      <p>Instagram links</p>
     </div>
 
     <div class="card">
-      <div class="icon">📘</div>
-      <h3>Facebook</h3>
-      <p>Public and authorized media</p>
+      <h3>📘 Facebook</h3>
+      <p>Facebook links</p>
     </div>
 
     <div class="card">
-      <div class="icon">💬</div>
-      <h3>WhatsApp</h3>
-      <p>Save your own status media</p>
+      <h3>▶ YouTube</h3>
+      <p>YouTube links</p>
     </div>
 
     <div class="card">
-      <div class="icon">▶️</div>
-      <h3>YouTube</h3>
-      <p>Officially downloadable content</p>
+      <h3>💬 WhatsApp</h3>
+      <p>WhatsApp links</p>
     </div>
 
   </div>
 
-</section>
-
-<section class="features" id="features">
-
-  <h2>Why MEDIAX?</h2>
-
-  <div class="feature-grid">
-
-    <div class="feature">
-      <div class="icon">⚡</div>
-      <h3>Simple Experience</h3>
-      <p>Easy-to-use interface for everyone.</p>
-    </div>
-
-    <div class="feature">
-      <div class="icon">📱</div>
-      <h3>Mobile Friendly</h3>
-      <p>Designed for phones, tablets and computers.</p>
-    </div>
-
-    <div class="feature">
-      <div class="icon">🔒</div>
-      <h3>Privacy First</h3>
-      <p>No passwords or social media login required.</p>
-    </div>
-
+  <div class="notice">
+    MEDIAX supports workflows for content you own or have
+    permission to use. Platform restrictions and copyright
+    rules still apply. This demo does not download media yet.
   </div>
 
-</section>
+</div>
 
 <footer>
-  <div class="logo">MEDIAX.</div>
-  <p>Simple Media Management.</p>
-  <p>© 2026 MEDIAX. All rights reserved.</p>
-  <p>Use only content you own or have permission to download.</p>
+  © 2026 MEDIAX. All Rights Reserved.
 </footer>
 
 <script>
-function checkLink() {
 
-  const input = document.getElementById("mediaUrl");
-  const message = document.getElementById("message");
+function detectMedia() {
+
+  const input = document.getElementById("mediaURL");
+  const result = document.getElementById("result");
 
   const value = input.value.trim();
 
+  result.style.display = "block";
+
   if (!value) {
-    message.textContent = "Please paste a media URL first.";
+    result.innerHTML = "❌ Please paste a URL first.";
     return;
   }
 
+  let url;
+
   try {
-    const url = new URL(value);
-
-    if (url.protocol !== "https:" && url.protocol !== "http:") {
-      throw new Error("Invalid protocol");
-    }
-
-    message.textContent =
-      "Link received! Download service will be connected in the next development stage.";
-
-  } catch (error) {
-    message.textContent = "Please enter a valid URL.";
+    url = new URL(value);
+  } catch {
+    result.innerHTML = "❌ Please enter a valid URL.";
+    return;
   }
+
+  if (url.protocol !== "https:" && url.protocol !== "http:") {
+    result.innerHTML = "❌ Only HTTP and HTTPS links are accepted.";
+    return;
+  }
+
+  const host = url.hostname.toLowerCase().replace(/^www\./, "");
+
+  let platform = "";
+
+  if (
+    host === "instagram.com" ||
+    host.endsWith(".instagram.com")
+  ) {
+    platform = "Instagram";
+  }
+
+  else if (
+    host === "facebook.com" ||
+    host.endsWith(".facebook.com") ||
+    host === "fb.watch"
+  ) {
+    platform = "Facebook";
+  }
+
+  else if (
+    host === "youtube.com" ||
+    host.endsWith(".youtube.com") ||
+    host === "youtu.be"
+  ) {
+    platform = "YouTube";
+  }
+
+  else if (
+    host === "whatsapp.com" ||
+    host.endsWith(".whatsapp.com") ||
+    host === "wa.me"
+  ) {
+    platform = "WhatsApp";
+  }
+
+  if (!platform) {
+    result.innerHTML = "❌ Unsupported platform. Please use an Instagram, Facebook, YouTube or WhatsApp link.";
+    return;
+  }
+
+  result.innerHTML =
+    "✅ Platform detected: <strong>" + platform +
+    "</strong><br><br>" +
+    "Your link is valid. The next step will connect the permitted media service.<br><br>" +
+    "⚠️ Actual downloading is not connected yet.";
 }
+
 </script>
 
 </body>
-  </html>
+</html>
