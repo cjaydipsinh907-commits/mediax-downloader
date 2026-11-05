@@ -1,69 +1,294 @@
-<script>
-const RENDER_BASE_URL = "PASTE_YOUR_RENDER_URL_HERE";
-const API_URL =
-  RENDER_BASE_URL.replace(/\/+$/, "") + "/api/check";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101323">
+  <title>MEDIAX - Media Platform</title>
 
-async function detectMedia() {
-  const input = document.getElementById("mediaURL");
-  const result = document.getElementById("result");
-  const value = input.value.trim();
-
-  result.style.display = "block";
-  result.textContent = "Checking your link...";
-
-  if (!value) {
-    result.textContent = "Please paste a URL first.";
-    return;
-  }
-
-  try {
-    const parsed = new URL(value);
-
-    if (parsed.protocol !== "https:") {
-      result.textContent = "Only HTTPS links are accepted.";
-      return;
-    }
-  } catch {
-    result.textContent = "Invalid URL. Please check your link.";
-    return;
-  }
-
-  try {
-    const response = await fetch(API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ url: value })
-    });
-
-    const data = await response.json();
-
-    if (!response.ok || !data.success) {
-      result.textContent =
-        data.message || "Unable to verify this link.";
-      return;
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
     }
 
-    result.textContent = "";
+    body {
+      min-height: 100vh;
+      background: #101323;
+      color: white;
+      padding: 25px 15px;
+    }
 
-    const heading = document.createElement("strong");
-    heading.textContent =
-      "Platform detected: " + data.platform;
+    .container {
+      max-width: 850px;
+      margin: auto;
+      text-align: center;
+    }
 
-    const message = document.createElement("p");
-    message.textContent =
-      "Your link was checked by MEDIAX backend.";
+    header {
+      padding: 25px 0;
+    }
 
-    const notice = document.createElement("p");
-    notice.textContent =
-      "Actual downloading is not connected yet.";
+    .logo {
+      font-size: 38px;
+      font-weight: bold;
+      letter-spacing: 3px;
+      color: #72e6ff;
+    }
 
-    result.append(heading, message, notice);
+    .tagline {
+      color: #b7bfd3;
+      margin-top: 10px;
+    }
 
-  } catch (error) {
-    result.textContent =
-      "Unable to connect to MEDIAX server. Please try again.";
-  }
-}
-</script>
+    .main-box {
+      background: #1b2138;
+      border: 1px solid #343d5d;
+      border-radius: 18px;
+      padding: 28px 18px;
+      margin-top: 25px;
+    }
+
+    h1 {
+      font-size: 27px;
+      margin-bottom: 12px;
+    }
+
+    .description {
+      color: #b7bfd3;
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+
+    .platforms {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+
+    .platform {
+      background: #272f4b;
+      padding: 17px 8px;
+      border-radius: 12px;
+      border: 1px solid #414b6b;
+      font-weight: bold;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      margin-bottom: 9px;
+      color: #dce5ff;
+    }
+
+    input {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #566180;
+      border-radius: 10px;
+      background: #101729;
+      color: white;
+      font-size: 15px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #72e6ff;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      margin-top: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #65d9f5;
+      color: #101323;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
+    #result {
+      display: none;
+      margin-top: 20px;
+      padding: 16px;
+      background: #101729;
+      border: 1px solid #414b6b;
+      border-radius: 10px;
+      text-align: left;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    #result p {
+      margin-top: 8px;
+      color: #c4cee5;
+    }
+
+    footer {
+      color: #8993ad;
+      font-size: 13px;
+      margin-top: 30px;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 450px) {
+      h1 {
+        font-size: 23px;
+      }
+
+      .logo {
+        font-size: 32px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <header>
+      <div class="logo">MEDIAX</div>
+      <p class="tagline">Your Media Platform</p>
+    </header>
+
+    <main class="main-box">
+
+      <h1>Welcome to MEDIAX</h1>
+
+      <p class="description">
+        Enter a supported public link to check its platform.
+        Only use content you own or have permission to use.
+      </p>
+
+      <div class="platforms">
+        <div class="platform">Instagram</div>
+        <div class="platform">Facebook</div>
+        <div class="platform">YouTube</div>
+        <div class="platform">WhatsApp</div>
+      </div>
+
+      <label for="mediaURL">Paste your link</label>
+
+      <input
+        type="url"
+        id="mediaURL"
+        placeholder="https://example.com/..."
+        autocomplete="url"
+      >
+
+      <button id="continueButton" onclick="detectMedia()">
+        Continue
+      </button>
+
+      <div id="result" role="status" aria-live="polite"></div>
+
+    </main>
+
+    <footer>
+      MEDIAX © 2026<br>
+      Use media responsibly and respect platform rules.
+    </footer>
+
+  </div>
+
+  <script>
+    const RENDER_BASE_URL = "PASTE_YOUR_RENDER_URL_HERE";
+
+    const API_URL =
+      RENDER_BASE_URL.replace(/\/+$/, "") + "/api/check";
+
+    async function detectMedia() {
+      const input = document.getElementById("mediaURL");
+      const result = document.getElementById("result");
+      const button = document.getElementById("continueButton");
+
+      const value = input.value.trim();
+
+      result.style.display = "block";
+      result.textContent = "";
+
+      if (!value) {
+        result.textContent = "Please paste a URL first.";
+        return;
+      }
+
+      let parsed;
+
+      try {
+        parsed = new URL(value);
+      } catch {
+        result.textContent = "Invalid URL. Please check your link.";
+        return;
+      }
+
+      if (parsed.protocol !== "https:") {
+        result.textContent = "Only HTTPS links are accepted.";
+        return;
+      }
+
+      if (
+        RENDER_BASE_URL === "PASTE_YOUR_RENDER_URL_HERE" ||
+        !RENDER_BASE_URL.startsWith("https://")
+      ) {
+        result.textContent =
+          "Backend URL is not configured yet.";
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = "Checking...";
+
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ url: value })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          result.textContent =
+            data.message || "Unable to verify this link.";
+          return;
+        }
+
+        const heading = document.createElement("strong");
+        heading.textContent =
+          "Platform detected: " + data.platform;
+
+        const message = document.createElement("p");
+        message.textContent =
+          "Your link was checked by MEDIAX backend.";
+
+        const notice = document.createElement("p");
+        notice.textContent =
+          "Actual downloading is not connected yet.";
+
+        result.append(heading, message, notice);
+
+      } catch (error) {
+        result.textContent =
+          "Unable to connect to MEDIAX server. Please try again.";
+      } finally {
+        button.disabled = false;
+        button.textContent = "Continue";
+      }
+    }
+  </script>
+
+</body>
+</html>
