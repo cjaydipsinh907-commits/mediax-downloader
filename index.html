@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MEDIAX - Media Hub</title>
+<title>MEDIAX | All-in-One Media Hub</title>
 
 <style>
 * {
@@ -15,33 +15,57 @@
 
 body {
   background: #080d18;
-  color: white;
-  min-height: 100vh;
+  color: #fff;
 }
 
 header {
-  padding: 22px 7%;
+  height: 75px;
+  padding: 0 7%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #263650;
+  border-bottom: 1px solid #1d2940;
+  background: #0b1220;
 }
 
 .logo {
-  font-size: 29px;
-  font-weight: bold;
+  font-size: 28px;
+  font-weight: 900;
   color: #38bdf8;
   letter-spacing: 2px;
 }
 
+nav a {
+  color: #cbd5e1;
+  text-decoration: none;
+  margin-left: 25px;
+  font-size: 14px;
+}
+
+nav a:hover {
+  color: #38bdf8;
+}
+
 .hero {
   text-align: center;
-  padding: 65px 20px 35px;
+  padding: 85px 20px 55px;
+  background: radial-gradient(ellipse at top, #12304c, #080d18 65%);
+}
+
+.badge {
+  display: inline-block;
+  padding: 8px 15px;
+  border: 1px solid #245477;
+  border-radius: 30px;
+  color: #7dd3fc;
+  font-size: 12px;
+  margin-bottom: 22px;
 }
 
 .hero h1 {
-  font-size: 42px;
-  margin-bottom: 15px;
+  font-size: clamp(35px, 7vw, 65px);
+  font-weight: 900;
+  margin-bottom: 20px;
 }
 
 .hero h1 span {
@@ -49,69 +73,113 @@ header {
 }
 
 .hero p {
-  color: #aab6ca;
-  line-height: 1.7;
+  color: #a8b6ca;
+  line-height: 1.8;
+  max-width: 600px;
+  margin: auto;
 }
 
 .container {
-  max-width: 750px;
-  margin: 25px auto;
-  padding: 20px;
+  max-width: 1000px;
+  padding: 25px 20px;
+  margin: auto;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 25px;
+  margin: 35px 0 25px;
+}
+
+.section-title span {
+  color: #38bdf8;
 }
 
 .platforms {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  margin-bottom: 25px;
+  gap: 17px;
 }
 
 .platform {
-  background: #131d30;
-  border: 1px solid #263650;
-  border-radius: 12px;
-  padding: 18px 5px;
+  background: #111c30;
+  border: 1px solid #243650;
+  border-radius: 16px;
+  padding: 25px 10px;
   text-align: center;
-  color: #dce7f8;
+  transition: 0.25s;
 }
 
-.icon {
-  display: block;
-  font-size: 25px;
-  margin-bottom: 9px;
+.platform:hover {
+  transform: translateY(-5px);
+  border-color: #38bdf8;
 }
 
-.input-box {
-  background: #131d30;
-  padding: 22px;
-  border-radius: 15px;
-  border: 1px solid #263650;
+.platform .icon {
+  font-size: 35px;
+  margin-bottom: 12px;
+}
+
+.platform h3 {
+  font-size: 15px;
+}
+
+.platform p {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 8px;
+}
+
+.checker {
+  margin: 50px auto;
+  max-width: 720px;
+  padding: 30px;
+  background: #111c30;
+  border: 1px solid #29415f;
+  border-radius: 20px;
+}
+
+.checker h2 {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.checker .subtitle {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 13px;
+  margin-bottom: 25px;
 }
 
 label {
   display: block;
   margin-bottom: 12px;
-  font-weight: bold;
+  font-size: 14px;
 }
 
 input {
   width: 100%;
-  padding: 16px;
-  border: 1px solid #34445f;
-  border-radius: 9px;
+  padding: 17px;
   background: #080d18;
   color: white;
+  border: 1px solid #34445f;
+  border-radius: 10px;
+  outline: none;
   font-size: 15px;
+}
+
+input:focus {
+  border-color: #38bdf8;
 }
 
 button {
   width: 100%;
   margin-top: 15px;
-  padding: 16px;
-  background: #0284c7;
-  color: white;
+  padding: 17px;
+  background: linear-gradient(90deg, #0284c7, #2563eb);
   border: none;
-  border-radius: 9px;
+  border-radius: 10px;
+  color: white;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
@@ -119,41 +187,62 @@ button {
 
 button:disabled {
   opacity: 0.6;
+  cursor: wait;
 }
 
 #result {
   display: none;
-  margin-top: 18px;
-  padding: 17px;
-  background: #0d192b;
-  border: 1px solid #263650;
-  border-radius: 10px;
-  line-height: 1.7;
+  margin-top: 20px;
+  padding: 18px;
+  background: #0a1729;
+  border: 1px solid #29415f;
+  border-radius: 12px;
+  line-height: 1.8;
   overflow-wrap: anywhere;
 }
 
-.notice {
-  margin-top: 20px;
+.about {
   text-align: center;
-  color: #91a0b8;
-  font-size: 13px;
-  line-height: 1.7;
+  padding: 55px 20px;
+  background: #0d1728;
+  margin-top: 40px;
+}
+
+.about h2 {
+  margin-bottom: 15px;
+}
+
+.about p {
+  color: #a8b6ca;
+  max-width: 650px;
+  margin: auto;
+  line-height: 1.8;
 }
 
 footer {
   text-align: center;
-  padding: 30px 15px;
-  border-top: 1px solid #202a3d;
-  color: #8190a8;
+  padding: 25px 15px;
+  color: #8291a8;
+  font-size: 13px;
+  border-top: 1px solid #1d2940;
 }
 
-@media(max-width: 550px) {
-  .hero h1 {
-    font-size: 32px;
+@media(max-width: 650px) {
+  header {
+    padding: 0 5%;
+  }
+
+  nav a {
+    margin-left: 10px;
+    font-size: 12px;
   }
 
   .platforms {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .checker {
+    padding: 22px 17px;
   }
 }
 </style>
@@ -163,49 +252,101 @@ footer {
 
 <header>
   <div class="logo">MEDIAX</div>
-  <div style="color:#4ade80">● API Ready</div>
+
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#platforms">Platforms</a>
+    <a href="#about">About</a>
+  </nav>
 </header>
 
-<section class="hero">
-  <h1>Your Media <span>Hub</span></h1>
-  <p>Paste a supported media link to check its platform.</p>
+<section class="hero" id="home">
+  <div class="badge">ALL-IN-ONE MEDIA HUB</div>
+
+  <h1>Everything Media.<br>
+    <span>One Platform.</span>
+  </h1>
+
+  <p>
+    Welcome to MEDIAX. Check supported media links
+    through one simple and easy-to-use platform.
+  </p>
 </section>
 
 <main class="container">
 
+  <h2 class="section-title" id="platforms">
+    Supported <span>Platforms</span>
+  </h2>
+
   <div class="platforms">
-    <div class="platform"><span class="icon">📸</span>Instagram</div>
-    <div class="platform"><span class="icon">📘</span>Facebook</div>
-    <div class="platform"><span class="icon">▶️</span>YouTube</div>
-    <div class="platform"><span class="icon">💬</span>WhatsApp</div>
+
+    <div class="platform">
+      <div class="icon">📸</div>
+      <h3>Instagram</h3>
+      <p>Link checking</p>
+    </div>
+
+    <div class="platform">
+      <div class="icon">📘</div>
+      <h3>Facebook</h3>
+      <p>Link checking</p>
+    </div>
+
+    <div class="platform">
+      <div class="icon">▶️</div>
+      <h3>YouTube</h3>
+      <p>Link checking</p>
+    </div>
+
+    <div class="platform">
+      <div class="icon">💬</div>
+      <h3>WhatsApp</h3>
+      <p>Link checking</p>
+    </div>
+
   </div>
 
-  <div class="input-box">
-    <label for="mediaURL">Paste your media link</label>
+  <section class="checker">
+
+    <h2>Media Link Checker</h2>
+
+    <p class="subtitle">
+      Paste your supported HTTPS link below.
+    </p>
+
+    <label for="mediaURL">Your Media Link</label>
 
     <input
       type="url"
       id="mediaURL"
-      placeholder="https://www.youtube.com/watch?v=..."
+      placeholder="Paste your link here..."
     >
 
     <button id="checkButton" onclick="detectMedia()">
-      Continue
+      Check My Link →
     </button>
 
     <div id="result" role="status" aria-live="polite"></div>
-  </div>
 
-  <p class="notice">
-    MEDIAX currently checks supported HTTPS links.
-    Only use content you own or have permission to use.
-    Actual downloading is not connected yet.
-  </p>
+  </section>
 
 </main>
 
+<section class="about" id="about">
+  <h2>About MEDIAX</h2>
+
+  <p>
+    MEDIAX is an all-in-one media platform concept.
+    Our goal is to make media-related tools simple,
+    accessible and easy to use.
+  </p>
+</section>
+
 <footer>
   © 2026 MEDIAX. All Rights Reserved.
+  <br><br>
+  Use only media you own or have permission to use.
 </footer>
 
 <script>
@@ -240,7 +381,7 @@ async function detectMedia() {
 
   button.disabled = true;
   button.textContent = "Checking...";
-  result.textContent = "Connecting to MEDIAX server...";
+  result.textContent = "Please wait. Checking your link...";
 
   try {
     const response = await fetch(API_URL, {
@@ -262,13 +403,13 @@ async function detectMedia() {
     result.replaceChildren();
 
     const heading = document.createElement("h3");
-    heading.textContent = "Platform detected: " + data.platform;
+    heading.textContent = "✅ Platform detected: " + data.platform;
 
     const message = document.createElement("p");
-    message.textContent = "MEDIAX successfully checked your link.";
+    message.textContent = "Your link was checked successfully.";
 
     const notice = document.createElement("p");
-    notice.textContent = "Actual downloading is not connected yet.";
+    notice.textContent = "Actual media processing is not connected yet.";
 
     result.append(heading, message, notice);
 
@@ -277,7 +418,7 @@ async function detectMedia() {
       "Unable to connect to MEDIAX server. Please try again.";
   } finally {
     button.disabled = false;
-    button.textContent = "Continue";
+    button.textContent = "Check My Link →";
   }
 }
 </script>
