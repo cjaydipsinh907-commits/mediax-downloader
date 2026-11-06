@@ -1,7 +1,8 @@
 <!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>MEDIAX - Media Viewer</title><style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MEDIAX - Media Platform</title><style>
 * {
   box-sizing: border-box;
   margin: 0;
@@ -71,8 +72,8 @@ header {
 }
 
 .icon {
-  width: 48px;
-  height: 48px;
+  width: 50px;
+  height: 50px;
   display: block;
   margin: 0 auto 10px;
 }
@@ -87,7 +88,7 @@ header {
   color: #aebbd0;
 }
 
-.box {
+.box, #mediaSection {
   background: #151f36;
   border: 1px solid #293954;
   border-radius: 16px;
@@ -95,7 +96,7 @@ header {
   margin-top: 20px;
 }
 
-.box h2 {
+.box h2, #mediaSection h2 {
   font-size: 21px;
   margin-bottom: 10px;
 }
@@ -149,34 +150,22 @@ button:disabled {
 
 #mediaSection {
   display: none;
-  margin-top: 20px;
-  background: #151f36;
-  border: 1px solid #293954;
-  border-radius: 16px;
-  padding: 18px;
-}
-
-#mediaSection h2 {
-  font-size: 20px;
-  margin-bottom: 14px;
 }
 
 video {
-  display: block;
   width: 100%;
   max-height: 450px;
-  background: #000;
+  background: black;
   border-radius: 12px;
+  display: block;
 }
 
-.download-button {
+.download-button, .source-button {
   display: block;
   width: 100%;
   padding: 15px;
-  margin-top: 15px;
-  background: #16a36a;
+  margin-top: 14px;
   color: white;
-  border: none;
   border-radius: 10px;
   text-align: center;
   text-decoration: none;
@@ -184,31 +173,25 @@ video {
   font-weight: bold;
 }
 
+.download-button {
+  background: #16a36a;
+}
+
 .source-button {
-  display: block;
-  width: 100%;
-  padding: 13px;
-  margin-top: 10px;
   background: #263b5d;
-  color: white;
-  border-radius: 10px;
-  text-align: center;
-  text-decoration: none;
+  font-size: 14px;
 }
 
-.note {
-  margin-top: 15px;
-  color: #aebbd0;
-  font-size: 12px;
-  line-height: 1.6;
-}
-
-.info {
-  margin-top: 22px;
-  text-align: center;
+.note, .info {
+  margin-top: 16px;
   color: #aebbd0;
   font-size: 12px;
   line-height: 1.7;
+}
+
+.info {
+  text-align: center;
+  margin-top: 22px;
 }
 
 footer {
@@ -220,7 +203,7 @@ footer {
   font-size: 12px;
 }
 
-@media (max-width: 420px) {
+@media(max-width:420px) {
   .hero h1 {
     font-size: 24px;
   }
@@ -230,107 +213,87 @@ footer {
   <div class="tagline">Your All-in-One Media Platform</div>
 </header><main class="container"><section class="hero">
   <h1>Welcome to MEDIAX</h1>
-  <p>
-    Paste a supported media link, check it,
-    preview supported videos and access permitted downloads.
-  </p>
-</section><section class="platforms">  <div class="platform">
-    <svg class="icon" viewBox="0 0 100 100" aria-label="Instagram">
-      <defs>
-        <linearGradient id="ig" x1="0" y1="1" x2="1" y2="0">
-          <stop offset="0%" stop-color="#FFD776"/>
-          <stop offset="45%" stop-color="#F04A72"/>
-          <stop offset="100%" stop-color="#8A35C8"/>
-        </linearGradient>
-      </defs>
-      <rect x="8" y="8" width="84" height="84" rx="24" fill="url(#ig)"/>
-      <rect x="26" y="26" width="48" height="48" rx="15"
-        fill="none" stroke="white" stroke-width="7"/>
-      <circle cx="50" cy="50" r="12"
-        fill="none" stroke="white" stroke-width="7"/>
-      <circle cx="69" cy="31" r="5" fill="white"/>
-    </svg>
-    <h3>Instagram</h3>
-    <p>Reels & Posts</p>
-  </div>  <div class="platform">
-    <svg class="icon" viewBox="0 0 100 100" aria-label="Facebook">
-      <circle cx="50" cy="50" r="45" fill="#1877F2"/>
-      <path d="M57 88V55h12l2-14H57v-9c0-4 2-7 8-7h7V12
-      c-4-1-9-1-14-1-14 0-23 9-23 24v6H23v14h12v33z"
-      fill="white"/>
-    </svg>
-    <h3>Facebook</h3>
-    <p>Reels & Posts</p>
-  </div>  <div class="platform">
-    <svg class="icon" viewBox="0 0 100 100" aria-label="WhatsApp">
-      <circle cx="50" cy="46" r="39" fill="#25D366"/>
-      <path d="M20 79l7-20" stroke="#25D366" stroke-width="8"/>
-      <path d="M36 26c-4 0-8 6-8 12 0 17 21 34 36 34
-      7 0 13-6 13-11 0-3-9-8-13-8-3 0-5 5-8 5
-      -4 0-15-10-15-14 0-3 5-5 5-8 0-4-6-10-10-10z"
-      fill="white"/>
-    </svg>
-    <h3>WhatsApp</h3>
-    <p>Status Media</p>
-  </div>  <div class="platform">
-    <svg class="icon" viewBox="0 0 100 100" aria-label="YouTube">
-      <rect x="5" y="19" width="90" height="62" rx="19" fill="#FF0033"/>
-      <path d="M42 34L69 50 42 66z" fill="white"/>
-    </svg>
-    <h3>YouTube</h3>
-    <p>Permitted media access</p>
-  </div>  <div class="platform">
-    <svg class="icon" viewBox="0 0 100 100" aria-label="Chrome">
-      <circle cx="50" cy="50" r="46" fill="#F1F1F1"/>
-      <path d="M50 50L27 10A46 46 0 0 1 96 42H58z" fill="#EA4335"/>
-      <path d="M50 50H96A46 46 0 0 1 25 90L47 52z" fill="#34A853"/>
-      <path d="M50 50L25 90A46 46 0 0 1 27 10l19 33z" fill="#FBBC05"/>
-      <circle cx="50" cy="50" r="21" fill="white"/>
-      <circle cx="50" cy="50" r="16" fill="#4285F4"/>
-    </svg>
-    <h3>Chrome</h3>
-    <p>Browser media links</p>
-  </div>  <div class="platform">
-    <svg class="icon" viewBox="0 0 100 100" aria-label="Other websites">
-      <circle cx="50" cy="50" r="42"
-        fill="none" stroke="#62b5ff" stroke-width="7"/>
-      <ellipse cx="50" cy="50" rx="19" ry="42"
-        fill="none" stroke="#62b5ff" stroke-width="5"/>
-      <path d="M10 50h80M18 30h64M18 70h64"
-        stroke="#62b5ff" stroke-width="5" fill="none"/>
-    </svg>
-    <h3>Other Websites</h3>
-    <p>Direct media links</p>
-  </div></section><section class="box">  <h2>Check Your Link</h2>
-  <p>Paste your media URL below.</p>  <form id="checkForm">
-    <label for="mediaLink">Paste Media URL</label><input
-  type="url"
-  id="mediaLink"
-  placeholder="https://example.com/video.mp4"
-  maxlength="2048"
-  required
->
-
-<button id="checkButton" type="submit">
-  Check Link
-</button>
-
-  </form>  <div id="result" role="status" aria-live="polite"></div></section><section id="mediaSection">  <h2>Video Preview</h2><video id="videoPlayer" controls playsinline></video>
-
-  <a id="downloadButton" class="download-button" href="#" download>
-    Download Video
-  </a>  <a id="sourceButton" class="source-button" href="#" target="_blank" rel="noopener">
-    Open Video Source
-  </a>  <p class="note">
-    Download is available only when the source permits it
-    and the browser can access the video file.
-  </p></section><section class="info">
-  Only use media you own or have permission to access.
-  Platform restrictions and copyright rules apply.
-  MEDIAX is an independent project and is not affiliated
-  with Instagram, Facebook, WhatsApp or YouTube.
+  <p>Paste your supported media link, check it and preview permitted direct media files.</p>
+</section><section class="platforms"><div class="platform">
+<svg class="icon" viewBox="0 0 100 100" aria-label="Instagram">
+<defs>
+<linearGradient id="ig" x1="0" y1="1" x2="1" y2="0">
+<stop offset="0%" stop-color="#FFD776"/>
+<stop offset="45%" stop-color="#F04A72"/>
+<stop offset="100%" stop-color="#8A35C8"/>
+</linearGradient>
+</defs>
+<rect x="8" y="8" width="84" height="84" rx="24" fill="url(#ig)"/>
+<rect x="26" y="26" width="48" height="48" rx="15" fill="none" stroke="white" stroke-width="7"/>
+<circle cx="50" cy="50" r="12" fill="none" stroke="white" stroke-width="7"/>
+<circle cx="69" cy="31" r="5" fill="white"/>
+</svg>
+<h3>Instagram</h3>
+<p>Reels & Posts</p>
+</div><div class="platform">
+<svg class="icon" viewBox="0 0 100 100" aria-label="Facebook">
+<circle cx="50" cy="50" r="45" fill="#1877F2"/>
+<path d="M57 88V55h12l2-14H57v-9c0-4 2-7 8-7h7V12c-4-1-9-1-14-1-14 0-23 9-23 24v6H23v14h12v33z" fill="white"/>
+</svg>
+<h3>Facebook</h3>
+<p>Reels & Posts</p>
+</div><div class="platform">
+<svg class="icon" viewBox="0 0 100 100" aria-label="WhatsApp">
+<circle cx="50" cy="46" r="39" fill="#25D366"/>
+<path d="M20 79l7-20" stroke="#25D366" stroke-width="8"/>
+<path d="M36 26c-4 0-8 6-8 12 0 17 21 34 36 34 7 0 13-6 13-11 0-3-9-8-13-8-3 0-5 5-8 5-4 0-15-10-15-14 0-3 5-5 5-8 0-4-6-10-10-10z" fill="white"/>
+</svg>
+<h3>WhatsApp</h3>
+<p>Status Media</p>
+</div><div class="platform">
+<svg class="icon" viewBox="0 0 100 100" aria-label="YouTube">
+<rect x="5" y="19" width="90" height="62" rx="19" fill="#FF0033"/>
+<path d="M42 34L69 50 42 66z" fill="white"/>
+</svg>
+<h3>YouTube</h3>
+<p>Permitted media access</p>
+</div><div class="platform">
+<svg class="icon" viewBox="0 0 100 100" aria-label="Chrome">
+<circle cx="50" cy="50" r="46" fill="#F1F1F1"/>
+<path d="M50 50L27 10A46 46 0 0 1 96 42H58z" fill="#EA4335"/>
+<path d="M50 50H96A46 46 0 0 1 25 90L47 52z" fill="#34A853"/>
+<path d="M50 50L25 90A46 46 0 0 1 27 10l19 33z" fill="#FBBC05"/>
+<circle cx="50" cy="50" r="21" fill="white"/>
+<circle cx="50" cy="50" r="16" fill="#4285F4"/>
+</svg>
+<h3>Chrome</h3>
+<p>Browser media links</p>
+</div><div class="platform">
+<svg class="icon" viewBox="0 0 100 100" aria-label="Other websites">
+<circle cx="50" cy="50" r="42" fill="none" stroke="#62b5ff" stroke-width="7"/>
+<ellipse cx="50" cy="50" rx="19" ry="42" fill="none" stroke="#62b5ff" stroke-width="5"/>
+<path d="M10 50h80M18 30h64M18 70h64" stroke="#62b5ff" stroke-width="5" fill="none"/>
+</svg>
+<h3>Other Websites</h3>
+<p>Direct media links</p>
+</div></section><section class="box">
+<h2>Check Your Link</h2>
+<p>Paste your media URL below.</p><form id="checkForm">
+<label for="mediaLink">Paste Media URL</label>
+<input type="url" id="mediaLink" placeholder="https://example.com/video.mp4" maxlength="2048" required>
+<button id="checkButton" type="submit">Check Link</button>
+</form><div id="result" role="status" aria-live="polite"></div>
+</section><section id="mediaSection">
+<h2>Video Preview</h2>
+<video id="videoPlayer" controls playsinline></video><a id="downloadButton" class="download-button" href="#" download="mediax-video">
+Download Video
+</a><a id="sourceButton" class="source-button" href="#" target="_blank" rel="noopener">
+Open Video Source
+</a><p class="note">
+Download depends on source permissions and browser access.
+</p>
+</section><section class="info">
+Only use media you own or have permission to access.
+Platform restrictions and copyright rules apply.
+MEDIAX is an independent project and is not affiliated
+with Instagram, Facebook, WhatsApp or YouTube.
 </section></main><footer>
-  © 2026 MEDIAX. All rights reserved.
+© 2026 MEDIAX. All rights reserved.
 </footer><script>
 const API_URL = "https://mediax-api.onrender.com";
 
@@ -348,61 +311,46 @@ function clearVideo() {
   videoPlayer.pause();
   videoPlayer.removeAttribute("src");
   videoPlayer.load();
-
   mediaSection.style.display = "none";
   downloadButton.removeAttribute("href");
   sourceButton.removeAttribute("href");
 }
 
-function showMessage(message, color) {
-  result.textContent = message;
-  result.style.color = color;
-}
-
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
-
   clearVideo();
 
   const mediaUrl = input.value.trim();
 
-  let parsedUrl;
-
   try {
-    parsedUrl = new URL(mediaUrl);
-
+    const parsedUrl = new URL(mediaUrl);
     if (parsedUrl.protocol !== "https:") {
       throw new Error("Only HTTPS links are supported.");
     }
   } catch (error) {
-    showMessage(error.message || "Please enter a valid HTTPS link.", "#ff9b9b");
+    result.textContent = error.message || "Enter a valid HTTPS link.";
+    result.style.color = "#ff9b9b";
     return;
   }
 
   button.disabled = true;
-  showMessage("Checking link...", "#75bcff");
+  result.textContent = "Checking link...";
+  result.style.color = "#75bcff";
 
   try {
-    const checkResponse = await fetch(API_URL + "/api/check", {
+    const response = await fetch(API_URL + "/api/check", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ url: mediaUrl })
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({url: mediaUrl})
     });
 
-    const checkData = await checkResponse.json();
+    const data = await response.json();
 
-    if (!checkResponse.ok || !checkData.success) {
-      throw new Error(checkData.message || "Link could not be checked.");
+    if (!response.ok || !data.success) {
+      throw new Error(data.message || "Link could not be checked.");
     }
 
-    showMessage(
-      "Platform detected: " + checkData.platform + " ✓",
-      "#6ee7a8"
-    );
-
-    const platform = String(checkData.platform || "").toLowerCase();
+    const platform = String(data.platform || "").toLowerCase();
 
     if (
       platform.includes("youtube") ||
@@ -410,52 +358,44 @@ form.addEventListener("submit", async (event) => {
       platform.includes("facebook") ||
       platform.includes("whatsapp")
     ) {
-      showMessage(
-        "Platform detected: " + checkData.platform +
-        ". Direct downloading is not available for this link. Use the platform's permitted viewing or export options.",
-        "#ffd479"
-      );
+      result.textContent =
+        "Platform detected: " + data.platform +
+        ". Use the platform's permitted viewing or export options for this content.";
+      result.style.color = "#ffd479";
       return;
     }
 
-    showMessage("Checking whether this is a supported direct media file...", "#75bcff");
-
+    result.textContent = "Platform detected: " + data.platform + ". Checking media...";
+    
     const inspectResponse = await fetch(API_URL + "/api/media/inspect", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ url: mediaUrl })
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({url: mediaUrl})
     });
 
     const inspectData = await inspectResponse.json();
 
     if (!inspectResponse.ok || !inspectData.success) {
-      throw new Error(
-        inspectData.message || "This link is not a supported direct media file."
-      );
+      throw new Error(inspectData.message || "Unsupported media link.");
     }
 
     if (
       String(inspectData.mediaType || "").toLowerCase() !== "video" ||
       !inspectData.previewUrl
     ) {
-      throw new Error("This link does not contain a supported video preview.");
+      throw new Error("No supported video preview found.");
     }
 
     const previewUrl = inspectData.previewUrl;
 
     videoPlayer.src = previewUrl;
     downloadButton.href = previewUrl;
-    downloadButton.download = "mediax-video";
     sourceButton.href = previewUrl;
 
     mediaSection.style.display = "block";
 
-    showMessage(
-      "Supported video found! Your preview is ready.",
-      "#6ee7a8"
-    );
+    result.textContent = "Supported video found! Preview is ready.";
+    result.style.color = "#6ee7a8";
 
     mediaSection.scrollIntoView({
       behavior: "smooth",
@@ -463,10 +403,8 @@ form.addEventListener("submit", async (event) => {
     });
 
   } catch (error) {
-    showMessage(
-      error.message || "Unable to check this link. Please try again.",
-      "#ff9b9b"
-    );
+    result.textContent = error.message || "Unable to check this link.";
+    result.style.color = "#ff9b9b";
   } finally {
     button.disabled = false;
   }
