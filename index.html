@@ -28,7 +28,7 @@ header {
 }
 
 .logo {
-  font-size: 27px;
+  font-size: 28px;
   font-weight: 900;
   color: #38bdf8;
   letter-spacing: 2px;
@@ -41,7 +41,7 @@ header span {
 
 .hero {
   text-align: center;
-  padding: 65px 20px 40px;
+  padding: 65px 20px 45px;
   background: radial-gradient(ellipse at top, #12304c, #080d18 70%);
 }
 
@@ -60,9 +60,55 @@ header span {
 }
 
 .container {
-  max-width: 850px;
+  max-width: 900px;
   margin: auto;
   padding: 25px 18px;
+}
+
+.section-title {
+  text-align: center;
+  margin: 25px 0;
+  font-size: 25px;
+}
+
+.section-title span {
+  color: #38bdf8;
+}
+
+.platforms {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+.platform {
+  background: #111c30;
+  border: 1px solid #263650;
+  border-radius: 16px;
+  padding: 23px 10px;
+  text-align: center;
+  transition: .2s;
+}
+
+.platform:hover {
+  transform: translateY(-5px);
+  border-color: #38bdf8;
+}
+
+.platform svg {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 13px;
+}
+
+.platform h3 {
+  font-size: 14px;
+}
+
+.platform p {
+  color: #94a3b8;
+  font-size: 11px;
+  margin-top: 7px;
 }
 
 .card {
@@ -70,7 +116,7 @@ header span {
   border: 1px solid #263650;
   border-radius: 17px;
   padding: 25px;
-  margin: 25px 0;
+  margin-top: 35px;
 }
 
 .card h2 {
@@ -86,7 +132,7 @@ header span {
 
 input[type="url"] {
   width: 100%;
-  padding: 15px;
+  padding: 16px;
   border: 1px solid #34445f;
   border-radius: 9px;
   background: #080d18;
@@ -95,13 +141,14 @@ input[type="url"] {
 }
 
 button {
-  padding: 14px;
+  padding: 15px;
   border: none;
   border-radius: 9px;
   background: #0284c7;
   color: white;
   font-weight: bold;
   cursor: pointer;
+  font-size: 15px;
 }
 
 button:disabled {
@@ -132,36 +179,57 @@ button:disabled {
   background: #0b1628;
 }
 
-.upload-area p {
-  color: #a8b6ca;
-  margin: 10px 0 18px;
-  font-size: 14px;
+.upload-icon {
+  font-size: 45px;
+  margin-bottom: 12px;
 }
 
-.upload-button {
-  display: inline-block;
+.upload-area p {
+  color: #a8b6ca;
+  margin: 12px 0 20px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* File picker button */
+.file-picker {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   background: #0284c7;
   color: white;
-  padding: 13px 20px;
-  border-radius: 9px;
+  padding: 15px 22px;
+  border-radius: 10px;
   font-weight: bold;
   cursor: pointer;
+  min-height: 48px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.file-picker:active {
+  background: #0369a1;
 }
 
 #mediaFile {
-  display: none;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+  z-index: -1;
 }
 
 #preview {
   display: none;
-  margin-top: 22px;
+  margin-top: 25px;
 }
 
 #preview img,
 #preview video {
   display: block;
-  max-width: 100%;
+  width: 100%;
   max-height: 420px;
+  object-fit: contain;
   margin: 15px auto;
   border-radius: 12px;
   background: #000;
@@ -173,6 +241,7 @@ button:disabled {
   border-radius: 10px;
   line-height: 1.9;
   font-size: 14px;
+  white-space: pre-line;
   overflow-wrap: anywhere;
 }
 
@@ -198,7 +267,11 @@ footer {
   font-size: 13px;
 }
 
-@media(max-width: 550px) {
+@media(max-width: 600px) {
+  .platforms {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .card {
     padding: 18px;
   }
@@ -215,11 +288,79 @@ footer {
 
 <section class="hero">
   <h1>Media <span>Tools</span></h1>
-  <p>Check supported links and preview your own media files.</p>
+  <p>One platform for your media tools and files.</p>
 </section>
 
 <main class="container">
 
+  <h2 class="section-title">
+    Supported <span>Platforms</span>
+  </h2>
+
+  <section class="platforms">
+
+    <!-- Instagram -->
+    <div class="platform">
+      <svg viewBox="0 0 24 24" aria-label="Instagram logo">
+        <defs>
+          <linearGradient id="insta" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0%" stop-color="#ffb13d"/>
+            <stop offset="50%" stop-color="#ed286c"/>
+            <stop offset="100%" stop-color="#9b36db"/>
+          </linearGradient>
+        </defs>
+        <rect x="2" y="2" width="20" height="20" rx="6"
+          fill="none" stroke="url(#insta)" stroke-width="2.5"/>
+        <circle cx="12" cy="12" r="4.5"
+          fill="none" stroke="url(#insta)" stroke-width="2.2"/>
+        <circle cx="18" cy="6.5" r="1.3" fill="#ed286c"/>
+      </svg>
+      <h3>Instagram</h3>
+      <p>Link checking</p>
+    </div>
+
+    <!-- Facebook -->
+    <div class="platform">
+      <svg viewBox="0 0 24 24" aria-label="Facebook logo">
+        <circle cx="12" cy="12" r="11" fill="#1877F2"/>
+        <path fill="#fff"
+          d="M13.7 21v-8h2.7l.4-3.1h-3.1v-2c0-.9.3-1.5 1.6-1.5h1.7V3.6c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.2v2.2H8v3.1h2.6v8z"/>
+      </svg>
+      <h3>Facebook</h3>
+      <p>Link checking</p>
+    </div>
+
+    <!-- YouTube -->
+    <div class="platform">
+      <svg viewBox="0 0 24 24" aria-label="YouTube logo">
+        <rect x="1" y="4" width="22" height="16" rx="5"
+          fill="#FF0033"/>
+        <path d="M10 8.3v7.4l6-3.7z" fill="#fff"/>
+      </svg>
+      <h3>YouTube</h3>
+      <p>Link checking</p>
+    </div>
+
+    <!-- WhatsApp -->
+    <div class="platform">
+      <svg viewBox="0 0 24 24" aria-label="WhatsApp logo">
+        <circle cx="12" cy="11" r="9.5" fill="#25D366"/>
+        <path d="M5.5 19.5l1.3-4.1"
+          stroke="#25D366" stroke-width="2"/>
+        <path d="M8 7.5c.4-.6.9-.5 1.2 0l1 1.8c.2.4 0 .7-.4 1.1
+          -.3.3-.2.6 0 .9.8 1.3 1.7 2.1 3 2.7.4.2.7.1.9-.2
+          l.8-1c.2-.3.6-.4.9-.2l1.8.9c.4.2.5.5.4.9
+          -.3 1.1-1.2 1.7-2.3 1.8-2.1.2-4.9-1.4-6.7-3.2
+          C6.8 11.3 6 9.1 8 7.5z"
+          fill="#fff"/>
+      </svg>
+      <h3>WhatsApp</h3>
+      <p>Link checking</p>
+    </div>
+
+  </section>
+
+  <!-- Link checker -->
   <section class="card">
     <h2>🔗 Media Link Checker</h2>
     <p class="subtitle">
@@ -239,36 +380,37 @@ footer {
     <div id="linkResult" role="status" aria-live="polite"></div>
   </section>
 
+  <!-- Media upload -->
   <section class="card">
     <h2>📁 Upload Your Media</h2>
-
     <p class="subtitle">
-      Select an image or video stored on your phone.
+      Select your own image or video from your phone.
     </p>
 
     <div class="upload-area">
-      <div style="font-size:40px">📷</div>
+      <div class="upload-icon">📷</div>
 
-      <h3>Select Your File</h3>
+      <h3>Select Image or Video</h3>
 
-      <p>Supported formats: JPG, PNG, GIF, WEBP, MP4, WEBM</p>
-
-      <label for="mediaFile" class="upload-button">
-        Choose Image or Video
-      </label>
+      <p>
+        Supported: JPG, PNG, GIF, WEBP, MP4, WEBM<br>
+        Maximum file size: 50 MB
+      </p>
 
       <input
         type="file"
         id="mediaFile"
         accept="image/jpeg,image/png,image/gif,image/webp,video/mp4,video/webm"
       >
+
+      <label for="mediaFile" class="file-picker">
+        Choose Image or Video
+      </label>
     </div>
 
     <div id="preview">
       <h3>Media Preview</h3>
-
       <div id="previewContent"></div>
-
       <div class="file-info" id="fileInfo"></div>
 
       <button class="remove-button" onclick="removeMedia()">
@@ -277,8 +419,8 @@ footer {
     </div>
 
     <p class="notice">
-      Your selected file is previewed inside your browser.
-      This version does not upload or store your file on a server.
+      Your selected file is previewed in your browser.
+      It is not uploaded to a server.
     </p>
   </section>
 
@@ -319,7 +461,7 @@ async function detectMedia() {
 
   button.disabled = true;
   button.textContent = "Checking...";
-  result.textContent = "Connecting to MEDIAX...";
+  result.textContent = "Checking your link...";
 
   try {
     const response = await fetch(API_URL, {
@@ -381,12 +523,12 @@ mediaInput.addEventListener("change", function() {
   }
 
   if (file.size > 50 * 1024 * 1024) {
-    alert("File size must be 50 MB or less.");
+    alert("File must be 50 MB or smaller.");
     this.value = "";
     return;
   }
 
-  removeMedia();
+  clearPreview();
 
   currentObjectURL = URL.createObjectURL(file);
 
@@ -395,25 +537,30 @@ mediaInput.addEventListener("change", function() {
   const info = document.getElementById("fileInfo");
 
   preview.style.display = "block";
-  content.replaceChildren();
 
   const isImage = file.type.startsWith("image/");
 
   if (isImage) {
-    const image = document.createElement("img");
-    image.src = currentObjectURL;
-    image.alt = "Selected image preview";
+    const img = document.createElement("img");
+    img.src = currentObjectURL;
+    img.alt = "Selected image preview";
 
-    image.onload = function() {
+    img.onload = function() {
       info.textContent =
         "File name: " + file.name +
         "\nFile type: " + file.type +
         "\nFile size: " + formatSize(file.size) +
         "\nImage dimensions: " +
-        image.naturalWidth + " × " + image.naturalHeight;
+        img.naturalWidth + " × " + img.naturalHeight;
     };
 
-    content.appendChild(image);
+    img.onerror = function() {
+      info.textContent = "Unable to preview this image.";
+    };
+
+    content.appendChild(img);
+
+    info.textContent = "Loading image information...";
 
   } else {
     const video = document.createElement("video");
@@ -426,20 +573,17 @@ mediaInput.addEventListener("change", function() {
         "File name: " + file.name +
         "\nFile type: " + file.type +
         "\nFile size: " + formatSize(file.size) +
-        "\nVideo duration: " + formatDuration(video.duration) +
-        "\nVideo dimensions: " +
+        "\nDuration: " + formatDuration(video.duration) +
+        "\nDimensions: " +
         video.videoWidth + " × " + video.videoHeight;
     };
 
-    content.appendChild(video);
-  }
+    video.onerror = function() {
+      info.textContent = "Unable to preview this video.";
+    };
 
-  if (isImage) {
-    info.textContent =
-      "File name: " + file.name +
-      "\nFile type: " + file.type +
-      "\nFile size: " + formatSize(file.size) +
-      "\nLoading image dimensions...";
+    content.appendChild(video);
+    info.textContent = "Loading video information...";
   }
 });
 
@@ -453,12 +597,12 @@ function formatDuration(seconds) {
   if (!Number.isFinite(seconds)) return "Unknown";
 
   const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = Math.floor(seconds % 60);
+  const remaining = Math.floor(seconds % 60);
 
-  return minutes + " min " + remainingSeconds + " sec";
+  return minutes + " min " + remaining + " sec";
 }
 
-function removeMedia() {
+function clearPreview() {
   if (currentObjectURL) {
     URL.revokeObjectURL(currentObjectURL);
     currentObjectURL = null;
@@ -467,7 +611,11 @@ function removeMedia() {
   document.getElementById("preview").style.display = "none";
   document.getElementById("previewContent").replaceChildren();
   document.getElementById("fileInfo").textContent = "";
-  document.getElementById("mediaFile").value = "";
+}
+
+function removeMedia() {
+  clearPreview();
+  mediaInput.value = "";
 }
 </script>
 
