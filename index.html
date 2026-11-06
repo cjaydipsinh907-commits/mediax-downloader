@@ -3,8 +3,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#10101c">
-<meta name="description" content="MEDIAX - All-in-One Media Link Checker">
-<title>MEDIAX - Media Link Checker</title><style>
+<meta name="description" content="MEDIAX - All-in-One Media Link Checker"><title>MEDIAX - Media Dashboard</title><style>
 * {
   box-sizing: border-box;
   margin: 0;
@@ -23,61 +22,95 @@ body {
 }
 
 header {
-  text-align: center;
-  padding: 22px 15px;
+  padding: 18px 5%;
+  background: #171729;
   border-bottom: 1px solid #303047;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
 }
 
 .logo {
-  font-size: 30px;
+  font-size: 27px;
   font-weight: bold;
   color: #8b7cff;
   letter-spacing: 2px;
 }
 
-header p {
-  color: #aaa;
-  margin-top: 7px;
+nav {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+nav a {
+  color: #ccc;
+  text-decoration: none;
   font-size: 13px;
+}
+
+nav a:hover {
+  color: #a78bfa;
 }
 
 main {
   width: 92%;
-  max-width: 650px;
-  margin: 35px auto;
+  max-width: 900px;
+  margin: 30px auto;
 }
 
 .hero {
+  padding: 35px 20px;
   text-align: center;
+  background: linear-gradient(135deg, #242044, #171729);
+  border: 1px solid #39345e;
+  border-radius: 18px;
   margin-bottom: 25px;
 }
 
 .hero h1 {
-  font-size: clamp(23px, 5vw, 30px);
-  margin-bottom: 10px;
+  font-size: clamp(25px, 5vw, 36px);
+  margin-bottom: 12px;
 }
 
 .hero p {
   color: #aaa;
-  line-height: 1.6;
+  line-height: 1.7;
   font-size: 14px;
+}
+
+.hero-button {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 13px 22px;
+  background: #7563f6;
+  border-radius: 9px;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.section-title {
+  font-size: 20px;
+  margin: 28px 0 15px;
 }
 
 .platforms {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  margin: 25px 0;
+  gap: 13px;
 }
 
 .platform {
   background: #1c1c2e;
   border: 1px solid #303047;
   border-radius: 14px;
-  padding: 17px 5px;
+  padding: 20px 8px;
   text-align: center;
-  font-size: 12px;
   color: #ddd;
+  font-size: 13px;
   transition: transform .2s, border-color .2s;
 }
 
@@ -88,9 +121,9 @@ main {
 
 .platform svg {
   display: block;
-  width: 34px;
-  height: 34px;
-  margin: 0 auto 9px;
+  width: 36px;
+  height: 36px;
+  margin: 0 auto 10px;
 }
 
 .card {
@@ -98,17 +131,23 @@ main {
   border: 1px solid #303047;
   border-radius: 16px;
   padding: 22px;
-  margin-bottom: 20px;
+  margin-top: 22px;
 }
 
 .card h2 {
   font-size: 19px;
-  margin-bottom: 16px;
+  margin-bottom: 15px;
+}
+
+.description {
+  color: #aaa;
+  font-size: 13px;
+  line-height: 1.7;
 }
 
 .input-label {
   display: block;
-  margin-bottom: 9px;
+  margin: 18px 0 9px;
   font-size: 13px;
   color: #ccc;
 }
@@ -141,22 +180,21 @@ button {
   font-size: 15px;
   font-weight: bold;
   cursor: pointer;
-  transition: background .2s;
 }
 
 button:hover {
   background: #6250df;
 }
 
+button:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
 button:focus-visible,
 a:focus-visible {
   outline: 2px solid white;
   outline-offset: 3px;
-}
-
-button:disabled {
-  opacity: .6;
-  cursor: not-allowed;
 }
 
 .status {
@@ -201,7 +239,7 @@ button:disabled {
 .note {
   font-size: 12px;
   color: #aaa;
-  line-height: 1.6;
+  line-height: 1.7;
   margin-top: 15px;
 }
 
@@ -225,6 +263,35 @@ button:disabled {
 .clear-button {
   margin-top: 13px;
   background: #3b3047;
+}
+
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 13px;
+  margin-top: 15px;
+}
+
+.quick-card {
+  background: #1c1c2e;
+  border: 1px solid #303047;
+  border-radius: 13px;
+  padding: 18px;
+  text-decoration: none;
+  color: white;
+  display: block;
+}
+
+.quick-card strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #a78bfa;
+}
+
+.quick-card span {
+  font-size: 12px;
+  color: #aaa;
+  line-height: 1.6;
 }
 
 footer {
@@ -253,168 +320,181 @@ footer {
   text-decoration: underline;
 }
 
-@media (max-width: 480px) {
+@media(max-width: 520px) {
   header {
-    padding: 19px 12px;
+    justify-content: center;
+    text-align: center;
   }
 
-  main {
-    width: 91%;
-    margin: 25px auto;
+  nav {
+    justify-content: center;
   }
 
   .platforms {
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
   }
 
-  .platform {
-    padding: 16px 8px;
+  .quick-grid {
+    grid-template-columns: 1fr;
+  }
+
+  main {
+    width: 91%;
   }
 
   .card {
     padding: 17px;
-    border-radius: 13px;
-  }
-
-  .hero p {
-    font-size: 13px;
   }
 }
 
-@media (min-width: 481px) and (max-width: 700px) {
-  main {
-    width: 90%;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
+@media(prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
 
-  *,
-  *::before,
-  *::after {
+  * {
     transition: none !important;
   }
 }
 </style></head><body><header>
-  <div class="logo">MEDIAX</div>
-  <p>All-in-One Media Link Checker</p>
-</header><main>  <section class="hero">
-    <h1>Media Link Checker</h1>
-    <p>Paste a media link to identify its platform and check supported previews.</p>
-  </section>  <section class="platforms" aria-label="Supported platforms"><div class="platform">
-  <svg viewBox="0 0 48 48" role="img" aria-label="YouTube logo">
-    <rect x="3" y="9" width="42" height="30" rx="9" fill="#FF0033"/>
-    <path d="M20 16 L33 24 L20 32 Z" fill="white"/>
-  </svg>
-  YouTube
-</div>
+  <div class="logo">MEDIAX</div>  <nav aria-label="Main navigation">
+    <a href="#home">Home</a>
+    <a href="#platforms">Platforms</a>
+    <a href="#checker">Link Checker</a>
+    <a href="media.html">Media Viewer</a>
+  </nav>
+</header><main id="home"><section class="hero">
+  <h1>Welcome to MEDIAX</h1>  <p>
+    Your Media Link Checker Dashboard.<br>
+    Identify platforms and preview supported direct media files.
+  </p>  <a class="hero-button" href="#checker">
+    Check Your Link
+  </a>
+</section><h2 class="section-title" id="platforms">
+  Supported Platforms
+</h2><section class="platforms" aria-label="Supported platforms">  <div class="platform">
+    <svg viewBox="0 0 48 48" role="img" aria-label="YouTube">
+      <rect x="3" y="9" width="42" height="30" rx="9" fill="#FF0033"/>
+      <path d="M20 16 L33 24 L20 32 Z" fill="white"/>
+    </svg>
+    YouTube
+  </div>  <div class="platform">
+    <svg viewBox="0 0 48 48" role="img" aria-label="Instagram">
+      <defs>
+        <linearGradient id="ig" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0%" stop-color="#FFDC80"/>
+          <stop offset="35%" stop-color="#F77737"/>
+          <stop offset="65%" stop-color="#E1306C"/>
+          <stop offset="100%" stop-color="#833AB4"/>
+        </linearGradient>
+      </defs>
+      <rect x="4" y="4" width="40" height="40" rx="12" fill="url(#ig)"/>
+      <rect x="12" y="12" width="24" height="24" rx="7" fill="none" stroke="white" stroke-width="3"/>
+      <circle cx="24" cy="24" r="6" fill="none" stroke="white" stroke-width="3"/>
+      <circle cx="32" cy="16" r="2" fill="white"/>
+    </svg>
+    Instagram
+  </div>  <div class="platform">
+    <svg viewBox="0 0 48 48" role="img" aria-label="Facebook">
+      <circle cx="24" cy="24" r="22" fill="#1877F2"/>
+      <path d="M27 42 V26 H33 L34 19 H27 V15 C27 13 28 12 30 12 H34 V6 H28 C21 6 19 10 19 15 V19 H14 V26 H19 V42 Z" fill="white"/>
+    </svg>
+    Facebook
+  </div>  <div class="platform">
+    <svg viewBox="0 0 48 48" role="img" aria-label="WhatsApp">
+      <circle cx="24" cy="23" r="19" fill="#25D366"/>
+      <path d="M13 38 L15 30 L13 27 C9 18 16 9 25 9 C34 9 40 16 39 25 C38 34 28 40 19 36 L13 38 Z" fill="none" stroke="white" stroke-width="2.5"/>
+      <path d="M19 17 C18 17 17 19 18 21 C20 26 23 29 28 31 C30 32 32 30 32 28 L28 26 L26 28 C23 27 21 25 20 22 L22 20 Z" fill="white"/>
+    </svg>
+    WhatsApp
+  </div></section><section class="card" id="checker">  <h2>Check Your Media Link</h2>  <p class="description">
+    Paste a public HTTPS link to identify its platform
+    and check whether it is a supported direct media file.
+  </p>  <label class="input-label" for="mediaLink">
+    Paste your media URL
+  </label><input
+type="url"
+id="mediaLink"
+placeholder="https://example.com/media.mp4"
+autocomplete="url"
+inputmode="url"
+maxlength="2048"
 
-<div class="platform">
-  <svg viewBox="0 0 48 48" role="img" aria-label="Instagram logo">
-    <defs>
-      <linearGradient id="instagramGradient" x1="0" y1="1" x2="1" y2="0">
-        <stop offset="0%" stop-color="#FFDC80"/>
-        <stop offset="35%" stop-color="#F77737"/>
-        <stop offset="65%" stop-color="#E1306C"/>
-        <stop offset="100%" stop-color="#833AB4"/>
-      </linearGradient>
-    </defs>
-    <rect x="4" y="4" width="40" height="40" rx="12" fill="url(#instagramGradient)"/>
-    <rect x="12" y="12" width="24" height="24" rx="7" fill="none" stroke="white" stroke-width="3"/>
-    <circle cx="24" cy="24" r="6" fill="none" stroke="white" stroke-width="3"/>
-    <circle cx="32" cy="16" r="2" fill="white"/>
-  </svg>
-  Instagram
-</div>
+«»
 
-<div class="platform">
-  <svg viewBox="0 0 48 48" role="img" aria-label="Facebook logo">
-    <circle cx="24" cy="24" r="22" fill="#1877F2"/>
-    <path d="M27 42 V26 H33 L34 19 H27 V15 C27 13 28 12 30 12 H34 V6 H28 C21 6 19 10 19 15 V19 H14 V26 H19 V42 Z" fill="white"/>
-  </svg>
-  Facebook
-</div>
+  <button type="button" id="checkButton">
+    Check Link
+  </button>  <div class="status" id="statusBox" role="status" aria-live="polite"></div></section><section class="card" id="mediaSection" hidden>  <h2>Media Preview</h2><video
+id="videoPlayer"
+class="media-preview"
+controls
+playsinline
+preload="metadata"
+hidden
 
-<div class="platform">
-  <svg viewBox="0 0 48 48" role="img" aria-label="WhatsApp logo">
-    <circle cx="24" cy="23" r="19" fill="#25D366"/>
-    <path d="M13 38 L15 30 L13 27 C9 18 16 9 25 9 C34 9 40 16 39 25 C38 34 28 40 19 36 L13 38 Z" fill="none" stroke="white" stroke-width="2.5" stroke-linejoin="round"/>
-    <path d="M19 17 C18 17 17 19 18 21 C20 26 23 29 28 31 C30 32 32 30 32 28 L28 26 L26 28 C23 27 21 25 20 22 L22 20 Z" fill="white"/>
-  </svg>
-  WhatsApp
-</div>
-
-  </section>  <section class="card">
-    <h2>Check Your Link</h2><label class="input-label" for="mediaLink">
-  Paste your media URL
-</label>
-
-<input
-  type="url"
-  id="mediaLink"
-  placeholder="https://example.com/media.mp4"
-  autocomplete="url"
-  inputmode="url"
->
-
-<button type="button" id="checkButton" onclick="checkMedia()">
-  Check Link
-</button>
-
-<div class="status" id="statusBox" role="status" aria-live="polite"></div>
-
-  </section>  <section class="card" id="mediaSection" style="display:none">
-    <h2>Media Preview</h2><video
-  id="videoPlayer"
-  class="media-preview"
-  controls
-  playsinline
-  preload="metadata"
-  style="display:none"
-></video>
+«</video>»
 
 <img
-  id="imagePlayer"
-  class="media-preview"
-  alt="Media preview"
-  style="display:none"
->
+id="imagePlayer"
+class="media-preview"
+alt="Media preview"
+hidden
+
+«»
 
 <a
-  id="downloadButton"
-  class="action-link"
-  href="#"
-  download
-  style="display:none"
->Download Media</a>
+id="downloadButton"
+class="action-link"
+href="#"
+download
+hidden
+
+«Download Media</a>»
 
 <a
-  id="sourceButton"
-  class="action-link source-link"
-  href="#"
-  target="_blank"
-  rel="noopener noreferrer"
-  style="display:none"
->Open Media Source</a>
+id="sourceButton"
+class="action-link source-link"
+href="#"
+target="_blank"
+rel="noopener noreferrer"
+hidden
 
-<p class="note">
-  Preview and downloading depend on source permissions and browser support.
-</p>
+«Open Media Source</a>»
 
-  </section>  <section class="card">
-    <h2>Recent History</h2><div id="historyList"></div>
+  <p class="note">
+    Preview and downloading depend on source permissions and browser support.
+  </p></section><h2 class="section-title">Quick Access</h2><section class="quick-grid">  <a class="quick-card" href="media.html">
+    <strong>🎬 Media Viewer</strong>
+    <span>Open the dedicated media preview page.</span>
+  </a>  <a class="quick-card" href="#checker">
+    <strong>🔎 Link Checker</strong>
+    <span>Identify supported media links.</span>
+  </a>  <a class="quick-card" href="#history">
+    <strong>🕘 Recent Activity</strong>
+    <span>View your recently checked links.</span>
+  </a>  <a class="quick-card" href="contact.html">
+    <strong>💬 Contact Support</strong>
+    <span>Visit the MEDIAX contact page.</span>
+  </a></section><section class="card" id="history">  <h2>Recent Activity</h2>  <div id="historyList"></div><button
+type="button"
+class="clear-button"
+id="clearHistoryButton"
 
-<button
-  type="button"
-  class="clear-button"
-  onclick="clearHistory()"
->Clear History</button>
+«»
 
-  </section></main><footer>
+Clear History
+
+  </button></section><section class="card">
+  <h2>Important Information</h2>  <p class="description">
+    MEDIAX identifies supported platforms and recognizes
+    certain direct media file links.
+  </p>  <p class="note">
+    Platform detection does not mean that media downloading
+    is available. MEDIAX does not bypass login restrictions,
+    privacy controls or DRM. Use only media you own or have
+    permission to access.
+  </p>
+</section></main><footer>
   MEDIAX © 2026<br>
   Use only media you own or have permission to access.  <nav class="footer-links" aria-label="Footer navigation">
     <a href="privacy.html">Privacy Policy</a>
@@ -425,18 +505,25 @@ footer {
 "use strict";
 
 const API_URL = "https://mediax-api.onrender.com";
+const HISTORY_KEY = "mediaxHistory";
+
+const input = document.getElementById("mediaLink");
+const button = document.getElementById("checkButton");
+const statusBox = document.getElementById("statusBox");
 
 function showStatus(message) {
-  const box = document.getElementById("statusBox");
-  box.style.display = "block";
-  box.textContent = message;
+  statusBox.style.display = "block";
+  statusBox.textContent = message;
 }
 
 function getHistory() {
   try {
-    const data = JSON.parse(localStorage.getItem("mediaxHistory") || "[]");
+    const data = JSON.parse(
+      localStorage.getItem(HISTORY_KEY) || "[]"
+    );
+
     return Array.isArray(data) ? data : [];
-  } catch (error) {
+  } catch {
     return [];
   }
 }
@@ -446,18 +533,18 @@ function saveHistory(url, platform) {
     const history = getHistory();
 
     history.unshift({
-      url: url,
-      platform: platform,
+      url,
+      platform,
       date: new Date().toLocaleString()
     });
 
     localStorage.setItem(
-      "mediaxHistory",
+      HISTORY_KEY,
       JSON.stringify(history.slice(0, 10))
     );
 
     displayHistory();
-  } catch (error) {
+  } catch {
     console.log("History could not be saved.");
   }
 }
@@ -468,7 +555,7 @@ function displayHistory() {
 
   const history = getHistory();
 
-  if (history.length === 0) {
+  if (!history.length) {
     const p = document.createElement("p");
     p.className = "note";
     p.textContent = "Your checked links will appear here.";
@@ -496,10 +583,10 @@ function displayHistory() {
 
 function clearHistory() {
   try {
-    localStorage.removeItem("mediaxHistory");
+    localStorage.removeItem(HISTORY_KEY);
     displayHistory();
     showStatus("History cleared successfully.");
-  } catch (error) {
+  } catch {
     showStatus("Could not clear history.");
   }
 }
@@ -511,7 +598,7 @@ function resetPreview() {
   const download = document.getElementById("downloadButton");
   const source = document.getElementById("sourceButton");
 
-  section.style.display = "none";
+  section.hidden = true;
 
   video.pause();
   video.removeAttribute("src");
@@ -519,10 +606,10 @@ function resetPreview() {
 
   image.removeAttribute("src");
 
-  video.style.display = "none";
-  image.style.display = "none";
-  download.style.display = "none";
-  source.style.display = "none";
+  video.hidden = true;
+  image.hidden = true;
+  download.hidden = true;
+  source.hidden = true;
 }
 
 async function postJSON(endpoint, data) {
@@ -538,22 +625,18 @@ async function postJSON(endpoint, data) {
 
   try {
     result = await response.json();
-  } catch (error) {
+  } catch {
     throw new Error("Backend returned an invalid response.");
   }
 
-  if (!response.ok) {
-    throw new Error(
-      result.message || "Backend request failed."
-    );
+  if (!response.ok || !result.success) {
+    throw new Error(result.message || "Backend request failed.");
   }
 
   return result;
 }
 
 async function checkMedia() {
-  const input = document.getElementById("mediaLink");
-  const button = document.getElementById("checkButton");
   const url = input.value.trim();
 
   resetPreview();
@@ -569,17 +652,14 @@ async function checkMedia() {
     parsed = new URL(url);
 
     if (parsed.protocol !== "https:") {
-      showStatus("Please enter a valid HTTPS link.");
-      return;
+      throw new Error("Please enter a valid HTTPS link.");
     }
 
     if (parsed.username || parsed.password) {
-      showStatus("Links containing usernames or passwords are not allowed.");
-      return;
+      throw new Error("Links containing usernames or passwords are not allowed.");
     }
-
   } catch (error) {
-    showStatus("Please enter a valid link.");
+    showStatus(error.message || "Please enter a valid link.");
     return;
   }
 
@@ -590,12 +670,12 @@ async function checkMedia() {
 
   try {
     const checkResult = await postJSON("/api/check", {
-      url: url
+      url: parsed.href
     });
 
     const detected = checkResult.platform || "Other";
 
-    saveHistory(url, detected);
+    saveHistory(parsed.href, detected);
 
     if (
       ["YouTube", "Instagram", "Facebook", "WhatsApp"].includes(detected)
@@ -609,7 +689,7 @@ async function checkMedia() {
     }
 
     const result = await postJSON("/api/media/inspect", {
-      url: url
+      url: parsed.href
     });
 
     const section = document.getElementById("mediaSection");
@@ -618,39 +698,43 @@ async function checkMedia() {
     const download = document.getElementById("downloadButton");
     const source = document.getElementById("sourceButton");
 
-    section.style.display = "block";
+    const mediaUrl = new URL(result.previewUrl || parsed.href);
 
-    source.href = result.previewUrl || url;
-    source.style.display = "block";
+    if (
+      mediaUrl.protocol !== "https:" ||
+      mediaUrl.username ||
+      mediaUrl.password
+    ) {
+      throw new Error("Unsupported media URL.");
+    }
+
+    section.hidden = false;
+
+    source.href = mediaUrl.href;
+    source.hidden = false;
 
     if (result.mediaType === "video") {
-      video.src = result.previewUrl || url;
-      video.style.display = "block";
+      video.src = mediaUrl.href;
+      video.hidden = false;
 
-      download.href = result.previewUrl || url;
-      download.style.display = "block";
+      download.href = mediaUrl.href;
+      download.hidden = false;
 
       showStatus(
-        "Platform detected: " + detected + " ✅\n" +
-        "Video preview is ready if the source permits playback."
+        "Direct video file recognized ✅\n" +
+        "Preview is ready if the source permits playback."
       );
 
     } else if (result.mediaType === "image") {
-      image.src = result.previewUrl || url;
-      image.style.display = "block";
+      image.src = mediaUrl.href;
+      image.hidden = false;
 
-      download.href = result.previewUrl || url;
-      download.style.display = "block";
+      download.href = mediaUrl.href;
+      download.hidden = false;
 
       showStatus(
-        "Platform detected: " + detected + " ✅\n" +
-        "Image preview is ready if the source permits access."
-      );
-
-    } else {
-      showStatus(
-        "Platform detected: " + detected + " ✅\n" +
-        "This file type is not supported for preview."
+        "Direct image file recognized ✅\n" +
+        "Preview is ready if the source permits access."
       );
     }
 
@@ -660,18 +744,22 @@ async function checkMedia() {
       error.message +
       "\n\nPlease try again after a short wait."
     );
-
   } finally {
     button.disabled = false;
     button.textContent = "Check Link";
   }
 }
 
-document.getElementById("mediaLink").addEventListener("keydown", event => {
+button.addEventListener("click", checkMedia);
+
+input.addEventListener("keydown", event => {
   if (event.key === "Enter") {
     checkMedia();
   }
 });
+
+document.getElementById("clearHistoryButton")
+  .addEventListener("click", clearHistory);
 
 displayHistory();
 showStatus("MEDIAX is ready. Paste a link and press Check Link.");
