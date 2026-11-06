@@ -93,10 +93,15 @@ button:disabled {
   margin-top: 14px;
 }
 
+.download-button {
+  margin-top: 12px;
+  background: #159b61;
+}
+
 .source-button {
   display: none;
   margin-top: 12px;
-  background: #159b61;
+  background: #40516f;
 }
 
 #status {
@@ -157,8 +162,8 @@ button:disabled {
   <h1>Check Your Media Link</h1>
 
   <p class="description">
-    Paste a media link to identify its platform.
-    Direct video file links can also be previewed.
+    Paste a media URL, check the link and preview
+    supported direct video files.
   </p>
 
   <form id="mediaForm">
@@ -187,6 +192,15 @@ button:disabled {
 
   <div class="preview" id="preview"></div>
 
+  <button
+    id="downloadButton"
+    class="download-button"
+    type="button"
+    hidden
+  >
+    Download Video
+  </button>
+
   <a
     id="sourceButton"
     class="source-button"
@@ -208,12 +222,13 @@ button:disabled {
   </p>
 
   <p class="note">
-    Platform detection does not guarantee video downloading.
-
     Direct video files such as MP4, WebM, MOV and M4V
     may be previewed if the source permits browser access.
 
-    Some platforms restrict video access and downloads.
+    Downloading depends on source permissions and browser
+    access. The Download button cannot guarantee that every
+    external video can be downloaded.
+
     MEDIAX does not bypass login restrictions, privacy
     controls or DRM.
 
@@ -235,6 +250,10 @@ const button = document.getElementById("checkButton");
 const statusBox = document.getElementById("status");
 const preview = document.getElementById("preview");
 const sourceButton = document.getElementById("sourceButton");
+const downloadButton = document.getElementById("downloadButton");
+
+let currentVideoUrl = "";
+let currentVideoName = "mediax-video.mp4";
 
 function showStatus(message, success = false) {
   statusBox.textContent = message;
@@ -244,8 +263,33 @@ function showStatus(message, success = false) {
 function clearResults() {
   preview.replaceChildren();
   preview.style.display = "none";
+
   sourceButton.style.display = "none";
   sourceButton.href = "#";
+
+  downloadButton.hidden = true;
+
+  currentVideoUrl = "";
+  currentVideoName = "mediax-video.mp4";
+}
+
+function getFileName(url) {
+  try {
+    const parsed = new URL(url);
+    let name = parsed.pathname.split("/").pop();
+
+    name = decodeURIComponent(name || "mediax-video.mp4");
+
+    name = name.replace(/[^a-zA-Z0-9._-]/g, "_");
+
+    if (!name || name === ".") {
+      return "mediax-video.mp4";
+    }
+
+    return name;
+  } catch {
+    return "mediax-video.mp4";
+  }
 }
 
 async function postData(endpoint, url) {
@@ -257,7 +301,13 @@ async function postData(endpoint, url) {
     body: JSON.stringify({ url })
   });
 
-  const data = await response.json();
+  let data;
+
+  try {
+    data = await response.json();
+  } catch {
+    throw new Error("Backend returned an invalid response.");
+  }
 
   if (!response.ok || !data.success) {
     throw new Error(data.message || "Request failed.");
@@ -271,6 +321,7 @@ function showVideo(url) {
   heading.textContent = "Video Preview";
 
   const video = document.createElement("video");
+
   video.src = url;
   video.controls = true;
   video.preload = "metadata";
@@ -278,13 +329,80 @@ function showVideo(url) {
 
   video.addEventListener("error", () => {
     showStatus(
-      "Video recognized, but the source does not allow browser preview."
+      "Video found, but the source does not allow browser preview."
     );
+    downloadButton.hidden = true;
   });
 
   preview.append(heading, video);
   preview.style.display = "block";
 }
+
+async function downloadVideo() {
+  if (!currentVideoUrl) {
+    showStatus("Please check a video link first.");
+    return;
+  }
+
+  downloadButton.disabled = true;
+  downloadButton.textContent = "Preparing Download...";
+
+  try {
+    const response = await fetch(currentVideoUrl, {
+      method: "GET",
+      mode: "cors",
+      credentials: "omit"
+    });
+
+    if (!response.ok) {
+      throw new Error("The source did not provide the video file.");
+    }
+
+    const contentType = (
+      response.headers.get("content-type") || ""
+    ).toLowerCase();
+
+    if (
+      contentType &&
+      !contentType.startsWith("video/") &&
+      !contentType.includes("application/octet-stream")
+    ) {
+      throw new Error("The source did not return a video file.");
+    }
+
+    const blob = await response.blob();
+
+    if (!blob.size) {
+      throw new Error("The video file is empty.");
+    }
+
+    const blobUrl = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = blobUrl;
+    link.download = currentVideoName;
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    setTimeout(() => {
+      URL.revokeObjectURL(blobUrl);
+    }, 60000);
+
+    showStatus("Download started successfully ✅", true);
+
+  } catch (error) {
+    showStatus(
+      "Direct download is blocked by the source or browser. Use Open Video Source if the website provides a permitted download option."
+    );
+  } finally {
+    downloadButton.disabled = false;
+    downloadButton.textContent = "Download Video";
+  }
+}
+
+downloadButton.addEventListener("click", downloadVideo);
 
 form.addEventListener("submit", async event => {
   event.preventDefault();
@@ -306,26 +424,17 @@ form.addEventListener("submit", async event => {
       throw new Error("This URL format is not supported.");
     }
 
-    showStatus("Checking platform...", true);
+    showStatus("Checking your link...", true);
 
     const platformData = await postData(
       "/api/check",
       parsedUrl.href
     );
 
-    showStatus(
-      "Platform detected: " +
-      platformData.platform +
-      " | " +
-      platformData.contentType +
-      " ✅",
-      true
-    );
-
     if (platformData.platform !== "Other Website") {
       showStatus(
         platformData.platform +
-        " detected successfully ✅. Direct downloading is not available for this link. Use the platform's permitted options.",
+        " detected successfully ✅. Use the platform's permitted download options. MEDIAX cannot directly download every social media link.",
         true
       );
 
@@ -333,7 +442,7 @@ form.addEventListener("submit", async event => {
     }
 
     showStatus(
-      "Other Website detected. Checking for a direct video file...",
+      "Website detected. Checking for a direct media file...",
       true
     );
 
@@ -346,19 +455,26 @@ form.addEventListener("submit", async event => {
       throw new Error("This link is not a supported video file.");
     }
 
-    const safeUrl = new URL(mediaData.previewUrl);
+    const safeUrl = new URL(
+      mediaData.previewUrl || parsedUrl.href
+    );
 
     if (safeUrl.protocol !== "https:") {
       throw new Error("Only HTTPS video links are supported.");
     }
 
-    showVideo(safeUrl.href);
+    currentVideoUrl = safeUrl.href;
+    currentVideoName = getFileName(safeUrl.href);
 
-    sourceButton.href = safeUrl.href;
+    showVideo(currentVideoUrl);
+
+    sourceButton.href = currentVideoUrl;
     sourceButton.style.display = "block";
 
+    downloadButton.hidden = false;
+
     showStatus(
-      "Direct video file recognized ✅. You can preview or open the source. Actual downloading depends on the source website.",
+      "Direct video file recognized ✅. Preview is ready. Download availability depends on the source.",
       true
     );
 
