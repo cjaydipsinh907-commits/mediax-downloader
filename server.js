@@ -105,18 +105,16 @@ function validatePublicHttpsUrl(value) {
   return parsed;
 }
 
-// Instagram ke official link hosts
+// Instagram hosts
 function isInstagramHost(hostname) {
-  const allowedHosts = [
+  return [
     "instagram.com",
     "www.instagram.com",
     "m.instagram.com"
-  ];
-
-  return allowedHosts.includes(hostname.toLowerCase());
+  ].includes(hostname.toLowerCase());
 }
 
-// Instagram Reel URL identify karna
+// Instagram Reel detection
 function detectInstagramReel(parsed) {
   if (!isInstagramHost(parsed.hostname)) {
     return null;
@@ -138,6 +136,7 @@ function detectInstagramReel(parsed) {
   };
 }
 
+// Supported direct media extensions
 const extensions = {
   image: [".jpg", ".jpeg", ".png", ".gif", ".webp"],
   video: [".mp4", ".webm", ".mov", ".m4v"]
@@ -174,7 +173,7 @@ app.post("/api/check", (req, res) => {
   });
 });
 
-// Direct media inspection API (existing feature)
+// Direct media inspection API
 app.post("/api/media/inspect", (req, res) => {
   const parsed = validatePublicHttpsUrl(req.body?.url);
 
@@ -216,6 +215,48 @@ app.post("/api/media/inspect", (req, res) => {
     mediaType: imageMatch ? "image" : "video",
     previewUrl: parsed.toString(),
     message: "Media link checked. Preview may depend on the source website."
+  });
+});
+
+// Direct video download eligibility check
+app.post("/api/media/download-check", (req, res) => {
+  const parsed = validatePublicHttpsUrl(req.body?.url);
+
+  if (!parsed) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid or unsafe HTTPS link."
+    });
+  }
+
+  let pathname;
+
+  try {
+    pathname = decodeURIComponent(parsed.pathname).toLowerCase();
+  } catch {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid media URL."
+    });
+  }
+
+  const isVideo = extensions.video.some(ext =>
+    pathname.endsWith(ext)
+  );
+
+  if (!isVideo) {
+    return res.status(400).json({
+      success: false,
+      message: "A direct video file link is required."
+    });
+  }
+
+  return res.json({
+    success: true,
+    mediaType: "video",
+    downloadUrl: parsed.toString(),
+    downloadAvailable: true,
+    message: "Direct video link recognized. Source permissions still apply."
   });
 });
 
