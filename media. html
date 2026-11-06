@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MEDIAX - Video Preview & Download</title>
+<title>MEDIAX - Video Link Checker</title>
 
 <style>
 * {
@@ -112,8 +112,7 @@ button:disabled {
   background: #0b1020;
 }
 
-.preview video,
-.preview img {
+.preview video {
   width: 100%;
   max-height: 430px;
   object-fit: contain;
@@ -147,18 +146,18 @@ button:disabled {
 
 <header>
   <div class="logo">MEDIAX</div>
-  <div>Video Preview & Download</div>
+  <div>Video Link Checker</div>
 </header>
 
 <main class="container">
 
 <section class="card">
 
-  <h1>Video Downloader</h1>
+  <h1>Video Link Checker</h1>
 
   <p class="description">
-    Paste a direct video file link to check and preview
-    supported videos.
+    Paste a video link to identify its platform.
+    Direct video file links can also be previewed.
   </p>
 
   <form id="mediaForm">
@@ -168,7 +167,7 @@ button:disabled {
     <input
       id="mediaUrl"
       type="url"
-      placeholder="https://example.com/video.mp4"
+      placeholder="Paste YouTube, Instagram, Facebook or video URL"
       maxlength="2048"
       required
     >
@@ -178,7 +177,7 @@ button:disabled {
       id="checkButton"
       type="submit"
     >
-      Check Video
+      Check Link
     </button>
 
   </form>
@@ -194,26 +193,32 @@ button:disabled {
     target="_blank"
     rel="noopener noreferrer"
   >
-    Open / Download Video
+    Open Video Source
   </a>
 
 </section>
 
 <section class="card">
 
-  <h2>Important Information</h2>
+  <h2>Supported Platforms</h2>
+
+  <p class="description">
+    YouTube, Instagram, Facebook, WhatsApp and other websites.
+  </p>
 
   <p class="note">
-    MEDIAX currently checks direct video file links such as
-    MP4, WebM, MOV and M4V.
+    Platform detection identifies the website from its URL.
+    It does not mean that the video can be downloaded.
 
-    The source website controls whether a video can actually
-    be downloaded. Some websites may block previews or
-    downloads.
+    Direct video file links such as MP4, WebM, MOV and M4V
+    may be previewed if the source allows browser access.
 
-    Only download videos you own or have permission to use.
-    This website does not bypass login restrictions,
-    privacy controls or DRM.
+    Some websites restrict video access, previews or downloads.
+    MEDIAX does not bypass login restrictions, privacy controls
+    or DRM.
+
+    Only access or download content you own or have permission
+    to use.
   </p>
 
 </section>
@@ -245,6 +250,43 @@ function clearResults() {
   downloadButton.href = "#";
 }
 
+function detectPlatform(url) {
+  const host = url.hostname.toLowerCase().replace(/^www\./, "");
+
+  if (
+    host === "youtube.com" ||
+    host === "m.youtube.com" ||
+    host === "youtu.be" ||
+    host === "youtube-nocookie.com"
+  ) {
+    return "YouTube";
+  }
+
+  if (
+    host === "instagram.com" ||
+    host === "instagr.am"
+  ) {
+    return "Instagram";
+  }
+
+  if (
+    host === "facebook.com" ||
+    host === "fb.watch" ||
+    host === "m.facebook.com"
+  ) {
+    return "Facebook";
+  }
+
+  if (
+    host === "whatsapp.com" ||
+    host === "wa.me"
+  ) {
+    return "WhatsApp";
+  }
+
+  return "Other Website";
+}
+
 function showVideo(url) {
   const heading = document.createElement("h3");
   heading.textContent = "Video Preview";
@@ -258,7 +300,7 @@ function showVideo(url) {
 
   video.addEventListener("error", () => {
     showStatus(
-      "Video link recognized, but the source does not allow browser preview."
+      "Video link detected, but the source does not allow browser preview."
     );
   });
 
@@ -274,10 +316,44 @@ form.addEventListener("submit", async event => {
   button.disabled = true;
   button.textContent = "Checking...";
 
-  showStatus("Checking video link...", true);
-
   try {
     const enteredUrl = input.value.trim();
+    const parsedUrl = new URL(enteredUrl);
+
+    if (parsedUrl.protocol !== "https:") {
+      throw new Error("Please enter a secure HTTPS link.");
+    }
+
+    if (parsedUrl.username || parsedUrl.password) {
+      throw new Error("This URL format is not supported.");
+    }
+
+    const platform = detectPlatform(parsedUrl);
+
+    showStatus(
+      "Platform detected: " + platform + " ✅",
+      true
+    );
+
+    if (
+      platform === "YouTube" ||
+      platform === "Instagram" ||
+      platform === "Facebook" ||
+      platform === "WhatsApp"
+    ) {
+      showStatus(
+        platform +
+        " detected ✅. Direct video downloading is not available for this link. Use the platform's permitted download or sharing options.",
+        true
+      );
+
+      return;
+    }
+
+    showStatus(
+      "Other Website detected. Checking for a direct video file...",
+      true
+    );
 
     const response = await fetch(
       API_URL + "/api/media/inspect",
@@ -296,12 +372,12 @@ form.addEventListener("submit", async event => {
 
     if (!response.ok || !data.success) {
       throw new Error(
-        data.message || "Video link could not be checked."
+        data.message || "This is not a supported direct media link."
       );
     }
 
     if (data.mediaType !== "video") {
-      throw new Error("Please provide a direct video file link.");
+      throw new Error("This link is not a direct video file.");
     }
 
     const safeUrl = new URL(data.previewUrl);
@@ -312,53 +388,21 @@ form.addEventListener("submit", async event => {
 
     showVideo(safeUrl.href);
 
-    showStatus(
-      "Video link recognized. Checking download link...",
-      true
-    );
-
-    const downloadResponse = await fetch(
-      API_URL + "/api/media/download-check",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          url: safeUrl.href
-        })
-      }
-    );
-
-    const downloadData = await downloadResponse.json();
-
-    if (!downloadResponse.ok || !downloadData.success) {
-      throw new Error(
-        downloadData.message || "Download link unavailable."
-      );
-    }
-
-    const downloadUrl = new URL(downloadData.downloadUrl);
-
-    if (downloadUrl.protocol !== "https:") {
-      throw new Error("Unsafe download link.");
-    }
-
-    downloadButton.href = downloadUrl.href;
+    downloadButton.href = safeUrl.href;
     downloadButton.style.display = "block";
 
     showStatus(
-      "Video recognized! Use the button below. Actual downloading depends on source permissions.",
+      "Direct video file recognized ✅. Use Open Video Source. Downloading depends on the source website.",
       true
     );
 
   } catch (error) {
     showStatus(
-      error.message || "Unable to check this video."
+      error.message || "Unable to check this link."
     );
   } finally {
     button.disabled = false;
-    button.textContent = "Check Video";
+    button.textContent = "Check Link";
   }
 });
 </script>
