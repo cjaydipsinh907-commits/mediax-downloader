@@ -31,6 +31,7 @@ app.get("/", (req, res) => {
   });
 });
 
+// Check private IPv4 addresses
 function isPrivateIPv4(ip) {
   const parts = ip.split(".").map(Number);
 
@@ -53,6 +54,7 @@ function isPrivateIPv4(ip) {
   );
 }
 
+// Validate public HTTPS URL
 function validatePublicHttpsUrl(value) {
   if (typeof value !== "string" || value.length > 2048) {
     return null;
@@ -105,44 +107,94 @@ function validatePublicHttpsUrl(value) {
   return parsed;
 }
 
-// Instagram hosts
-function isInstagramHost(hostname) {
-  return [
-    "instagram.com",
-    "www.instagram.com",
-    "m.instagram.com"
-  ].includes(hostname.toLowerCase());
+// Match a domain or its subdomain
+function isHost(host, domain) {
+  return host === domain || host.endsWith("." + domain);
 }
 
-// Instagram Reel detection
-function detectInstagramReel(parsed) {
-  if (!isInstagramHost(parsed.hostname)) {
-    return null;
+// Detect platform from URL
+function detectPlatform(parsed) {
+  const host = parsed.hostname.toLowerCase().replace(/^www\./, "");
+  const path = parsed.pathname;
+
+  // YouTube
+  if (
+    isHost(host, "youtube.com") ||
+    host === "youtu.be" ||
+    isHost(host, "youtube-nocookie.com")
+  ) {
+    let contentType = "Video";
+
+    if (/^\/shorts\//i.test(path)) {
+      contentType = "Shorts";
+    } else if (/^\/live\//i.test(path)) {
+      contentType = "Live";
+    }
+
+    return {
+      platform: "YouTube",
+      contentType
+    };
   }
 
-  const match = parsed.pathname.match(
-    /^\/reel\/([A-Za-z0-9_-]+)\/?$/i
-  );
+  // Instagram
+  if (
+    isHost(host, "instagram.com") ||
+    host === "instagr.am"
+  ) {
+    let contentType = "Instagram Link";
 
-  if (!match) {
-    return null;
+    if (/^\/reel\//i.test(path)) {
+      contentType = "Reel";
+    } else if (/^\/p\//i.test(path)) {
+      contentType = "Post";
+    } else if (/^\/stories\//i.test(path)) {
+      contentType = "Story";
+    }
+
+    return {
+      platform: "Instagram",
+      contentType
+    };
+  }
+
+  // Facebook
+  if (
+    isHost(host, "facebook.com") ||
+    host === "fb.watch"
+  ) {
+    let contentType = "Facebook Link";
+
+    if (
+      /\/(watch|videos|reel|reels)\//i.test(path)
+    ) {
+      contentType = "Video";
+    }
+
+    return {
+      platform: "Facebook",
+      contentType
+    };
+  }
+
+  // WhatsApp
+  if (
+    isHost(host, "whatsapp.com") ||
+    host === "wa.me"
+  ) {
+    return {
+      platform: "WhatsApp",
+      contentType: "WhatsApp Link"
+    };
   }
 
   return {
-    platform: "Instagram",
-    contentType: "Reel",
-    shortcode: match[1],
-    reelUrl: parsed.toString()
+    platform: "Other Website",
+    contentType: "Website Link"
   };
 }
 
-// Supported direct media extensions
-const extensions = {
-  image: [".jpg", ".jpeg", ".png", ".gif", ".webp"],
-  video: [".mp4", ".webm", ".mov", ".m4v"]
-};
-
-// Instagram Reel detection API
+// Platform detection API
 app.post("/api/check", (req, res) => {
   const parsed = validatePublicHttpsUrl(req.body?.url);
 
@@ -153,25 +205,23 @@ app.post("/api/check", (req, res) => {
     });
   }
 
-  const reel = detectInstagramReel(parsed);
-
-  if (!reel) {
-    return res.status(400).json({
-      success: false,
-      message: "Valid Instagram Reel link required."
-    });
-  }
+  const result = detectPlatform(parsed);
 
   return res.json({
     success: true,
-    platform: reel.platform,
-    contentType: reel.contentType,
-    shortcode: reel.shortcode,
-    reelUrl: reel.reelUrl,
+    platform: result.platform,
+    contentType: result.contentType,
+    url: parsed.toString(),
     downloadAvailable: false,
-    message: "Instagram Reel link detected successfully."
+    message: result.platform + " link detected successfully."
   });
 });
+
+// Supported direct media extensions
+const extensions = {
+  image: [".jpg", ".jpeg", ".png", ".gif", ".webp"],
+  video: [".mp4", ".webm", ".mov", ".m4v"]
+};
 
 // Direct media inspection API
 app.post("/api/media/inspect", (req, res) => {
@@ -206,7 +256,7 @@ app.post("/api/media/inspect", (req, res) => {
   if (!imageMatch && !videoMatch) {
     return res.status(400).json({
       success: false,
-      message: "Unsupported media file."
+      message: "Unsupported media file. A direct media file link is required."
     });
   }
 
@@ -214,11 +264,11 @@ app.post("/api/media/inspect", (req, res) => {
     success: true,
     mediaType: imageMatch ? "image" : "video",
     previewUrl: parsed.toString(),
-    message: "Media link checked. Preview may depend on the source website."
+    message: "Direct media link recognized. Preview depends on source permissions."
   });
 });
 
-// Direct video download eligibility check
+// Direct video link recognition API
 app.post("/api/media/download-check", (req, res) => {
   const parsed = validatePublicHttpsUrl(req.body?.url);
 
@@ -255,8 +305,8 @@ app.post("/api/media/download-check", (req, res) => {
     success: true,
     mediaType: "video",
     downloadUrl: parsed.toString(),
-    downloadAvailable: true,
-    message: "Direct video link recognized. Source permissions still apply."
+    downloadAvailable: false,
+    message: "Direct video link recognized. Actual downloading depends on the source website."
   });
 });
 
