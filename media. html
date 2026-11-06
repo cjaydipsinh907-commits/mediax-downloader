@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MEDIAX - Media Viewer</title>
+<title>MEDIAX - Video Preview & Download</title>
 
 <style>
 * {
@@ -68,8 +68,10 @@ input {
   font-size: 15px;
 }
 
-button {
-  padding: 13px;
+button, .download-button {
+  display: block;
+  width: 100%;
+  padding: 14px;
   border: 0;
   border-radius: 9px;
   background: #1688ff;
@@ -77,15 +79,23 @@ button {
   font-size: 15px;
   font-weight: bold;
   cursor: pointer;
+  text-align: center;
+  text-decoration: none;
 }
 
 button:disabled {
   opacity: .6;
+  cursor: not-allowed;
 }
 
 .main-button {
-  width: 100%;
   margin-top: 14px;
+}
+
+.download-button {
+  display: none;
+  margin-top: 12px;
+  background: #159b61;
 }
 
 #status {
@@ -102,8 +112,8 @@ button:disabled {
   background: #0b1020;
 }
 
-.preview img,
-.preview video {
+.preview video,
+.preview img {
   width: 100%;
   max-height: 430px;
   object-fit: contain;
@@ -111,49 +121,10 @@ button:disabled {
   background: black;
 }
 
-.open-link {
-  display: block;
-  margin-top: 14px;
-  padding: 13px;
-  background: #263b5d;
-  color: white;
-  border-radius: 8px;
-  text-align: center;
-  text-decoration: none;
-}
-
-.history-item {
-  padding: 13px;
-  border-bottom: 1px solid #34435e;
-  overflow-wrap: anywhere;
-  line-height: 1.6;
-}
-
-.history-item:last-child {
-  border-bottom: none;
-}
-
-.history-item small {
+.note {
   color: #aebbd0;
-}
-
-.history-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.history-actions button {
-  flex: 1;
-}
-
-.clear-button {
-  background: #b83248;
-}
-
-.empty {
-  color: #aebbd0;
-  padding: 10px 0;
+  font-size: 12px;
+  line-height: 1.7;
 }
 
 .back {
@@ -164,15 +135,9 @@ button:disabled {
   margin: 20px;
 }
 
-.note {
-  color: #aebbd0;
-  font-size: 12px;
-  line-height: 1.7;
-}
-
 @media(max-width: 450px) {
-  .history-actions {
-    flex-direction: column;
+  .container {
+    padding: 12px;
   }
 }
 </style>
@@ -182,21 +147,23 @@ button:disabled {
 
 <header>
   <div class="logo">MEDIAX</div>
-  <div>Media Viewer & Activity History</div>
+  <div>Video Preview & Download</div>
 </header>
 
 <main class="container">
 
 <section class="card">
-  <h1>Media Viewer</h1>
+
+  <h1>Video Downloader</h1>
 
   <p class="description">
-    Check a direct image or video file link and preview
-    supported media.
+    Paste a direct video file link to check and preview
+    supported videos.
   </p>
 
   <form id="mediaForm">
-    <label for="mediaUrl">Paste Media URL</label>
+
+    <label for="mediaUrl">Paste Video URL</label>
 
     <input
       id="mediaUrl"
@@ -206,45 +173,49 @@ button:disabled {
       required
     >
 
-    <button class="main-button" id="checkButton" type="submit">
-      Check Media
+    <button
+      class="main-button"
+      id="checkButton"
+      type="submit"
+    >
+      Check Video
     </button>
+
   </form>
 
   <div id="status" role="status" aria-live="polite"></div>
 
   <div class="preview" id="preview"></div>
+
+  <a
+    id="downloadButton"
+    class="download-button"
+    href="#"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    Open / Download Video
+  </a>
+
 </section>
 
 <section class="card">
-  <h2>Recent Activity</h2>
 
-  <p class="description">
-    Your recent media-link checks on this browser.
-  </p>
-
-  <div id="historyList"></div>
-
-  <div class="history-actions">
-    <button id="clearHistory" class="clear-button">
-      Clear History
-    </button>
-  </div>
-</section>
-
-<section class="card">
-  <h2>Privacy & Safety</h2>
+  <h2>Important Information</h2>
 
   <p class="note">
-    History is stored only in this browser's local storage.
-    The complete media URL is not saved in history.
-    Clearing browser data may remove this history.
+    MEDIAX currently checks direct video file links such as
+    MP4, WebM, MOV and M4V.
 
-    MEDIAX does not download or store media on its server.
-    Only use content you own or have permission to access.
-    Website restrictions, login requirements and DRM are
-    not bypassed.
+    The source website controls whether a video can actually
+    be downloaded. Some websites may block previews or
+    downloads.
+
+    Only download videos you own or have permission to use.
+    This website does not bypass login restrictions,
+    privacy controls or DRM.
   </p>
+
 </section>
 
 <a class="back" href="./index.html">← Back to Home</a>
@@ -259,105 +230,55 @@ const input = document.getElementById("mediaUrl");
 const button = document.getElementById("checkButton");
 const statusBox = document.getElementById("status");
 const preview = document.getElementById("preview");
-const historyList = document.getElementById("historyList");
-const clearButton = document.getElementById("clearHistory");
-
-const STORAGE_KEY = "mediax_activity_v1";
+const downloadButton = document.getElementById("downloadButton");
 
 function showStatus(message, success = false) {
   statusBox.textContent = message;
   statusBox.style.color = success ? "#6ee7a8" : "#ff9b9b";
 }
 
-function clearPreview() {
+function clearResults() {
   preview.replaceChildren();
   preview.style.display = "none";
+
+  downloadButton.style.display = "none";
+  downloadButton.href = "#";
 }
 
-function getHistory() {
-  try {
-    const data = JSON.parse(
-      localStorage.getItem(STORAGE_KEY) || "[]"
-    );
+function showVideo(url) {
+  const heading = document.createElement("h3");
+  heading.textContent = "Video Preview";
 
-    return Array.isArray(data) ? data.slice(0, 20) : [];
-  } catch {
-    return [];
-  }
-}
+  const video = document.createElement("video");
 
-function saveHistory(item) {
-  const history = getHistory();
+  video.src = url;
+  video.controls = true;
+  video.preload = "metadata";
+  video.playsInline = true;
 
-  history.unshift(item);
-
-  try {
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(history.slice(0, 20))
-    );
-
-    renderHistory();
-  } catch {
+  video.addEventListener("error", () => {
     showStatus(
-      "Media checked, but browser history could not be saved."
+      "Video link recognized, but the source does not allow browser preview."
     );
-  }
-}
-
-function renderHistory() {
-  const history = getHistory();
-
-  historyList.replaceChildren();
-
-  if (history.length === 0) {
-    const empty = document.createElement("p");
-    empty.className = "empty";
-    empty.textContent = "No recent activity yet.";
-    historyList.appendChild(empty);
-    return;
-  }
-
-  history.forEach(item => {
-    const row = document.createElement("div");
-    row.className = "history-item";
-
-    const title = document.createElement("strong");
-    title.textContent = item.type + " checked";
-
-    const domain = document.createElement("div");
-    domain.textContent = item.domain;
-
-    const date = document.createElement("small");
-    date.textContent = new Date(item.time).toLocaleString();
-
-    row.append(title, domain, date);
-    historyList.appendChild(row);
   });
+
+  preview.append(heading, video);
+  preview.style.display = "block";
 }
-
-clearButton.addEventListener("click", () => {
-  const confirmed = confirm(
-    "Clear all MEDIAX activity history from this browser?"
-  );
-
-  if (!confirmed) return;
-
-  localStorage.removeItem(STORAGE_KEY);
-  renderHistory();
-});
 
 form.addEventListener("submit", async event => {
   event.preventDefault();
 
-  clearPreview();
+  clearResults();
 
   button.disabled = true;
   button.textContent = "Checking...";
 
-  showStatus("Checking your media link...", true);
+  showStatus("Checking video link...", true);
 
   try {
+    const enteredUrl = input.value.trim();
+
     const response = await fetch(
       API_URL + "/api/media/inspect",
       {
@@ -366,7 +287,7 @@ form.addEventListener("submit", async event => {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          url: input.value.trim()
+          url: enteredUrl
         })
       }
     );
@@ -375,80 +296,71 @@ form.addEventListener("submit", async event => {
 
     if (!response.ok || !data.success) {
       throw new Error(
-        data.message || "Media link could not be checked."
+        data.message || "Video link could not be checked."
       );
+    }
+
+    if (data.mediaType !== "video") {
+      throw new Error("Please provide a direct video file link.");
     }
 
     const safeUrl = new URL(data.previewUrl);
 
     if (safeUrl.protocol !== "https:") {
-      throw new Error("Only HTTPS media links are supported.");
+      throw new Error("Only HTTPS video links are supported.");
     }
 
+    showVideo(safeUrl.href);
+
     showStatus(
-      "Supported " + data.mediaType + " link detected.",
+      "Video link recognized. Checking download link...",
       true
     );
 
-    const heading = document.createElement("h3");
-
-    heading.textContent =
-      data.mediaType === "image"
-        ? "Image Preview"
-        : "Video Preview";
-
-    preview.appendChild(heading);
-
-    const media = document.createElement(
-      data.mediaType === "image" ? "img" : "video"
+    const downloadResponse = await fetch(
+      API_URL + "/api/media/download-check",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          url: safeUrl.href
+        })
+      }
     );
 
-    media.src = safeUrl.href;
+    const downloadData = await downloadResponse.json();
 
-    if (data.mediaType === "image") {
-      media.alt = "Media preview";
-    } else {
-      media.controls = true;
-      media.preload = "metadata";
+    if (!downloadResponse.ok || !downloadData.success) {
+      throw new Error(
+        downloadData.message || "Download link unavailable."
+      );
     }
 
-    media.addEventListener("error", () => {
-      showStatus(
-        "Link recognized, but the source website blocked the preview."
-      );
-    });
+    const downloadUrl = new URL(downloadData.downloadUrl);
 
-    preview.appendChild(media);
+    if (downloadUrl.protocol !== "https:") {
+      throw new Error("Unsafe download link.");
+    }
 
-    const openLink = document.createElement("a");
+    downloadButton.href = downloadUrl.href;
+    downloadButton.style.display = "block";
 
-    openLink.className = "open-link";
-    openLink.href = safeUrl.href;
-    openLink.target = "_blank";
-    openLink.rel = "noopener noreferrer";
-    openLink.textContent = "Open Original Media";
-
-    preview.appendChild(openLink);
-
-    preview.style.display = "block";
-
-    saveHistory({
-      type: data.mediaType,
-      domain: safeUrl.hostname,
-      time: new Date().toISOString()
-    });
+    showStatus(
+      "Video recognized! Use the button below. Actual downloading depends on source permissions.",
+      true
+    );
 
   } catch (error) {
     showStatus(
-      error.message || "Unable to check this media link."
+      error.message || "Unable to check this video."
     );
   } finally {
     button.disabled = false;
-    button.textContent = "Check Media";
+    button.textContent = "Check Video";
   }
 });
-
-renderHistory();
 </script>
 
 </body>
