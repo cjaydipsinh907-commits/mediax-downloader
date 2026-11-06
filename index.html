@@ -1,65 +1,442 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#10101c">
-<title>MEDIAX - Media Link Checker</title><style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#10101c;color:white;min-height:100vh}
-header{text-align:center;padding:22px;border-bottom:1px solid #303047}
-.logo{font-size:30px;font-weight:bold;color:#8b7cff;letter-spacing:2px}
-header p{color:#aaa;margin-top:7px;font-size:13px}
-main{width:92%;max-width:650px;margin:30px auto}
-.hero{text-align:center;margin-bottom:25px}
-.hero h1{font-size:27px;margin-bottom:10px}
-.hero p{color:#aaa;line-height:1.5;font-size:14px}
-.platforms{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:25px 0}
-.platform{background:#1c1c2e;border:1px solid #303047;border-radius:12px;padding:15px 5px;text-align:center;font-size:12px;color:#ddd}
-.platform span{display:block;font-size:23px;margin-bottom:7px}
-.card{background:#1b1b2b;border:1px solid #303047;border-radius:16px;padding:20px;margin-bottom:20px}
-.card h2{font-size:19px;margin-bottom:15px}
-input{width:100%;padding:15px;border-radius:10px;border:1px solid #44445c;background:#10101c;color:white;font-size:14px;margin-bottom:12px}
-button{width:100%;padding:14px;background:#7563f6;color:white;border:0;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer}
-button:disabled{opacity:.6}
-.status{display:none;margin-top:15px;padding:13px;border-radius:9px;background:#292940;color:#ddd;line-height:1.5;overflow-wrap:anywhere;font-size:14px;white-space:pre-wrap}
-.media-preview{width:100%;max-height:350px;margin-top:15px;border-radius:10px;background:#080810}
-.action-link{display:block;text-align:center;padding:13px;border-radius:9px;margin-top:12px;text-decoration:none;font-weight:bold;background:#7563f6;color:white}
-.source-link{background:#303047}
-.note{font-size:12px;color:#aaa;line-height:1.5;margin-top:15px}
-.history-item{background:#10101c;padding:12px;border-radius:9px;margin-top:10px;font-size:13px;overflow-wrap:anywhere;color:#ccc}
-.clear-button{margin-top:12px;background:#3b3047}
-footer{text-align:center;padding:25px 12px;color:#888;font-size:12px;border-top:1px solid #292940;margin-top:35px}
-@media(max-width:400px){.platforms{grid-template-columns:repeat(2,1fr)}}
-</style></head><body><header>
+<meta name="description" content="MEDIAX - All-in-One Media Link Checker">
+<title>MEDIAX - Media Link Checker</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #10101c;
+  color: white;
+  min-height: 100vh;
+}
+
+header {
+  text-align: center;
+  padding: 22px 15px;
+  border-bottom: 1px solid #303047;
+}
+
+.logo {
+  font-size: 30px;
+  font-weight: bold;
+  color: #8b7cff;
+  letter-spacing: 2px;
+}
+
+header p {
+  color: #aaa;
+  margin-top: 7px;
+  font-size: 13px;
+}
+
+main {
+  width: 92%;
+  max-width: 650px;
+  margin: 35px auto;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.hero h1 {
+  font-size: clamp(23px, 5vw, 30px);
+  margin-bottom: 10px;
+}
+
+.hero p {
+  color: #aaa;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.platforms {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 25px 0;
+}
+
+.platform {
+  background: #1c1c2e;
+  border: 1px solid #303047;
+  border-radius: 14px;
+  padding: 17px 5px;
+  text-align: center;
+  font-size: 12px;
+  color: #ddd;
+  transition: transform .2s, border-color .2s;
+}
+
+.platform:hover {
+  transform: translateY(-3px);
+  border-color: #7563f6;
+}
+
+.platform svg {
+  display: block;
+  width: 34px;
+  height: 34px;
+  margin: 0 auto 9px;
+}
+
+.card {
+  background: #1b1b2b;
+  border: 1px solid #303047;
+  border-radius: 16px;
+  padding: 22px;
+  margin-bottom: 20px;
+}
+
+.card h2 {
+  font-size: 19px;
+  margin-bottom: 16px;
+}
+
+.input-label {
+  display: block;
+  margin-bottom: 9px;
+  font-size: 13px;
+  color: #ccc;
+}
+
+input {
+  width: 100%;
+  min-height: 49px;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid #44445c;
+  background: #10101c;
+  color: white;
+  font-size: 15px;
+  margin-bottom: 13px;
+}
+
+input:focus {
+  outline: 2px solid #7563f6;
+  border-color: transparent;
+}
+
+button {
+  width: 100%;
+  min-height: 48px;
+  padding: 14px;
+  background: #7563f6;
+  color: white;
+  border: 0;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background .2s;
+}
+
+button:hover {
+  background: #6250df;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 3px;
+}
+
+button:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+.status {
+  display: none;
+  margin-top: 15px;
+  padding: 14px;
+  border-radius: 9px;
+  background: #292940;
+  color: #ddd;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  font-size: 14px;
+  white-space: pre-wrap;
+}
+
+.media-preview {
+  display: block;
+  width: 100%;
+  max-height: 350px;
+  margin-top: 15px;
+  border-radius: 10px;
+  background: #080810;
+  object-fit: contain;
+}
+
+.action-link {
+  display: block;
+  text-align: center;
+  padding: 14px;
+  border-radius: 9px;
+  margin-top: 12px;
+  text-decoration: none;
+  font-weight: bold;
+  background: #7563f6;
+  color: white;
+}
+
+.source-link {
+  background: #303047;
+}
+
+.note {
+  font-size: 12px;
+  color: #aaa;
+  line-height: 1.6;
+  margin-top: 15px;
+}
+
+.history-item {
+  background: #10101c;
+  padding: 13px;
+  border-radius: 9px;
+  margin-top: 10px;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+  color: #ccc;
+  line-height: 1.6;
+}
+
+.history-item small {
+  display: block;
+  color: #888;
+  margin-top: 5px;
+}
+
+.clear-button {
+  margin-top: 13px;
+  background: #3b3047;
+}
+
+footer {
+  text-align: center;
+  padding: 25px 12px;
+  color: #888;
+  font-size: 12px;
+  border-top: 1px solid #292940;
+  margin-top: 35px;
+  line-height: 1.7;
+}
+
+@media (max-width: 480px) {
+  header {
+    padding: 19px 12px;
+  }
+
+  main {
+    width: 91%;
+    margin: 25px auto;
+  }
+
+  .platforms {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .platform {
+    padding: 16px 8px;
+  }
+
+  .card {
+    padding: 17px;
+    border-radius: 13px;
+  }
+
+  .hero p {
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 700px) {
+  main {
+    width: 90%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
   <div class="logo">MEDIAX</div>
   <p>All-in-One Media Link Checker</p>
-</header><main>
+</header>
+
+<main>
+
   <section class="hero">
     <h1>Media Link Checker</h1>
     <p>Paste a media link to identify its platform and check supported previews.</p>
-  </section>  <section class="platforms">
-    <div class="platform"><span>▶️</span>YouTube</div>
-    <div class="platform"><span>📸</span>Instagram</div>
-    <div class="platform"><span>📘</span>Facebook</div>
-    <div class="platform"><span>💬</span>WhatsApp</div>
-  </section>  <section class="card">
-    <h2>Check Your Link</h2>
-    <input type="url" id="mediaLink" placeholder="Paste your media link here...">
-    <button type="button" id="checkButton" onclick="checkMedia()">Check Link</button>
-    <div class="status" id="statusBox"></div>
-  </section>  <section class="card" id="mediaSection" style="display:none">
-    <h2>Media Preview</h2>
-    <video id="videoPlayer" class="media-preview" controls playsinline style="display:none"></video>
-    <img id="imagePlayer" class="media-preview" alt="Media preview" style="display:none">
-    <a id="downloadButton" class="action-link" href="#" download style="display:none">Download Media</a>
-    <a id="sourceButton" class="action-link source-link" href="#" target="_blank" rel="noopener noreferrer">Open Media Source</a>
-    <p class="note">Preview and downloading depend on source permissions and browser support.</p>
-  </section>  <section class="card">
-    <h2>Recent History</h2>
-    <div id="historyList"></div>
-    <button type="button" class="clear-button" onclick="clearHistory()">Clear History</button>
   </section>
-</main><footer>MEDIAX © 2026 — Use only media you own or have permission to access.</footer><script>
+
+  <section class="platforms" aria-label="Supported platforms">
+
+    <div class="platform">
+      <!-- YouTube-style logo -->
+      <svg viewBox="0 0 48 48" role="img" aria-label="YouTube logo">
+        <rect x="3" y="9" width="42" height="30" rx="9" fill="#FF0033"/>
+        <path d="M20 16 L33 24 L20 32 Z" fill="white"/>
+      </svg>
+      YouTube
+    </div>
+
+    <div class="platform">
+      <!-- Instagram-style logo -->
+      <svg viewBox="0 0 48 48" role="img" aria-label="Instagram logo">
+        <defs>
+          <linearGradient id="instagramGradient" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0%" stop-color="#FFDC80"/>
+            <stop offset="35%" stop-color="#F77737"/>
+            <stop offset="65%" stop-color="#E1306C"/>
+            <stop offset="100%" stop-color="#833AB4"/>
+          </linearGradient>
+        </defs>
+        <rect x="4" y="4" width="40" height="40" rx="12" fill="url(#instagramGradient)"/>
+        <rect x="12" y="12" width="24" height="24" rx="7" fill="none" stroke="white" stroke-width="3"/>
+        <circle cx="24" cy="24" r="6" fill="none" stroke="white" stroke-width="3"/>
+        <circle cx="32" cy="16" r="2" fill="white"/>
+      </svg>
+      Instagram
+    </div>
+
+    <div class="platform">
+      <!-- Facebook-style logo -->
+      <svg viewBox="0 0 48 48" role="img" aria-label="Facebook logo">
+        <circle cx="24" cy="24" r="22" fill="#1877F2"/>
+        <path d="M27 42 V26 H33 L34 19 H27 V15 C27 13 28 12 30 12 H34 V6 H28 C21 6 19 10 19 15 V19 H14 V26 H19 V42 Z" fill="white"/>
+      </svg>
+      Facebook
+    </div>
+
+    <div class="platform">
+      <!-- WhatsApp-style logo -->
+      <svg viewBox="0 0 48 48" role="img" aria-label="WhatsApp logo">
+        <circle cx="24" cy="23" r="19" fill="#25D366"/>
+        <path d="M13 38 L15 30 L13 27 C9 18 16 9 25 9 C34 9 40 16 39 25 C38 34 28 40 19 36 L13 38 Z" fill="none" stroke="white" stroke-width="2.5" stroke-linejoin="round"/>
+        <path d="M19 17 C18 17 17 19 18 21 C20 26 23 29 28 31 C30 32 32 30 32 28 L28 26 L26 28 C23 27 21 25 20 22 L22 20 Z" fill="white"/>
+      </svg>
+      WhatsApp
+    </div>
+
+  </section>
+
+  <section class="card">
+    <h2>Check Your Link</h2>
+
+    <label class="input-label" for="mediaLink">
+      Paste your media URL
+    </label>
+
+    <input
+      type="url"
+      id="mediaLink"
+      placeholder="https://example.com/media.mp4"
+      autocomplete="url"
+      inputmode="url"
+    >
+
+    <button type="button" id="checkButton" onclick="checkMedia()">
+      Check Link
+    </button>
+
+    <div class="status" id="statusBox" role="status" aria-live="polite"></div>
+  </section>
+
+  <section class="card" id="mediaSection" style="display:none">
+    <h2>Media Preview</h2>
+
+    <video
+      id="videoPlayer"
+      class="media-preview"
+      controls
+      playsinline
+      preload="metadata"
+      style="display:none"
+    ></video>
+
+    <img
+      id="imagePlayer"
+      class="media-preview"
+      alt="Media preview"
+      style="display:none"
+    >
+
+    <a
+      id="downloadButton"
+      class="action-link"
+      href="#"
+      download
+      style="display:none"
+    >Download Media</a>
+
+    <a
+      id="sourceButton"
+      class="action-link source-link"
+      href="#"
+      target="_blank"
+      rel="noopener noreferrer"
+      style="display:none"
+    >Open Media Source</a>
+
+    <p class="note">
+      Preview and downloading depend on source permissions and browser support.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>Recent History</h2>
+
+    <div id="historyList"></div>
+
+    <button
+      type="button"
+      class="clear-button"
+      onclick="clearHistory()"
+    >Clear History</button>
+  </section>
+
+</main>
+
+<footer>
+  MEDIAX © 2026<br>
+  Use only media you own or have permission to access.
+</footer>
+
+<script>
 "use strict";
 
 const API_URL = "https://mediax-api.onrender.com";
@@ -70,20 +447,10 @@ function showStatus(message) {
   box.textContent = message;
 }
 
-function getPlatform(url) {
-  const host = new URL(url).hostname.toLowerCase();
-
-  if (host.includes("youtube.com") || host === "youtu.be") return "YouTube";
-  if (host.includes("instagram.com")) return "Instagram";
-  if (host.includes("facebook.com") || host === "fb.watch") return "Facebook";
-  if (host.includes("whatsapp.com") || host === "wa.me") return "WhatsApp";
-
-  return "Other";
-}
-
 function getHistory() {
   try {
-    return JSON.parse(localStorage.getItem("mediaxHistory") || "[]");
+    const data = JSON.parse(localStorage.getItem("mediaxHistory") || "[]");
+    return Array.isArray(data) ? data : [];
   } catch (error) {
     return [];
   }
@@ -92,12 +459,18 @@ function getHistory() {
 function saveHistory(url, platform) {
   try {
     const history = getHistory();
+
     history.unshift({
       url: url,
       platform: platform,
       date: new Date().toLocaleString()
     });
-    localStorage.setItem("mediaxHistory", JSON.stringify(history.slice(0, 10)));
+
+    localStorage.setItem(
+      "mediaxHistory",
+      JSON.stringify(history.slice(0, 10))
+    );
+
     displayHistory();
   } catch (error) {
     console.log("History could not be saved.");
@@ -137,8 +510,13 @@ function displayHistory() {
 }
 
 function clearHistory() {
-  localStorage.removeItem("mediaxHistory");
-  displayHistory();
+  try {
+    localStorage.removeItem("mediaxHistory");
+    displayHistory();
+    showStatus("History cleared successfully.");
+  } catch (error) {
+    showStatus("Could not clear history.");
+  }
 }
 
 function resetPreview() {
@@ -149,10 +527,13 @@ function resetPreview() {
   const source = document.getElementById("sourceButton");
 
   section.style.display = "none";
+
   video.pause();
   video.removeAttribute("src");
   video.load();
+
   image.removeAttribute("src");
+
   video.style.display = "none";
   image.style.display = "none";
   download.style.display = "none";
@@ -162,11 +543,14 @@ function resetPreview() {
 async function postJSON(endpoint, data) {
   const response = await fetch(API_URL + endpoint, {
     method: "POST",
-    headers: {"Content-Type": "application/json"},
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify(data)
   });
 
   let result;
+
   try {
     result = await response.json();
   } catch (error) {
@@ -174,7 +558,9 @@ async function postJSON(endpoint, data) {
   }
 
   if (!response.ok) {
-    throw new Error(result.message || result.error || "Backend request failed.");
+    throw new Error(
+      result.message || "Backend request failed."
+    );
   }
 
   return result;
@@ -193,12 +579,20 @@ async function checkMedia() {
   }
 
   let parsed;
+
   try {
     parsed = new URL(url);
+
     if (parsed.protocol !== "https:") {
       showStatus("Please enter a valid HTTPS link.");
       return;
     }
+
+    if (parsed.username || parsed.password) {
+      showStatus("Links containing usernames or passwords are not allowed.");
+      return;
+    }
+
   } catch (error) {
     showStatus("Please enter a valid link.");
     return;
@@ -206,26 +600,32 @@ async function checkMedia() {
 
   button.disabled = true;
   button.textContent = "Checking...";
+
   showStatus("Checking your link. Please wait...");
 
   try {
-    const platform = getPlatform(url);
+    const checkResult = await postJSON("/api/check", {
+      url: url
+    });
 
-    const checkResult = await postJSON("/api/check", {url: url});
-    const detected = checkResult.platform || checkResult.detectedPlatform || platform;
+    const detected = checkResult.platform || "Other";
 
     saveHistory(url, detected);
 
-    if (["YouTube", "Instagram", "Facebook", "WhatsApp"].includes(platform)) {
+    if (
+      ["YouTube", "Instagram", "Facebook", "WhatsApp"].includes(detected)
+    ) {
       showStatus(
-        "Platform detected: " + platform + " ✅\n\n" +
+        "Platform detected: " + detected + " ✅\n\n" +
         "Use the platform's official download or export options for content you are allowed to save."
       );
+
       return;
     }
 
-    const result = await postJSON("/api/media/inspect", {url: url});
-    const cleanUrl = url.split("?")[0].toLowerCase();
+    const result = await postJSON("/api/media/inspect", {
+      url: url
+    });
 
     const section = document.getElementById("mediaSection");
     const video = document.getElementById("videoPlayer");
@@ -234,34 +634,64 @@ async function checkMedia() {
     const source = document.getElementById("sourceButton");
 
     section.style.display = "block";
-    source.href = url;
+
+    source.href = result.previewUrl || url;
     source.style.display = "block";
 
-    if (/\.(mp4|webm|ogg|mov|m4v)$/.test(cleanUrl)) {
-      video.src = url;
+    if (result.mediaType === "video") {
+      video.src = result.previewUrl || url;
       video.style.display = "block";
-      download.href = url;
+
+      download.href = result.previewUrl || url;
       download.style.display = "block";
-      showStatus("Platform detected: " + detected + " ✅\nVideo preview is ready if the source permits playback.");
-    } else if (/\.(jpg|jpeg|png|gif|webp|avif)$/.test(cleanUrl)) {
-      image.src = url;
+
+      showStatus(
+        "Platform detected: " + detected + " ✅\n" +
+        "Video preview is ready if the source permits playback."
+      );
+
+    } else if (result.mediaType === "image") {
+      image.src = result.previewUrl || url;
       image.style.display = "block";
-      download.href = url;
+
+      download.href = result.previewUrl || url;
       download.style.display = "block";
-      showStatus("Platform detected: " + detected + " ✅\nImage preview is ready if the source permits access.");
+
+      showStatus(
+        "Platform detected: " + detected + " ✅\n" +
+        "Image preview is ready if the source permits access."
+      );
+
     } else {
-      showStatus("Platform detected: " + detected + " ✅\n" + (result.message || "Link checked. This file type is not supported for preview."));
+      showStatus(
+        "Platform detected: " + detected + " ✅\n" +
+        "This file type is not supported for preview."
+      );
     }
 
   } catch (error) {
-    showStatus("Could not check this link.\n\n" + error.message + "\n\nPlease try again after a short wait.");
+    showStatus(
+      "Could not check this link.\n\n" +
+      error.message +
+      "\n\nPlease try again after a short wait."
+    );
+
   } finally {
     button.disabled = false;
     button.textContent = "Check Link";
   }
 }
 
+// Press Enter to check a link
+document.getElementById("mediaLink").addEventListener("keydown", event => {
+  if (event.key === "Enter") {
+    checkMedia();
+  }
+});
+
 displayHistory();
 showStatus("MEDIAX is ready. Paste a link and press Check Link.");
-</script></body>
-</html>
+</script>
+
+</body>
+  </html>
