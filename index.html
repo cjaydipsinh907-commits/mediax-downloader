@@ -3,7 +3,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0b1020">
-<title>MEDIAX - Media Platform</title><style>
+<title>MEDIAX - All-in-One Media Platform</title><style>
 * {
   box-sizing: border-box;
   margin: 0;
@@ -68,15 +68,13 @@ header {
   background: #151f36;
   border: 1px solid #293954;
   border-radius: 15px;
-  padding: 16px 8px;
+  padding: 18px 8px;
   text-align: center;
 }
 
-.icon {
-  width: 50px;
-  height: 50px;
-  display: block;
-  margin: 0 auto 10px;
+.platform-icon {
+  font-size: 32px;
+  margin-bottom: 9px;
 }
 
 .platform h3 {
@@ -264,7 +262,10 @@ footer {
 }
 
 @media(max-width:420px) {
-  .hero h1 { font-size: 24px; }
+  .hero h1 {
+    font-size: 24px;
+  }
+
   .box, .media-section, .history-section {
     padding: 17px;
   }
@@ -274,68 +275,34 @@ footer {
   <div class="tagline">Your All-in-One Media Platform</div>
 </header><main class="container"><section class="hero">
   <h1>Welcome to MEDIAX</h1>
-  <p>Paste your supported media link, check it and preview permitted direct media files.</p>
-</section><section class="platforms"><div class="platform">
-<svg class="icon" viewBox="0 0 100 100" aria-label="Instagram">
-<defs>
-<linearGradient id="ig" x1="0" y1="1" x2="1" y2="0">
-<stop offset="0%" stop-color="#FFD776"/>
-<stop offset="45%" stop-color="#F04A72"/>
-<stop offset="100%" stop-color="#8A35C8"/>
-</linearGradient>
-</defs>
-<rect x="8" y="8" width="84" height="84" rx="24" fill="url(#ig)"/>
-<rect x="26" y="26" width="48" height="48" rx="15" fill="none" stroke="white" stroke-width="7"/>
-<circle cx="50" cy="50" r="12" fill="none" stroke="white" stroke-width="7"/>
-<circle cx="69" cy="31" r="5" fill="white"/>
-</svg>
-<h3>Instagram</h3>
-<p>Reels & Posts</p>
-</div><div class="platform">
-<svg class="icon" viewBox="0 0 100 100" aria-label="Facebook">
-<circle cx="50" cy="50" r="45" fill="#1877F2"/>
-<path d="M57 88V55h12l2-14H57v-9c0-4 2-7 8-7h7V12c-4-1-9-1-14-1-14 0-23 9-23 24v6H23v14h12v33z" fill="white"/>
-</svg>
-<h3>Facebook</h3>
-<p>Reels & Posts</p>
-</div><div class="platform">
-<svg class="icon" viewBox="0 0 100 100" aria-label="WhatsApp">
-<circle cx="50" cy="46" r="39" fill="#25D366"/>
-<path d="M20 79l7-20" stroke="#25D366" stroke-width="8"/>
-<path d="M36 26c-4 0-8 6-8 12 0 17 21 34 36 34 7 0 13-6 13-11 0-3-9-8-13-8-3 0-5 5-8 5-4 0-15-10-15-14 0-3 5-5 5-8 0-4-6-10-10-10z" fill="white"/>
-</svg>
-<h3>WhatsApp</h3>
-<p>Status Media</p>
-</div><div class="platform">
-<svg class="icon" viewBox="0 0 100 100" aria-label="YouTube">
-<rect x="5" y="19" width="90" height="62" rx="19" fill="#FF0033"/>
-<path d="M42 34L69 50 42 66z" fill="white"/>
-</svg>
-<h3>YouTube</h3>
-<p>Permitted media access</p>
-</div><div class="platform">
-<svg class="icon" viewBox="0 0 100 100" aria-label="Chrome">
-<circle cx="50" cy="50" r="46" fill="#F1F1F1"/>
-<path d="M50 50L27 10A46 46 0 0 1 96 42H58z" fill="#EA4335"/>
-<path d="M50 50H96A46 46 0 0 1 25 90L47 52z" fill="#34A853"/>
-<path d="M50 50L25 90A46 46 0 0 1 27 10l19 33z" fill="#FBBC05"/>
-<circle cx="50" cy="50" r="21" fill="white"/>
-<circle cx="50" cy="50" r="16" fill="#4285F4"/>
-</svg>
-<h3>Chrome</h3>
-<p>Browser media links</p>
-</div><div class="platform">
-<svg class="icon" viewBox="0 0 100 100" aria-label="Other websites">
-<circle cx="50" cy="50" r="42" fill="none" stroke="#62b5ff" stroke-width="7"/>
-<ellipse cx="50" cy="50" rx="19" ry="42" fill="none" stroke="#62b5ff" stroke-width="5"/>
-<path d="M10 50h80M18 30h64M18 70h64" stroke="#62b5ff" stroke-width="5" fill="none"/>
-</svg>
-<h3>Other Websites</h3>
-<p>Direct media links</p>
-</div></section><section class="box">
-<h2>Check Your Link</h2>
-<p>Paste a supported direct image or video URL below.</p><form id="checkForm">
-<label for="mediaLink">Paste Media URL</label>
+  <p>Check supported media links and preview permitted direct image and video files.</p>
+</section><section class="platforms">  <div class="platform">
+    <div class="platform-icon">📸</div>
+    <h3>Instagram</h3>
+    <p>Reels & Posts</p>
+  </div>  <div class="platform">
+    <div class="platform-icon">📘</div>
+    <h3>Facebook</h3>
+    <p>Reels & Posts</p>
+  </div>  <div class="platform">
+    <div class="platform-icon">🟢</div>
+    <h3>WhatsApp</h3>
+    <p>Shared Media Links</p>
+  </div>  <div class="platform">
+    <div class="platform-icon">▶️</div>
+    <h3>YouTube</h3>
+    <p>Permitted media access</p>
+  </div>  <div class="platform">
+    <div class="platform-icon">🌐</div>
+    <h3>Browser</h3>
+    <p>Direct media links</p>
+  </div>  <div class="platform">
+    <div class="platform-icon">🔗</div>
+    <h3>Other Websites</h3>
+    <p>Supported media files</p>
+  </div></section><section class="box">  <h2>Check Your Link</h2>
+  <p>Paste a supported direct image or video URL below.</p>  <form id="checkForm"><label for="mediaLink">Paste Media URL</label>
+
 <input
   type="url"
   id="mediaLink"
@@ -343,13 +310,15 @@ footer {
   maxlength="2048"
   required
 >
-<button id="checkButton" type="submit">Check Link</button>
-</form><div class="loader" id="loader" aria-live="polite">
-  <span class="spinner"></span>
-  <span>Checking your link. Please wait...</span>
-</div><div id="result" role="status" aria-live="polite"></div>
-</section><section class="media-section" id="mediaSection">
-<h2 id="previewTitle">Media Preview</h2><video
+
+<button id="checkButton" type="submit">
+  Check Link
+</button>
+
+  </form>  <div class="loader" id="loader" aria-live="polite">
+    <span class="spinner"></span>
+    <span>Checking your link. Please wait...</span>
+  </div>  <div id="result" role="status" aria-live="polite"></div></section><section class="media-section" id="mediaSection">  <h2 id="previewTitle">Media Preview</h2><video
 id="videoPlayer"
 class="media-preview"
 controls
@@ -371,13 +340,14 @@ id="downloadButton"
 class="download-button"
 href="#"
 download
+target="_blank"
+rel="noopener noreferrer"
 
 «»
 
 Download Media
-</a>
 
-<a
+  </a><a
 id="sourceButton"
 class="source-button"
 href="#"
@@ -387,23 +357,27 @@ rel="noopener noreferrer"
 «»
 
 Open Media Source
-</a>
 
-<p class="note">
-Preview and download depend on source permissions, browser support and server configuration.
-</p>
-</section><section class="history-section">
-<h2>Recent History</h2>
-<p class="note">Your recent checks are saved only in this browser on this device.</p><div id="historyList"></div><button id="clearHistoryButton" class="clear-button" type="button">
+  </a>  <p class="note">
+    Preview and downloading depend on source permissions, browser support and server configuration.
+  </p></section><section class="history-section">  <h2>Recent History</h2>  <p class="note">
+    Your recent checks are saved only in this browser on this device.
+  </p>  <div id="historyList"></div><button
+id="clearHistoryButton"
+class="clear-button"
+type="button"
+
+«»
+
 Clear History
-</button>
-</section><section class="info">
-Only use media you own or have permission to access.
-Platform restrictions and copyright rules apply.
-MEDIAX is an independent project and is not affiliated
-with Instagram, Facebook, WhatsApp or YouTube.
+
+  </button></section><section class="info">
+  Only use media you own or have permission to access.
+  Platform restrictions and copyright rules apply.
+  MEDIAX is an independent project and is not affiliated
+  with Instagram, Facebook, WhatsApp or YouTube.
 </section></main><footer>
-© 2026 MEDIAX. All rights reserved.
+  © 2026 MEDIAX. All rights reserved.
 </footer><script>
 "use strict";
 
@@ -456,8 +430,12 @@ function clearMedia() {
 
 function getHistory() {
   try {
-    const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
+    const history = JSON.parse(
+      localStorage.getItem(HISTORY_KEY) || "[]"
+    );
+
     return Array.isArray(history) ? history : [];
+
   } catch {
     return [];
   }
@@ -481,16 +459,15 @@ function saveHistory(item) {
     );
 
     renderHistory();
+
   } catch {
-    setMessage(
-      "Your browser could not save history. You can still use MEDIAX.",
-      "#ffd479"
-    );
+    // History saving is optional.
   }
 }
 
 function renderHistory() {
   const history = getHistory();
+
   historyList.replaceChildren();
 
   if (history.length === 0) {
@@ -502,6 +479,7 @@ function renderHistory() {
   }
 
   history.forEach((item) => {
+
     const card = document.createElement("div");
     card.className = "history-item";
 
@@ -509,6 +487,7 @@ function renderHistory() {
     title.textContent = item.platform || "Unknown platform";
 
     const details = document.createElement("p");
+
     details.textContent =
       "Type: " + (item.mediaType || "Unknown") +
       " | Status: " + (item.status || "Checked") +
@@ -525,7 +504,11 @@ function renderHistory() {
     retry.addEventListener("click", () => {
       input.value = item.url;
       form.requestSubmit();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
     });
 
     card.append(title, details, url, retry);
@@ -534,14 +517,20 @@ function renderHistory() {
 }
 
 clearHistoryButton.addEventListener("click", () => {
-  const confirmed = confirm("Do you want to clear all MEDIAX history?");
+
+  const confirmed = confirm(
+    "Do you want to clear all MEDIAX history?"
+  );
 
   if (!confirmed) return;
 
   localStorage.removeItem(HISTORY_KEY);
   renderHistory();
 
-  setMessage("History cleared successfully.", "#6ee7a8");
+  setMessage(
+    "History cleared successfully.",
+    "#6ee7a8"
+  );
 });
 
 function validateInput(value) {
@@ -561,25 +550,32 @@ function validateInput(value) {
 }
 
 async function postJSON(endpoint, data) {
-  const response = await fetch(API_URL + endpoint, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  });
+
+  const response = await fetch(
+    API_URL + endpoint,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    }
+  );
 
   let responseData;
 
   try {
     responseData = await response.json();
   } catch {
-    throw new Error("The server returned an invalid response.");
+    throw new Error(
+      "The server returned an invalid response."
+    );
   }
 
   if (!response.ok || !responseData.success) {
     throw new Error(
-      responseData.message || "The request could not be completed."
+      responseData.message ||
+      "The request could not be completed."
     );
   }
 
@@ -587,6 +583,7 @@ async function postJSON(endpoint, data) {
 }
 
 function showVideo(url) {
+
   previewTitle.textContent = "Video Preview";
 
   imagePlayer.style.display = "none";
@@ -606,6 +603,7 @@ function showVideo(url) {
 }
 
 function showImage(url) {
+
   previewTitle.textContent = "Image Preview";
 
   videoPlayer.pause();
@@ -625,7 +623,26 @@ function showImage(url) {
   mediaSection.style.display = "block";
 }
 
+videoPlayer.addEventListener("error", () => {
+  if (videoPlayer.style.display !== "none") {
+    setMessage(
+      "The video link was recognized, but the browser could not play it. Try opening the source link.",
+      "#ffd479"
+    );
+  }
+});
+
+imagePlayer.addEventListener("error", () => {
+  if (imagePlayer.style.display !== "none") {
+    setMessage(
+      "The image link was recognized, but the image could not be displayed. Check the source link.",
+      "#ffd479"
+    );
+  }
+});
+
 form.addEventListener("submit", async (event) => {
+
   event.preventDefault();
 
   clearMedia();
@@ -642,14 +659,27 @@ form.addEventListener("submit", async (event) => {
   }
 
   setLoading(true);
-  setMessage("Connecting to MEDIAX server...", "#75bcff");
+
+  setMessage(
+    "Connecting to MEDIAX server...",
+    "#75bcff"
+  );
+
+  let platform = "Unknown";
 
   try {
-    const data = await postJSON("/api/check", {
-      url: parsedUrl.toString()
-    });
 
-    const platform = String(data.platform || "Other Website");
+    const data = await postJSON(
+      "/api/check",
+      {
+        url: parsedUrl.toString()
+      }
+    );
+
+    platform = String(
+      data.platform || "Other Website"
+    );
+
     const normalizedPlatform = platform.toLowerCase();
 
     if (
@@ -658,11 +688,12 @@ form.addEventListener("submit", async (event) => {
       normalizedPlatform.includes("facebook") ||
       normalizedPlatform.includes("whatsapp")
     ) {
-      const message =
-        "Platform detected: " + platform +
-        ". Use the platform's permitted viewing or export options.";
 
-      setMessage(message, "#ffd479");
+      setMessage(
+        "Platform detected: " + platform +
+        ". Use the platform's permitted viewing or export options.",
+        "#ffd479"
+      );
 
       saveHistory({
         url: parsedUrl.toString(),
@@ -675,31 +706,45 @@ form.addEventListener("submit", async (event) => {
     }
 
     setMessage(
-      "Platform detected: " + platform + ". Checking media file...",
+      "Platform detected: " + platform +
+      ". Checking media file...",
       "#75bcff"
     );
 
-    const media = await postJSON("/api/media/inspect", {
-      url: parsedUrl.toString()
-    });
+    const media = await postJSON(
+      "/api/media/inspect",
+      {
+        url: parsedUrl.toString()
+      }
+    );
 
-    const mediaType = String(media.mediaType || "").toLowerCase();
+    const mediaType = String(
+      media.mediaType || ""
+    ).toLowerCase();
+
     const previewUrl = media.previewUrl;
 
     if (!previewUrl) {
-      throw new Error("The server did not provide a preview link.");
+      throw new Error(
+        "The server did not provide a preview link."
+      );
     }
 
     if (mediaType === "video") {
       showVideo(previewUrl);
+
     } else if (mediaType === "image") {
       showImage(previewUrl);
+
     } else {
-      throw new Error("This media format is not supported.");
+      throw new Error(
+        "This media format is not supported."
+      );
     }
 
     setMessage(
-      "Supported " + mediaType + " link found! Preview is ready.",
+      "Supported " + mediaType +
+      " link found! Preview is ready.",
       "#6ee7a8"
     );
 
@@ -716,7 +761,9 @@ form.addEventListener("submit", async (event) => {
     });
 
   } catch (error) {
-    let message = error.message || "Unable to check this link.";
+
+    let message =
+      error.message || "Unable to check this link.";
 
     if (
       error instanceof TypeError &&
@@ -730,7 +777,7 @@ form.addEventListener("submit", async (event) => {
 
     saveHistory({
       url: parsedUrl.toString(),
-      platform: "Unknown",
+      platform,
       mediaType: "Not available",
       status: "Failed"
     });
@@ -741,5 +788,6 @@ form.addEventListener("submit", async (event) => {
 });
 
 renderHistory();
+
 </script></body>
-</html>
+  </html>
