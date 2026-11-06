@@ -105,31 +105,37 @@ function validatePublicHttpsUrl(value) {
   return parsed;
 }
 
-function detectPlatform(host) {
-  if (
-    host === "instagram.com" ||
-    host.endsWith(".instagram.com")
-  ) return "Instagram";
+// Instagram ke official link hosts
+function isInstagramHost(hostname) {
+  const allowedHosts = [
+    "instagram.com",
+    "www.instagram.com",
+    "m.instagram.com"
+  ];
 
-  if (
-    host === "facebook.com" ||
-    host.endsWith(".facebook.com") ||
-    host === "fb.watch"
-  ) return "Facebook";
+  return allowedHosts.includes(hostname.toLowerCase());
+}
 
-  if (
-    host === "youtube.com" ||
-    host.endsWith(".youtube.com") ||
-    host === "youtu.be"
-  ) return "YouTube";
+// Instagram Reel URL identify karna
+function detectInstagramReel(parsed) {
+  if (!isInstagramHost(parsed.hostname)) {
+    return null;
+  }
 
-  if (
-    host === "whatsapp.com" ||
-    host.endsWith(".whatsapp.com") ||
-    host === "wa.me"
-  ) return "WhatsApp";
+  const match = parsed.pathname.match(
+    /^\/reel\/([A-Za-z0-9_-]+)\/?$/i
+  );
 
-  return null;
+  if (!match) {
+    return null;
+  }
+
+  return {
+    platform: "Instagram",
+    contentType: "Reel",
+    shortcode: match[1],
+    reelUrl: parsed.toString()
+  };
 }
 
 const extensions = {
@@ -137,6 +143,7 @@ const extensions = {
   video: [".mp4", ".webm", ".mov", ".m4v"]
 };
 
+// Instagram Reel detection API
 app.post("/api/check", (req, res) => {
   const parsed = validatePublicHttpsUrl(req.body?.url);
 
@@ -147,23 +154,27 @@ app.post("/api/check", (req, res) => {
     });
   }
 
-  const platform = detectPlatform(parsed.hostname.toLowerCase());
+  const reel = detectInstagramReel(parsed);
 
-  if (!platform) {
+  if (!reel) {
     return res.status(400).json({
       success: false,
-      message: "Unsupported platform."
+      message: "Valid Instagram Reel link required."
     });
   }
 
   return res.json({
     success: true,
-    platform,
-    message: "Platform detected successfully.",
-    downloadAvailable: false
+    platform: reel.platform,
+    contentType: reel.contentType,
+    shortcode: reel.shortcode,
+    reelUrl: reel.reelUrl,
+    downloadAvailable: false,
+    message: "Instagram Reel link detected successfully."
   });
 });
 
+// Direct media inspection API (existing feature)
 app.post("/api/media/inspect", (req, res) => {
   const parsed = validatePublicHttpsUrl(req.body?.url);
 
@@ -174,7 +185,16 @@ app.post("/api/media/inspect", (req, res) => {
     });
   }
 
-  const pathname = decodeURIComponent(parsed.pathname).toLowerCase();
+  let pathname;
+
+  try {
+    pathname = decodeURIComponent(parsed.pathname).toLowerCase();
+  } catch {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid media URL."
+    });
+  }
 
   const imageMatch = extensions.image.some(ext =>
     pathname.endsWith(ext)
@@ -187,7 +207,7 @@ app.post("/api/media/inspect", (req, res) => {
   if (!imageMatch && !videoMatch) {
     return res.status(400).json({
       success: false,
-      message: "Unsupported file. Use a direct JPG, PNG, GIF, WebP, MP4, WebM, MOV or M4V link."
+      message: "Unsupported media file."
     });
   }
 
