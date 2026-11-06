@@ -6,25 +6,43 @@ const net = require("node:net");
 
 const app = express();
 
+// Render runs behind a reverse proxy.
+// Trust only the nearest proxy hop.
+app.set("trust proxy", 1);
+
 // Security headers
 app.use(helmet());
+
+// Disable framework identification
+app.disable("x-powered-by");
 
 // CORS configuration
 app.use(cors({
   origin: "https://cjaydipsinh907-commits.github.io",
   methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type"]
+  allowedHeaders: ["Content-Type"],
+  maxAge: 600
 }));
 
-// JSON request limit
-app.use(express.json({ limit: "10kb" }));
-
 // Rate limiting
-app.use(rateLimit({
+const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   limit: 60,
   standardHeaders: "draft-8",
-  legacyHeaders: false
+  legacyHeaders: false,
+  handler: (req, res) => {
+    res.status(429).json({
+      success: false,
+      message: "Too many requests. Please try again later."
+    });
+  }
+});
+
+app.use(apiLimiter);
+
+// JSON request limit
+app.use(express.json({
+  limit: "10kb"
 }));
 
 // Homepage
@@ -36,9 +54,21 @@ app.get("/", (req, res) => {
   });
 });
 
+// Health check
+app.get("/health", (req, res) => {
+  res.json({
+    success: true,
+    status: "healthy"
+  });
+});
+
 // Validate public HTTPS URL
 function validatePublicHttpsUrl(value) {
-  if (typeof value !== "string" || value.length > 2048) {
+  if (
+    typeof value !== "string" ||
+    value.length === 0 ||
+    value.length > 2048
+  ) {
     return null;
   }
 
@@ -63,20 +93,23 @@ function validatePublicHttpsUrl(value) {
     .toLowerCase()
     .replace(/\.$/, "");
 
-  // Block local and reserved hostnames
+  const blockedHosts = [
+    "localhost",
+    "metadata.google.internal"
+  ];
+
   if (
-    hostname === "localhost" ||
+    blockedHosts.includes(hostname) ||
     hostname.endsWith(".localhost") ||
     hostname.endsWith(".local") ||
     hostname.endsWith(".internal") ||
     hostname.endsWith(".test") ||
-    hostname.endsWith(".invalid") ||
-    hostname === "metadata.google.internal"
+    hostname.endsWith(".invalid")
   ) {
     return null;
   }
 
-  // Block direct IPv4 and IPv6 addresses
+  // Block all direct IP addresses
   const ipHostname = hostname.replace(/^\[|\]$/g, "");
 
   if (net.isIP(ipHostname) !== 0) {
@@ -86,7 +119,7 @@ function validatePublicHttpsUrl(value) {
   return parsed;
 }
 
-// Match a domain or its subdomain
+// Match domain or subdomain
 function isHost(host, domain) {
   return host === domain || host.endsWith("." + domain);
 }
@@ -204,6 +237,15 @@ const extensions = {
   video: [".mp4", ".webm", ".mov", ".m4v"]
 };
 
+// Extract safe media pathname
+function getMediaPath(parsed) {
+  try {
+    return decodeURIComponent(parsed.pathname).toLowerCase();
+  } catch {
+    return null;
+  }
+}
+
 // Direct media inspection API
 app.post("/api/media/inspect", (req, res) => {
   const parsed = validatePublicHttpsUrl(req.body?.url);
@@ -215,11 +257,9 @@ app.post("/api/media/inspect", (req, res) => {
     });
   }
 
-  let pathname;
+  const pathname = getMediaPath(parsed);
 
-  try {
-    pathname = decodeURIComponent(parsed.pathname).toLowerCase();
-  } catch {
+  if (!pathname) {
     return res.status(400).json({
       success: false,
       message: "Invalid media URL."
@@ -260,11 +300,9 @@ app.post("/api/media/download-check", (req, res) => {
     });
   }
 
-  let pathname;
+  const pathname = getMediaPath(parsed);
 
-  try {
-    pathname = decodeURIComponent(parsed.pathname).toLowerCase();
-  } catch {
+  if (!pathname) {
     return res.status(400).json({
       success: false,
       message: "Invalid media URL."
@@ -291,7 +329,7 @@ app.post("/api/media/download-check", (req, res) => {
   });
 });
 
-// Handle unknown API routes
+// Unknown routes
 app.use((req, res) => {
   res.status(404).json({
     success: false,
@@ -307,7 +345,6 @@ app.use((err, req, res, next) => {
     return next(err);
   }
 
-  // Invalid JSON
   if (err.type === "entity.parse.failed") {
     return res.status(400).json({
       success: false,
@@ -315,7 +352,6 @@ app.use((err, req, res, next) => {
     });
   }
 
-  // Request body too large
   if (err.type === "entity.too.large") {
     return res.status(413).json({
       success: false,
@@ -323,15 +359,6 @@ app.use((err, req, res, next) => {
     });
   }
 
-  // Rate limit
-  if (err.status === 429) {
-    return res.status(429).json({
-      success: false,
-      message: "Too many requests. Please try again later."
-    });
-  }
-
-  // General server error
   return res.status(500).json({
     success: false,
     message: "Something went wrong. Please try again later."
