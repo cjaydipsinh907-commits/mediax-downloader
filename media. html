@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>MEDIAX - Media Viewer</title>
-
-<style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>MEDIAX - Media Viewer</title><style>
 * {
   box-sizing: border-box;
 }
@@ -45,7 +40,7 @@ header {
   margin-bottom: 20px;
 }
 
-h1, h2 {
+h1, h2, h3 {
   margin-top: 0;
 }
 
@@ -98,6 +93,11 @@ button:disabled {
   background: #159b61;
 }
 
+.cancel-button {
+  margin-top: 10px;
+  background: #b43d4b;
+}
+
 .source-button {
   display: none;
   margin-top: 12px;
@@ -126,6 +126,59 @@ button:disabled {
   background: black;
 }
 
+.file-info {
+  margin-top: 15px;
+  padding: 14px;
+  background: #0b1020;
+  border: 1px solid #293954;
+  border-radius: 10px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.progress-container {
+  display: none;
+  margin-top: 15px;
+}
+
+.progress-track {
+  height: 12px;
+  background: #293954;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  width: 0;
+  height: 100%;
+  background: #159b61;
+  transition: width .15s;
+}
+
+.progress-text {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #b8c4d9;
+}
+
+.history-item {
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 9px;
+  background: #0b1020;
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+}
+
+.history-item small {
+  color: #aebbd0;
+}
+
+.clear-button {
+  margin-top: 12px;
+  background: #40516f;
+}
+
 .note {
   color: #aebbd0;
   font-size: 12px;
@@ -140,137 +193,284 @@ button:disabled {
   margin: 20px;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 @media(max-width: 450px) {
   .container {
     padding: 12px;
   }
+
+  .card {
+    padding: 17px;
+  }
 }
-</style>
-</head>
 
-<body>
-
-<header>
+@media(prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+</style></head><body><header>
   <div class="logo">MEDIAX</div>
   <div>Media Viewer</div>
-</header>
-
-<main class="container">
-
-<section class="card">
-
-  <h1>Check Your Media Link</h1>
-
-  <p class="description">
+</header><main class="container"><section class="card">  <h1>Check Your Media Link</h1>  <p class="description">
     Paste a media URL, check the link and preview
     supported direct video files.
-  </p>
+  </p>  <form id="mediaForm"><label for="mediaUrl">Paste Media URL</label>
 
-  <form id="mediaForm">
+<input
+  id="mediaUrl"
+  type="url"
+  placeholder="https://example.com/video.mp4"
+  maxlength="2048"
+  required
+>
 
-    <label for="mediaUrl">Paste Media URL</label>
+<button
+  class="main-button"
+  id="checkButton"
+  type="submit"
+>
+  Check Link
+</button>
 
-    <input
-      id="mediaUrl"
-      type="url"
-      placeholder="https://example.com/video.mp4"
-      maxlength="2048"
-      required
-    >
+  </form>  <div id="status" role="status" aria-live="polite"></div>  <div class="preview" id="preview"></div>  <div class="file-info" id="fileInfo" hidden></div>  <div class="progress-container" id="progressContainer">
+    <div class="progress-track">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="progress-text" id="progressText">
+      Preparing download...
+    </div>
+  </div><button
+id="downloadButton"
+class="download-button"
+type="button"
+hidden
 
-    <button
-      class="main-button"
-      id="checkButton"
-      type="submit"
-    >
-      Check Link
-    </button>
+«»
 
-  </form>
+Download Video
 
-  <div id="status" role="status" aria-live="polite"></div>
+  </button><button
+id="cancelButton"
+class="cancel-button"
+type="button"
+hidden
 
-  <div class="preview" id="preview"></div>
+«»
 
-  <button
-    id="downloadButton"
-    class="download-button"
-    type="button"
-    hidden
-  >
-    Download Video
-  </button>
+Cancel Download
 
-  <a
-    id="sourceButton"
-    class="source-button"
-    href="#"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    Open Video Source
-  </a>
+  </button><a
+id="sourceButton"
+class="source-button"
+href="#"
+target="_blank"
+rel="noopener noreferrer"
 
-</section>
+«»
 
-<section class="card">
+Open Video Source
 
-  <h2>Supported Platforms</h2>
+  </a></section><section class="card">  <h2>Download History</h2>  <p class="description">
+    Your recent successful downloads are stored
+    on this device.
+  </p>  <div id="historyList"></div><button
+class="clear-button"
+id="clearHistoryButton"
+type="button"
 
-  <p class="description">
+«»
+
+Clear History
+
+  </button></section><section class="card">  <h2>Supported Platforms</h2>  <p class="description">
     YouTube, Instagram, Facebook, WhatsApp and other websites.
-  </p>
-
-  <p class="note">
+  </p>  <p class="note">
     Direct video files such as MP4, WebM, MOV and M4V
-    may be previewed if the source permits browser access.
+    may be previewed if the source permits browser access.Downloading depends on source permissions and browser
+access. MEDIAX does not bypass login restrictions,
+privacy controls or DRM.
 
-    Downloading depends on source permissions and browser
-    access. The Download button cannot guarantee that every
-    external video can be downloaded.
+Only use videos you own or have permission to access.
 
-    MEDIAX does not bypass login restrictions, privacy
-    controls or DRM.
+  </p>  <p class="note">
+    Downloads are limited to 200 MB per file in this
+    browser-based version. Download history is stored
+    locally on this device.
+  </p></section><a class="back" href="./index.html">← Back to Home</a>
 
-    Only use videos you own or have permission to access.
-  </p>
-
-</section>
-
-<a class="back" href="./index.html">← Back to Home</a>
-
-</main>
-
-<script>
+</main><script>
 const API_URL = "https://mediax-api.onrender.com";
+const MAX_DOWNLOAD_SIZE = 200 * 1024 * 1024;
+const HISTORY_KEY = "mediax_download_history";
 
 const form = document.getElementById("mediaForm");
 const input = document.getElementById("mediaUrl");
 const button = document.getElementById("checkButton");
 const statusBox = document.getElementById("status");
 const preview = document.getElementById("preview");
+const fileInfo = document.getElementById("fileInfo");
 const sourceButton = document.getElementById("sourceButton");
 const downloadButton = document.getElementById("downloadButton");
+const cancelButton = document.getElementById("cancelButton");
+const progressContainer = document.getElementById("progressContainer");
+const progressBar = document.getElementById("progressBar");
+const progressText = document.getElementById("progressText");
+const historyList = document.getElementById("historyList");
+const clearHistoryButton = document.getElementById("clearHistoryButton");
 
 let currentVideoUrl = "";
 let currentVideoName = "mediax-video.mp4";
+let currentVideo = null;
+let downloadController = null;
 
 function showStatus(message, success = false) {
   statusBox.textContent = message;
   statusBox.style.color = success ? "#6ee7a8" : "#ff9b9b";
 }
 
+function formatBytes(bytes) {
+  if (!Number.isFinite(bytes) || bytes < 0) {
+    return "Unknown";
+  }
+
+  if (bytes === 0) {
+    return "0 Bytes";
+  }
+
+  const units = ["Bytes", "KB", "MB", "GB"];
+  const index = Math.min(
+    Math.floor(Math.log(bytes) / Math.log(1024)),
+    units.length - 1
+  );
+
+  return (
+    (bytes / Math.pow(1024, index)).toFixed(2) +
+    " " +
+    units[index]
+  );
+}
+
+function formatDuration(seconds) {
+  if (!Number.isFinite(seconds)) {
+    return "Not available";
+  }
+
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+
+  return (
+    minutes +
+    ":" +
+    String(remainingSeconds).padStart(2, "0")
+  );
+}
+
+function getHistory() {
+  try {
+    const history = JSON.parse(
+      localStorage.getItem(HISTORY_KEY) || "[]"
+    );
+
+    return Array.isArray(history) ? history : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveHistory(name, size) {
+  const history = getHistory();
+
+  history.unshift({
+    name,
+    size: formatBytes(size),
+    date: new Date().toLocaleString()
+  });
+
+  try {
+    localStorage.setItem(
+      HISTORY_KEY,
+      JSON.stringify(history.slice(0, 10))
+    );
+  } catch {
+    showStatus(
+      "Download completed, but history could not be saved.",
+      true
+    );
+  }
+
+  displayHistory();
+}
+
+function displayHistory() {
+  historyList.replaceChildren();
+
+  const history = getHistory();
+
+  if (!history.length) {
+    const empty = document.createElement("p");
+    empty.className = "note";
+    empty.textContent = "No successful downloads yet.";
+    historyList.appendChild(empty);
+    return;
+  }
+
+  history.forEach(item => {
+    const row = document.createElement("div");
+    row.className = "history-item";
+
+    const name = document.createElement("strong");
+    name.textContent = item.name;
+
+    const details = document.createElement("small");
+    details.textContent =
+      item.size + " · " + item.date;
+
+    row.append(name, document.createElement("br"), details);
+    historyList.appendChild(row);
+  });
+}
+
+function clearHistory() {
+  localStorage.removeItem(HISTORY_KEY);
+  displayHistory();
+  showStatus("Download history cleared.", true);
+}
+
+function resetProgress() {
+  progressContainer.style.display = "none";
+  progressBar.style.width = "0%";
+  progressText.textContent = "Preparing download...";
+}
+
 function clearResults() {
+  if (downloadController) {
+    downloadController.abort();
+    downloadController = null;
+  }
+
   preview.replaceChildren();
   preview.style.display = "none";
+
+  fileInfo.replaceChildren();
+  fileInfo.hidden = true;
 
   sourceButton.style.display = "none";
   sourceButton.href = "#";
 
   downloadButton.hidden = true;
+  downloadButton.disabled = false;
+
+  cancelButton.hidden = true;
+
+  resetProgress();
 
   currentVideoUrl = "";
   currentVideoName = "mediax-video.mp4";
+  currentVideo = null;
 }
 
 function getFileName(url) {
@@ -279,7 +479,6 @@ function getFileName(url) {
     let name = parsed.pathname.split("/").pop();
 
     name = decodeURIComponent(name || "mediax-video.mp4");
-
     name = name.replace(/[^a-zA-Z0-9._-]/g, "_");
 
     if (!name || name === ".") {
@@ -316,6 +515,20 @@ async function postData(endpoint, url) {
   return data;
 }
 
+function addInfoRow(label, value) {
+  const row = document.createElement("div");
+  const strong = document.createElement("strong");
+
+  strong.textContent = label + ": ";
+
+  row.append(
+    strong,
+    document.createTextNode(value)
+  );
+
+  fileInfo.appendChild(row);
+}
+
 function showVideo(url) {
   const heading = document.createElement("h3");
   heading.textContent = "Video Preview";
@@ -327,15 +540,60 @@ function showVideo(url) {
   video.preload = "metadata";
   video.playsInline = true;
 
+  currentVideo = video;
+
+  video.addEventListener("loadedmetadata", () => {
+    fileInfo.replaceChildren();
+
+    addInfoRow("File name", currentVideoName);
+    addInfoRow("Format", currentVideoName.split(".").pop().toUpperCase());
+    addInfoRow("Duration", formatDuration(video.duration));
+    addInfoRow(
+      "Resolution",
+      video.videoWidth + " × " + video.videoHeight
+    );
+
+    addInfoRow(
+      "File size",
+      "Available when the source provides it during download"
+    );
+
+    fileInfo.hidden = false;
+  });
+
   video.addEventListener("error", () => {
     showStatus(
       "Video found, but the source does not allow browser preview."
     );
+
     downloadButton.hidden = true;
   });
 
   preview.append(heading, video);
   preview.style.display = "block";
+}
+
+function updateProgress(loaded, total) {
+  if (total > 0) {
+    const percent = Math.min(
+      100,
+      Math.round((loaded / total) * 100)
+    );
+
+    progressBar.style.width = percent + "%";
+
+    progressText.textContent =
+      percent +
+      "% · " +
+      formatBytes(loaded) +
+      " / " +
+      formatBytes(total);
+  } else {
+    progressBar.style.width = "100%";
+
+    progressText.textContent =
+      formatBytes(loaded) + " downloaded";
+  }
 }
 
 async function downloadVideo() {
@@ -345,13 +603,20 @@ async function downloadVideo() {
   }
 
   downloadButton.disabled = true;
-  downloadButton.textContent = "Preparing Download...";
+  cancelButton.hidden = false;
+  progressContainer.style.display = "block";
+
+  progressBar.style.width = "0%";
+  progressText.textContent = "Connecting to source...";
+
+  downloadController = new AbortController();
 
   try {
     const response = await fetch(currentVideoUrl, {
       method: "GET",
       mode: "cors",
-      credentials: "omit"
+      credentials: "omit",
+      signal: downloadController.signal
     });
 
     if (!response.ok) {
@@ -370,11 +635,56 @@ async function downloadVideo() {
       throw new Error("The source did not return a video file.");
     }
 
-    const blob = await response.blob();
+    const contentLength = Number(
+      response.headers.get("content-length")
+    );
 
-    if (!blob.size) {
+    if (
+      Number.isFinite(contentLength) &&
+      contentLength > MAX_DOWNLOAD_SIZE
+    ) {
+      throw new Error("This file exceeds the 200 MB download limit.");
+    }
+
+    if (!response.body) {
+      throw new Error("Streaming is not supported by this browser.");
+    }
+
+    const reader = response.body.getReader();
+    const chunks = [];
+    let loaded = 0;
+
+    while (true) {
+      const result = await reader.read();
+
+      if (result.done) {
+        break;
+      }
+
+      loaded += result.value.length;
+
+      if (loaded > MAX_DOWNLOAD_SIZE) {
+        await reader.cancel();
+        throw new Error("This file exceeds the 200 MB download limit.");
+      }
+
+      chunks.push(result.value);
+
+      updateProgress(
+        loaded,
+        Number.isFinite(contentLength) && contentLength > 0
+          ? contentLength
+          : 0
+      );
+    }
+
+    if (!loaded) {
       throw new Error("The video file is empty.");
     }
+
+    const blob = new Blob(chunks, {
+      type: contentType || "application/octet-stream"
+    });
 
     const blobUrl = URL.createObjectURL(blob);
 
@@ -390,19 +700,42 @@ async function downloadVideo() {
       URL.revokeObjectURL(blobUrl);
     }, 60000);
 
-    showStatus("Download started successfully ✅", true);
+    saveHistory(currentVideoName, blob.size);
+
+    progressBar.style.width = "100%";
+    progressText.textContent =
+      "Download prepared: " + formatBytes(blob.size);
+
+    showStatus(
+      "Download prepared successfully ✅ Check your browser downloads.",
+      true
+    );
 
   } catch (error) {
-    showStatus(
-      "Direct download is blocked by the source or browser. Use Open Video Source if the website provides a permitted download option."
-    );
+    if (error.name === "AbortError") {
+      showStatus("Download cancelled.");
+    } else {
+      showStatus(
+        error.message ||
+        "Download failed. The source may block browser access."
+      );
+    }
   } finally {
+    downloadController = null;
     downloadButton.disabled = false;
-    downloadButton.textContent = "Download Video";
+    cancelButton.hidden = true;
+  }
+}
+
+function cancelDownload() {
+  if (downloadController) {
+    downloadController.abort();
   }
 }
 
 downloadButton.addEventListener("click", downloadVideo);
+cancelButton.addEventListener("click", cancelDownload);
+clearHistoryButton.addEventListener("click", clearHistory);
 
 form.addEventListener("submit", async event => {
   event.preventDefault();
@@ -459,8 +792,12 @@ form.addEventListener("submit", async event => {
       mediaData.previewUrl || parsedUrl.href
     );
 
-    if (safeUrl.protocol !== "https:") {
-      throw new Error("Only HTTPS video links are supported.");
+    if (
+      safeUrl.protocol !== "https:" ||
+      safeUrl.username ||
+      safeUrl.password
+    ) {
+      throw new Error("This video link is not supported.");
     }
 
     currentVideoUrl = safeUrl.href;
@@ -487,7 +824,7 @@ form.addEventListener("submit", async event => {
     button.textContent = "Check Link";
   }
 });
-</script>
 
-</body>
+displayHistory();
+</script></body>
 </html>
