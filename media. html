@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MEDIAX — Media Viewer</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0b1020;
+  color: white;
+}
+
+header {
+  padding: 20px;
+  text-align: center;
+  background: #111a30;
+  border-bottom: 1px solid #26334e;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+  color: #65b9ff;
+}
+
+.container {
+  max-width: 650px;
+  margin: 35px auto;
+  padding: 20px;
+}
+
+.card {
+  background: #151f36;
+  padding: 25px;
+  border-radius: 18px;
+  border: 1px solid #26334e;
+}
+
+h1 {
+  font-size: 25px;
+}
+
+.description {
+  color: #b8c4d9;
+  line-height: 1.6;
+}
+
+label {
+  display: block;
+  margin: 20px 0 8px;
+}
+
+input {
+  width: 100%;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #40516f;
+  background: #0b1020;
+  color: white;
+  font-size: 15px;
+}
+
+button {
+  width: 100%;
+  padding: 15px;
+  margin-top: 15px;
+  border: 0;
+  border-radius: 10px;
+  background: #1688ff;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+}
+
+#status {
+  margin-top: 18px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.preview {
+  margin-top: 20px;
+  padding: 12px;
+  background: #0b1020;
+  border-radius: 12px;
+  display: none;
+}
+
+.preview img,
+.preview video {
+  width: 100%;
+  max-height: 450px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: black;
+}
+
+.open-link {
+  display: block;
+  margin-top: 15px;
+  padding: 13px;
+  background: #263b5d;
+  color: white;
+  border-radius: 8px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.note {
+  font-size: 13px;
+  color: #aebbd0;
+  line-height: 1.6;
+  margin-top: 20px;
+}
+
+.back {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  color: #75bcff;
+  text-decoration: none;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">MEDIAX</div>
+  <div>Direct Media Viewer</div>
+</header>
+
+<main class="container">
+
+<section class="card">
+
+<h1>Image & Video Preview</h1>
+
+<p class="description">
+Paste a direct media-file link to check and preview supported images or videos.
+</p>
+
+<form id="mediaForm">
+
+<label for="mediaUrl">Media URL</label>
+
+<input
+  id="mediaUrl"
+  type="url"
+  placeholder="https://example.com/video.mp4"
+  required
+  maxlength="2048"
+>
+
+<button id="checkButton" type="submit">
+Check Media
+</button>
+
+</form>
+
+<div id="status" role="status" aria-live="polite"></div>
+
+<div class="preview" id="preview"></div>
+
+<p class="note">
+MEDIAX only checks the link format. The source website may block previews.
+Only use media you own or have permission to access. This page does not bypass
+login restrictions, DRM or website download restrictions.
+</p>
+
+<a class="back" href="./index.html">← Back to Home</a>
+
+</section>
+</main>
+
+<script>
+const API_URL = "https://mediax-api.onrender.com";
+
+const form = document.getElementById("mediaForm");
+const input = document.getElementById("mediaUrl");
+const button = document.getElementById("checkButton");
+const statusBox = document.getElementById("status");
+const preview = document.getElementById("preview");
+
+function showMessage(message, success = false) {
+  statusBox.textContent = message;
+  statusBox.style.color = success ? "#6ee7a8" : "#ff9b9b";
+}
+
+function clearPreview() {
+  preview.replaceChildren();
+  preview.style.display = "none";
+}
+
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  clearPreview();
+  button.disabled = true;
+  button.textContent = "Checking...";
+  showMessage("Checking your media link...", true);
+
+  try {
+    const response = await fetch(API_URL + "/api/media/inspect", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        url: input.value.trim()
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.message || "Media link could not be checked.");
+    }
+
+    const mediaUrl = new URL(data.previewUrl);
+
+    showMessage(
+      "Supported " + data.mediaType + " link detected.",
+      true
+    );
+
+    const heading = document.createElement("h3");
+    heading.textContent = data.mediaType === "image"
+      ? "Image Preview"
+      : "Video Preview";
+
+    preview.appendChild(heading);
+
+    const media = document.createElement(
+      data.mediaType === "image" ? "img" : "video"
+    );
+
+    media.src = mediaUrl.href;
+    media.controls = data.mediaType === "video";
+    media.preload = "metadata";
+
+    if (data.mediaType === "image") {
+      media.alt = "Media preview";
+    }
+
+    media.addEventListener("error", () => {
+      showMessage(
+        "The link was recognized, but the source website blocked the preview."
+      );
+    });
+
+    preview.appendChild(media);
+
+    const openLink = document.createElement("a");
+    openLink.className = "open-link";
+    openLink.href = mediaUrl.href;
+    openLink.target = "_blank";
+    openLink.rel = "noopener noreferrer";
+    openLink.textContent = "Open Original Media";
+
+    preview.appendChild(openLink);
+
+    preview.style.display = "block";
+
+  } catch (error) {
+    showMessage(error.message || "Something went wrong.");
+  } finally {
+    button.disabled = false;
+    button.textContent = "Check Media";
+  }
+});
+</script>
+
+</body>
+</html>
