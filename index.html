@@ -188,6 +188,7 @@ button {
   font-size: 15px;
   font-weight: bold;
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 button:hover {
@@ -384,7 +385,6 @@ footer {
 
   <section class="hero">
     <h1>Welcome to MEDIAX</h1>
-
     <p>
       Your Media Link Checker Dashboard.<br>
       Identify platforms and preview supported direct media files.
@@ -467,7 +467,10 @@ footer {
       maxlength="2048"
     >
 
-    <button type="button" id="checkButton">
+    <button
+      type="button"
+      id="checkButton"
+      onclick="window.checkMedia()">
       Check Link
     </button>
 
@@ -807,8 +810,10 @@ async function checkMedia() {
       throw new Error("Unsupported media URL.");
     }
 
-    if (result.mediaType !== "video" &&
-        result.mediaType !== "image") {
+    if (
+      result.mediaType !== "video" &&
+      result.mediaType !== "image"
+    ) {
       showStatus(
         "Platform detected: " + detected +
         "\nThis link is not a supported direct media file."
@@ -859,17 +864,21 @@ async function checkMedia() {
   }
 }
 
-button.addEventListener("click", checkMedia);
+/* Explicitly expose the function for the HTML button. */
+window.checkMedia = checkMedia;
 
+/* Enter key support */
 input.addEventListener("keydown", event => {
   if (event.key === "Enter") {
     checkMedia();
   }
 });
 
+/* Clear history button */
 document.getElementById("clearHistoryButton")
   .addEventListener("click", clearHistory);
 
+/* Initial page setup */
 displayHistory();
 
 showStatus(
