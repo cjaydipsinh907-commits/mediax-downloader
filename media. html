@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>MEDIAX — Media Viewer</title>
+<title>MEDIAX - Media Viewer</title>
 
 <style>
 * {
@@ -32,20 +31,21 @@ header {
 }
 
 .container {
-  max-width: 650px;
-  margin: 35px auto;
-  padding: 20px;
+  max-width: 700px;
+  margin: 25px auto;
+  padding: 16px;
 }
 
 .card {
   background: #151f36;
-  padding: 25px;
-  border-radius: 18px;
-  border: 1px solid #26334e;
+  padding: 22px;
+  border-radius: 16px;
+  border: 1px solid #293954;
+  margin-bottom: 20px;
 }
 
-h1 {
-  font-size: 25px;
+h1, h2 {
+  margin-top: 0;
 }
 
 .description {
@@ -55,13 +55,13 @@ h1 {
 
 label {
   display: block;
-  margin: 20px 0 8px;
+  margin: 18px 0 8px;
 }
 
 input {
   width: 100%;
-  padding: 15px;
-  border-radius: 10px;
+  padding: 14px;
+  border-radius: 9px;
   border: 1px solid #40516f;
   background: #0b1020;
   color: white;
@@ -69,40 +69,43 @@ input {
 }
 
 button {
-  width: 100%;
-  padding: 15px;
-  margin-top: 15px;
+  padding: 13px;
   border: 0;
-  border-radius: 10px;
+  border-radius: 9px;
   background: #1688ff;
   color: white;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: bold;
   cursor: pointer;
 }
 
 button:disabled {
-  opacity: 0.5;
+  opacity: .6;
+}
+
+.main-button {
+  width: 100%;
+  margin-top: 14px;
 }
 
 #status {
-  margin-top: 18px;
+  margin-top: 16px;
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
 
 .preview {
+  display: none;
   margin-top: 20px;
   padding: 12px;
-  background: #0b1020;
   border-radius: 12px;
-  display: none;
+  background: #0b1020;
 }
 
 .preview img,
 .preview video {
   width: 100%;
-  max-height: 450px;
+  max-height: 430px;
   object-fit: contain;
   border-radius: 8px;
   background: black;
@@ -110,7 +113,7 @@ button:disabled {
 
 .open-link {
   display: block;
-  margin-top: 15px;
+  margin-top: 14px;
   padding: 13px;
   background: #263b5d;
   color: white;
@@ -119,19 +122,58 @@ button:disabled {
   text-decoration: none;
 }
 
-.note {
-  font-size: 13px;
-  color: #aebbd0;
+.history-item {
+  padding: 13px;
+  border-bottom: 1px solid #34435e;
+  overflow-wrap: anywhere;
   line-height: 1.6;
-  margin-top: 20px;
+}
+
+.history-item:last-child {
+  border-bottom: none;
+}
+
+.history-item small {
+  color: #aebbd0;
+}
+
+.history-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.history-actions button {
+  flex: 1;
+}
+
+.clear-button {
+  background: #b83248;
+}
+
+.empty {
+  color: #aebbd0;
+  padding: 10px 0;
 }
 
 .back {
   display: block;
   text-align: center;
-  margin-top: 20px;
   color: #75bcff;
   text-decoration: none;
+  margin: 20px;
+}
+
+.note {
+  color: #aebbd0;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+@media(max-width: 450px) {
+  .history-actions {
+    flex-direction: column;
+  }
 }
 </style>
 </head>
@@ -140,50 +182,73 @@ button:disabled {
 
 <header>
   <div class="logo">MEDIAX</div>
-  <div>Direct Media Viewer</div>
+  <div>Media Viewer & Activity History</div>
 </header>
 
 <main class="container">
 
 <section class="card">
+  <h1>Media Viewer</h1>
 
-<h1>Image & Video Preview</h1>
+  <p class="description">
+    Check a direct image or video file link and preview
+    supported media.
+  </p>
 
-<p class="description">
-Paste a direct media-file link to check and preview supported images or videos.
-</p>
+  <form id="mediaForm">
+    <label for="mediaUrl">Paste Media URL</label>
 
-<form id="mediaForm">
+    <input
+      id="mediaUrl"
+      type="url"
+      placeholder="https://example.com/video.mp4"
+      maxlength="2048"
+      required
+    >
 
-<label for="mediaUrl">Media URL</label>
+    <button class="main-button" id="checkButton" type="submit">
+      Check Media
+    </button>
+  </form>
 
-<input
-  id="mediaUrl"
-  type="url"
-  placeholder="https://example.com/video.mp4"
-  required
-  maxlength="2048"
->
+  <div id="status" role="status" aria-live="polite"></div>
 
-<button id="checkButton" type="submit">
-Check Media
-</button>
+  <div class="preview" id="preview"></div>
+</section>
 
-</form>
+<section class="card">
+  <h2>Recent Activity</h2>
 
-<div id="status" role="status" aria-live="polite"></div>
+  <p class="description">
+    Your recent media-link checks on this browser.
+  </p>
 
-<div class="preview" id="preview"></div>
+  <div id="historyList"></div>
 
-<p class="note">
-MEDIAX only checks the link format. The source website may block previews.
-Only use media you own or have permission to access. This page does not bypass
-login restrictions, DRM or website download restrictions.
-</p>
+  <div class="history-actions">
+    <button id="clearHistory" class="clear-button">
+      Clear History
+    </button>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Privacy & Safety</h2>
+
+  <p class="note">
+    History is stored only in this browser's local storage.
+    The complete media URL is not saved in history.
+    Clearing browser data may remove this history.
+
+    MEDIAX does not download or store media on its server.
+    Only use content you own or have permission to access.
+    Website restrictions, login requirements and DRM are
+    not bypassed.
+  </p>
+</section>
 
 <a class="back" href="./index.html">← Back to Home</a>
 
-</section>
 </main>
 
 <script>
@@ -194,8 +259,12 @@ const input = document.getElementById("mediaUrl");
 const button = document.getElementById("checkButton");
 const statusBox = document.getElementById("status");
 const preview = document.getElementById("preview");
+const historyList = document.getElementById("historyList");
+const clearButton = document.getElementById("clearHistory");
 
-function showMessage(message, success = false) {
+const STORAGE_KEY = "mediax_activity_v1";
+
+function showStatus(message, success = false) {
   statusBox.textContent = message;
   statusBox.style.color = success ? "#6ee7a8" : "#ff9b9b";
 }
@@ -205,42 +274,128 @@ function clearPreview() {
   preview.style.display = "none";
 }
 
-form.addEventListener("submit", async (event) => {
+function getHistory() {
+  try {
+    const data = JSON.parse(
+      localStorage.getItem(STORAGE_KEY) || "[]"
+    );
+
+    return Array.isArray(data) ? data.slice(0, 20) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveHistory(item) {
+  const history = getHistory();
+
+  history.unshift(item);
+
+  try {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(history.slice(0, 20))
+    );
+
+    renderHistory();
+  } catch {
+    showStatus(
+      "Media checked, but browser history could not be saved."
+    );
+  }
+}
+
+function renderHistory() {
+  const history = getHistory();
+
+  historyList.replaceChildren();
+
+  if (history.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "empty";
+    empty.textContent = "No recent activity yet.";
+    historyList.appendChild(empty);
+    return;
+  }
+
+  history.forEach(item => {
+    const row = document.createElement("div");
+    row.className = "history-item";
+
+    const title = document.createElement("strong");
+    title.textContent = item.type + " checked";
+
+    const domain = document.createElement("div");
+    domain.textContent = item.domain;
+
+    const date = document.createElement("small");
+    date.textContent = new Date(item.time).toLocaleString();
+
+    row.append(title, domain, date);
+    historyList.appendChild(row);
+  });
+}
+
+clearButton.addEventListener("click", () => {
+  const confirmed = confirm(
+    "Clear all MEDIAX activity history from this browser?"
+  );
+
+  if (!confirmed) return;
+
+  localStorage.removeItem(STORAGE_KEY);
+  renderHistory();
+});
+
+form.addEventListener("submit", async event => {
   event.preventDefault();
 
   clearPreview();
+
   button.disabled = true;
   button.textContent = "Checking...";
-  showMessage("Checking your media link...", true);
+
+  showStatus("Checking your media link...", true);
 
   try {
-    const response = await fetch(API_URL + "/api/media/inspect", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        url: input.value.trim()
-      })
-    });
+    const response = await fetch(
+      API_URL + "/api/media/inspect",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          url: input.value.trim()
+        })
+      }
+    );
 
     const data = await response.json();
 
     if (!response.ok || !data.success) {
-      throw new Error(data.message || "Media link could not be checked.");
+      throw new Error(
+        data.message || "Media link could not be checked."
+      );
     }
 
-    const mediaUrl = new URL(data.previewUrl);
+    const safeUrl = new URL(data.previewUrl);
 
-    showMessage(
+    if (safeUrl.protocol !== "https:") {
+      throw new Error("Only HTTPS media links are supported.");
+    }
+
+    showStatus(
       "Supported " + data.mediaType + " link detected.",
       true
     );
 
     const heading = document.createElement("h3");
-    heading.textContent = data.mediaType === "image"
-      ? "Image Preview"
-      : "Video Preview";
+
+    heading.textContent =
+      data.mediaType === "image"
+        ? "Image Preview"
+        : "Video Preview";
 
     preview.appendChild(heading);
 
@@ -248,25 +403,27 @@ form.addEventListener("submit", async (event) => {
       data.mediaType === "image" ? "img" : "video"
     );
 
-    media.src = mediaUrl.href;
-    media.controls = data.mediaType === "video";
-    media.preload = "metadata";
+    media.src = safeUrl.href;
 
     if (data.mediaType === "image") {
       media.alt = "Media preview";
+    } else {
+      media.controls = true;
+      media.preload = "metadata";
     }
 
     media.addEventListener("error", () => {
-      showMessage(
-        "The link was recognized, but the source website blocked the preview."
+      showStatus(
+        "Link recognized, but the source website blocked the preview."
       );
     });
 
     preview.appendChild(media);
 
     const openLink = document.createElement("a");
+
     openLink.className = "open-link";
-    openLink.href = mediaUrl.href;
+    openLink.href = safeUrl.href;
     openLink.target = "_blank";
     openLink.rel = "noopener noreferrer";
     openLink.textContent = "Open Original Media";
@@ -275,13 +432,23 @@ form.addEventListener("submit", async (event) => {
 
     preview.style.display = "block";
 
+    saveHistory({
+      type: data.mediaType,
+      domain: safeUrl.hostname,
+      time: new Date().toISOString()
+    });
+
   } catch (error) {
-    showMessage(error.message || "Something went wrong.");
+    showStatus(
+      error.message || "Unable to check this media link."
+    );
   } finally {
     button.disabled = false;
     button.textContent = "Check Media";
   }
 });
+
+renderHistory();
 </script>
 
 </body>
