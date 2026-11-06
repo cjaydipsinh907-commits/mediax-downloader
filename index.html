@@ -2,6 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b1020">
 <title>MEDIAX - Media Platform</title><style>
 * {
   box-sizing: border-box;
@@ -88,7 +89,7 @@ header {
   color: #aebbd0;
 }
 
-.box, #mediaSection {
+.box, .media-section, .history-section {
   background: #151f36;
   border: 1px solid #293954;
   border-radius: 16px;
@@ -96,7 +97,7 @@ header {
   margin-top: 20px;
 }
 
-.box h2, #mediaSection h2 {
+.box h2, .media-section h2, .history-section h2 {
   font-size: 21px;
   margin-bottom: 10px;
 }
@@ -141,6 +142,14 @@ button:disabled {
   cursor: wait;
 }
 
+.secondary-button {
+  background: #263b5d;
+}
+
+.clear-button {
+  background: #a93649;
+}
+
 #result {
   margin-top: 16px;
   font-size: 14px;
@@ -148,16 +157,40 @@ button:disabled {
   overflow-wrap: anywhere;
 }
 
-#mediaSection {
+.loader {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  color: #75bcff;
+  font-size: 14px;
+}
+
+.spinner {
+  width: 19px;
+  height: 19px;
+  border: 3px solid #344765;
+  border-top-color: #62b5ff;
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.media-section {
   display: none;
 }
 
-video {
+.media-preview {
   width: 100%;
   max-height: 450px;
   background: black;
   border-radius: 12px;
   display: block;
+  object-fit: contain;
+  margin-top: 15px;
 }
 
 .download-button, .source-button {
@@ -194,6 +227,33 @@ video {
   margin-top: 22px;
 }
 
+.history-item {
+  background: #0b1020;
+  border: 1px solid #293954;
+  border-radius: 10px;
+  padding: 13px;
+  margin-top: 12px;
+  overflow-wrap: anywhere;
+}
+
+.history-item p {
+  color: #b8c4d9;
+  font-size: 12px;
+  line-height: 1.6;
+  margin-top: 5px;
+}
+
+.history-item button {
+  padding: 10px;
+  font-size: 13px;
+}
+
+.empty-history {
+  color: #aebbd0;
+  font-size: 13px;
+  margin-top: 15px;
+}
+
 footer {
   margin-top: 35px;
   padding: 25px;
@@ -204,8 +264,9 @@ footer {
 }
 
 @media(max-width:420px) {
-  .hero h1 {
-    font-size: 24px;
+  .hero h1 { font-size: 24px; }
+  .box, .media-section, .history-section {
+    padding: 17px;
   }
 }
 </style></head><body><header>
@@ -273,20 +334,69 @@ footer {
 <p>Direct media links</p>
 </div></section><section class="box">
 <h2>Check Your Link</h2>
-<p>Paste your media URL below.</p><form id="checkForm">
+<p>Paste a supported direct image or video URL below.</p><form id="checkForm">
 <label for="mediaLink">Paste Media URL</label>
-<input type="url" id="mediaLink" placeholder="https://example.com/video.mp4" maxlength="2048" required>
+<input
+  type="url"
+  id="mediaLink"
+  placeholder="https://example.com/video.mp4"
+  maxlength="2048"
+  required
+>
 <button id="checkButton" type="submit">Check Link</button>
-</form><div id="result" role="status" aria-live="polite"></div>
-</section><section id="mediaSection">
-<h2>Video Preview</h2>
-<video id="videoPlayer" controls playsinline></video><a id="downloadButton" class="download-button" href="#" download="mediax-video">
-Download Video
-</a><a id="sourceButton" class="source-button" href="#" target="_blank" rel="noopener">
-Open Video Source
-</a><p class="note">
-Download depends on source permissions and browser access.
+</form><div class="loader" id="loader" aria-live="polite">
+  <span class="spinner"></span>
+  <span>Checking your link. Please wait...</span>
+</div><div id="result" role="status" aria-live="polite"></div>
+</section><section class="media-section" id="mediaSection">
+<h2 id="previewTitle">Media Preview</h2><video
+id="videoPlayer"
+class="media-preview"
+controls
+playsinline
+style="display:none"
+
+«</video>»
+
+<img
+id="imagePlayer"
+class="media-preview"
+alt="Media preview"
+style="display:none"
+
+«»
+
+<a
+id="downloadButton"
+class="download-button"
+href="#"
+download
+
+«»
+
+Download Media
+</a>
+
+<a
+id="sourceButton"
+class="source-button"
+href="#"
+target="_blank"
+rel="noopener noreferrer"
+
+«»
+
+Open Media Source
+</a>
+
+<p class="note">
+Preview and download depend on source permissions, browser support and server configuration.
 </p>
+</section><section class="history-section">
+<h2>Recent History</h2>
+<p class="note">Your recent checks are saved only in this browser on this device.</p><div id="historyList"></div><button id="clearHistoryButton" class="clear-button" type="button">
+Clear History
+</button>
 </section><section class="info">
 Only use media you own or have permission to access.
 Platform restrictions and copyright rules apply.
@@ -295,107 +405,310 @@ with Instagram, Facebook, WhatsApp or YouTube.
 </section></main><footer>
 © 2026 MEDIAX. All rights reserved.
 </footer><script>
+"use strict";
+
 const API_URL = "https://mediax-api.onrender.com";
+const HISTORY_KEY = "mediax_history_v1";
+const MAX_HISTORY = 20;
 
 const form = document.getElementById("checkForm");
 const input = document.getElementById("mediaLink");
 const result = document.getElementById("result");
 const button = document.getElementById("checkButton");
+const loader = document.getElementById("loader");
 
 const mediaSection = document.getElementById("mediaSection");
 const videoPlayer = document.getElementById("videoPlayer");
+const imagePlayer = document.getElementById("imagePlayer");
+const previewTitle = document.getElementById("previewTitle");
 const downloadButton = document.getElementById("downloadButton");
 const sourceButton = document.getElementById("sourceButton");
 
-function clearVideo() {
+const historyList = document.getElementById("historyList");
+const clearHistoryButton = document.getElementById("clearHistoryButton");
+
+function setMessage(message, color) {
+  result.textContent = message;
+  result.style.color = color;
+}
+
+function setLoading(isLoading) {
+  button.disabled = isLoading;
+  loader.style.display = isLoading ? "flex" : "none";
+  button.textContent = isLoading ? "Checking..." : "Check Link";
+}
+
+function clearMedia() {
   videoPlayer.pause();
   videoPlayer.removeAttribute("src");
   videoPlayer.load();
+
+  imagePlayer.removeAttribute("src");
+
+  videoPlayer.style.display = "none";
+  imagePlayer.style.display = "none";
+
   mediaSection.style.display = "none";
+
   downloadButton.removeAttribute("href");
   sourceButton.removeAttribute("href");
 }
 
-form.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  clearVideo();
-
-  const mediaUrl = input.value.trim();
-
+function getHistory() {
   try {
-    const parsedUrl = new URL(mediaUrl);
-    if (parsedUrl.protocol !== "https:") {
-      throw new Error("Only HTTPS links are supported.");
-    }
-  } catch (error) {
-    result.textContent = error.message || "Enter a valid HTTPS link.";
-    result.style.color = "#ff9b9b";
+    const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
+    return Array.isArray(history) ? history : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveHistory(item) {
+  try {
+    const history = getHistory();
+
+    history.unshift({
+      url: item.url,
+      platform: item.platform,
+      mediaType: item.mediaType || "Not available",
+      status: item.status,
+      date: new Date().toLocaleString()
+    });
+
+    localStorage.setItem(
+      HISTORY_KEY,
+      JSON.stringify(history.slice(0, MAX_HISTORY))
+    );
+
+    renderHistory();
+  } catch {
+    setMessage(
+      "Your browser could not save history. You can still use MEDIAX.",
+      "#ffd479"
+    );
+  }
+}
+
+function renderHistory() {
+  const history = getHistory();
+  historyList.replaceChildren();
+
+  if (history.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "empty-history";
+    empty.textContent = "No recent checks yet.";
+    historyList.appendChild(empty);
     return;
   }
 
-  button.disabled = true;
-  result.textContent = "Checking link...";
-  result.style.color = "#75bcff";
+  history.forEach((item) => {
+    const card = document.createElement("div");
+    card.className = "history-item";
 
-  try {
-    const response = await fetch(API_URL + "/api/check", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({url: mediaUrl})
+    const title = document.createElement("strong");
+    title.textContent = item.platform || "Unknown platform";
+
+    const details = document.createElement("p");
+    details.textContent =
+      "Type: " + (item.mediaType || "Unknown") +
+      " | Status: " + (item.status || "Checked") +
+      " | " + (item.date || "");
+
+    const url = document.createElement("p");
+    url.textContent = item.url;
+
+    const retry = document.createElement("button");
+    retry.type = "button";
+    retry.className = "secondary-button";
+    retry.textContent = "Check This Link Again";
+
+    retry.addEventListener("click", () => {
+      input.value = item.url;
+      form.requestSubmit();
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
 
-    const data = await response.json();
+    card.append(title, details, url, retry);
+    historyList.appendChild(card);
+  });
+}
 
-    if (!response.ok || !data.success) {
-      throw new Error(data.message || "Link could not be checked.");
-    }
+clearHistoryButton.addEventListener("click", () => {
+  const confirmed = confirm("Do you want to clear all MEDIAX history?");
 
-    const platform = String(data.platform || "").toLowerCase();
+  if (!confirmed) return;
+
+  localStorage.removeItem(HISTORY_KEY);
+  renderHistory();
+
+  setMessage("History cleared successfully.", "#6ee7a8");
+});
+
+function validateInput(value) {
+  let parsed;
+
+  try {
+    parsed = new URL(value);
+  } catch {
+    throw new Error("Please enter a valid URL.");
+  }
+
+  if (parsed.protocol !== "https:") {
+    throw new Error("Only HTTPS links are supported.");
+  }
+
+  return parsed;
+}
+
+async function postJSON(endpoint, data) {
+  const response = await fetch(API_URL + endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  });
+
+  let responseData;
+
+  try {
+    responseData = await response.json();
+  } catch {
+    throw new Error("The server returned an invalid response.");
+  }
+
+  if (!response.ok || !responseData.success) {
+    throw new Error(
+      responseData.message || "The request could not be completed."
+    );
+  }
+
+  return responseData;
+}
+
+function showVideo(url) {
+  previewTitle.textContent = "Video Preview";
+
+  imagePlayer.style.display = "none";
+  imagePlayer.removeAttribute("src");
+
+  videoPlayer.style.display = "block";
+  videoPlayer.src = url;
+  videoPlayer.load();
+
+  downloadButton.href = url;
+  downloadButton.download = "mediax-video";
+  downloadButton.textContent = "Download Video";
+
+  sourceButton.href = url;
+
+  mediaSection.style.display = "block";
+}
+
+function showImage(url) {
+  previewTitle.textContent = "Image Preview";
+
+  videoPlayer.pause();
+  videoPlayer.style.display = "none";
+  videoPlayer.removeAttribute("src");
+  videoPlayer.load();
+
+  imagePlayer.style.display = "block";
+  imagePlayer.src = url;
+
+  downloadButton.href = url;
+  downloadButton.download = "mediax-image";
+  downloadButton.textContent = "Download Image";
+
+  sourceButton.href = url;
+
+  mediaSection.style.display = "block";
+}
+
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  clearMedia();
+
+  const mediaUrl = input.value.trim();
+
+  let parsedUrl;
+
+  try {
+    parsedUrl = validateInput(mediaUrl);
+  } catch (error) {
+    setMessage(error.message, "#ff9b9b");
+    return;
+  }
+
+  setLoading(true);
+  setMessage("Connecting to MEDIAX server...", "#75bcff");
+
+  try {
+    const data = await postJSON("/api/check", {
+      url: parsedUrl.toString()
+    });
+
+    const platform = String(data.platform || "Other Website");
+    const normalizedPlatform = platform.toLowerCase();
 
     if (
-      platform.includes("youtube") ||
-      platform.includes("instagram") ||
-      platform.includes("facebook") ||
-      platform.includes("whatsapp")
+      normalizedPlatform.includes("youtube") ||
+      normalizedPlatform.includes("instagram") ||
+      normalizedPlatform.includes("facebook") ||
+      normalizedPlatform.includes("whatsapp")
     ) {
-      result.textContent =
-        "Platform detected: " + data.platform +
-        ". Use the platform's permitted viewing or export options for this content.";
-      result.style.color = "#ffd479";
+      const message =
+        "Platform detected: " + platform +
+        ". Use the platform's permitted viewing or export options.";
+
+      setMessage(message, "#ffd479");
+
+      saveHistory({
+        url: parsedUrl.toString(),
+        platform,
+        mediaType: "Platform link",
+        status: "Detected"
+      });
+
       return;
     }
 
-    result.textContent = "Platform detected: " + data.platform + ". Checking media...";
-    
-    const inspectResponse = await fetch(API_URL + "/api/media/inspect", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({url: mediaUrl})
+    setMessage(
+      "Platform detected: " + platform + ". Checking media file...",
+      "#75bcff"
+    );
+
+    const media = await postJSON("/api/media/inspect", {
+      url: parsedUrl.toString()
     });
 
-    const inspectData = await inspectResponse.json();
+    const mediaType = String(media.mediaType || "").toLowerCase();
+    const previewUrl = media.previewUrl;
 
-    if (!inspectResponse.ok || !inspectData.success) {
-      throw new Error(inspectData.message || "Unsupported media link.");
+    if (!previewUrl) {
+      throw new Error("The server did not provide a preview link.");
     }
 
-    if (
-      String(inspectData.mediaType || "").toLowerCase() !== "video" ||
-      !inspectData.previewUrl
-    ) {
-      throw new Error("No supported video preview found.");
+    if (mediaType === "video") {
+      showVideo(previewUrl);
+    } else if (mediaType === "image") {
+      showImage(previewUrl);
+    } else {
+      throw new Error("This media format is not supported.");
     }
 
-    const previewUrl = inspectData.previewUrl;
+    setMessage(
+      "Supported " + mediaType + " link found! Preview is ready.",
+      "#6ee7a8"
+    );
 
-    videoPlayer.src = previewUrl;
-    downloadButton.href = previewUrl;
-    sourceButton.href = previewUrl;
-
-    mediaSection.style.display = "block";
-
-    result.textContent = "Supported video found! Preview is ready.";
-    result.style.color = "#6ee7a8";
+    saveHistory({
+      url: parsedUrl.toString(),
+      platform,
+      mediaType,
+      status: "Preview ready"
+    });
 
     mediaSection.scrollIntoView({
       behavior: "smooth",
@@ -403,11 +716,30 @@ form.addEventListener("submit", async (event) => {
     });
 
   } catch (error) {
-    result.textContent = error.message || "Unable to check this link.";
-    result.style.color = "#ff9b9b";
+    let message = error.message || "Unable to check this link.";
+
+    if (
+      error instanceof TypeError &&
+      /fetch/i.test(message)
+    ) {
+      message =
+        "Unable to connect to the MEDIAX server. Please try again later.";
+    }
+
+    setMessage(message, "#ff9b9b");
+
+    saveHistory({
+      url: parsedUrl.toString(),
+      platform: "Unknown",
+      mediaType: "Not available",
+      status: "Failed"
+    });
+
   } finally {
-    button.disabled = false;
+    setLoading(false);
   }
 });
+
+renderHistory();
 </script></body>
 </html>
