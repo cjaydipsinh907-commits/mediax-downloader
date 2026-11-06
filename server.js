@@ -63,7 +63,7 @@ function validatePublicHttpsUrl(value) {
     .toLowerCase()
     .replace(/\.$/, "");
 
-  // Block localhost and local network domains
+  // Block local and reserved hostnames
   if (
     hostname === "localhost" ||
     hostname.endsWith(".localhost") ||
@@ -76,10 +76,9 @@ function validatePublicHttpsUrl(value) {
     return null;
   }
 
-  // Remove IPv6 brackets before checking
+  // Block direct IPv4 and IPv6 addresses
   const ipHostname = hostname.replace(/^\[|\]$/g, "");
 
-  // Block all direct IPv4 and IPv6 addresses
   if (net.isIP(ipHostname) !== 0) {
     return null;
   }
@@ -92,7 +91,7 @@ function isHost(host, domain) {
   return host === domain || host.endsWith("." + domain);
 }
 
-// Detect platform from URL
+// Detect platform
 function detectPlatform(parsed) {
   const host = parsed.hostname
     .toLowerCase()
@@ -289,6 +288,53 @@ app.post("/api/media/download-check", (req, res) => {
     downloadUrl: parsed.toString(),
     downloadAvailable: false,
     message: "Direct video link recognized. Actual downloading depends on the source website."
+  });
+});
+
+// Handle unknown API routes
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "Requested API endpoint was not found."
+  });
+});
+
+// Central error handler
+app.use((err, req, res, next) => {
+  console.error("MEDIAX API error:", err.message);
+
+  if (res.headersSent) {
+    return next(err);
+  }
+
+  // Invalid JSON
+  if (err.type === "entity.parse.failed") {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid JSON request."
+    });
+  }
+
+  // Request body too large
+  if (err.type === "entity.too.large") {
+    return res.status(413).json({
+      success: false,
+      message: "Request body is too large."
+    });
+  }
+
+  // Rate limit
+  if (err.status === 429) {
+    return res.status(429).json({
+      success: false,
+      message: "Too many requests. Please try again later."
+    });
+  }
+
+  // General server error
+  return res.status(500).json({
+    success: false,
+    message: "Something went wrong. Please try again later."
   });
 });
 
