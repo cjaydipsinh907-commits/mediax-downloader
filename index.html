@@ -3,69 +3,51 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MEDIAX | All-in-One Media Hub</title>
+<title>MEDIAX | Media Hub</title>
 
 <style>
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
   font-family: Arial, sans-serif;
 }
 
 body {
   background: #080d18;
-  color: #fff;
+  color: white;
 }
 
 header {
-  height: 75px;
-  padding: 0 7%;
+  padding: 20px 7%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #1d2940;
   background: #0b1220;
+  border-bottom: 1px solid #263650;
 }
 
 .logo {
-  font-size: 28px;
+  font-size: 27px;
   font-weight: 900;
   color: #38bdf8;
   letter-spacing: 2px;
 }
 
-nav a {
-  color: #cbd5e1;
-  text-decoration: none;
-  margin-left: 25px;
-  font-size: 14px;
-}
-
-nav a:hover {
-  color: #38bdf8;
+header span {
+  color: #4ade80;
+  font-size: 13px;
 }
 
 .hero {
   text-align: center;
-  padding: 85px 20px 55px;
-  background: radial-gradient(ellipse at top, #12304c, #080d18 65%);
-}
-
-.badge {
-  display: inline-block;
-  padding: 8px 15px;
-  border: 1px solid #245477;
-  border-radius: 30px;
-  color: #7dd3fc;
-  font-size: 12px;
-  margin-bottom: 22px;
+  padding: 65px 20px 40px;
+  background: radial-gradient(ellipse at top, #12304c, #080d18 70%);
 }
 
 .hero h1 {
-  font-size: clamp(35px, 7vw, 65px);
-  font-weight: 900;
-  margin-bottom: 20px;
+  font-size: clamp(35px, 7vw, 55px);
+  margin-bottom: 15px;
 }
 
 .hero h1 span {
@@ -74,175 +56,151 @@ nav a:hover {
 
 .hero p {
   color: #a8b6ca;
-  line-height: 1.8;
-  max-width: 600px;
-  margin: auto;
+  line-height: 1.7;
 }
 
 .container {
-  max-width: 1000px;
-  padding: 25px 20px;
+  max-width: 850px;
   margin: auto;
+  padding: 25px 18px;
 }
 
-.section-title {
-  text-align: center;
-  font-size: 25px;
-  margin: 35px 0 25px;
-}
-
-.section-title span {
-  color: #38bdf8;
-}
-
-.platforms {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 17px;
-}
-
-.platform {
+.card {
   background: #111c30;
-  border: 1px solid #243650;
-  border-radius: 16px;
-  padding: 25px 10px;
-  text-align: center;
-  transition: 0.25s;
+  border: 1px solid #263650;
+  border-radius: 17px;
+  padding: 25px;
+  margin: 25px 0;
 }
 
-.platform:hover {
-  transform: translateY(-5px);
-  border-color: #38bdf8;
-}
-
-.platform .icon {
-  font-size: 35px;
+.card h2 {
   margin-bottom: 12px;
 }
 
-.platform h3 {
-  font-size: 15px;
-}
-
-.platform p {
-  font-size: 11px;
+.subtitle {
   color: #94a3b8;
-  margin-top: 8px;
-}
-
-.checker {
-  margin: 50px auto;
-  max-width: 720px;
-  padding: 30px;
-  background: #111c30;
-  border: 1px solid #29415f;
-  border-radius: 20px;
-}
-
-.checker h2 {
-  text-align: center;
-  margin-bottom: 12px;
-}
-
-.checker .subtitle {
-  text-align: center;
-  color: #94a3b8;
-  font-size: 13px;
-  margin-bottom: 25px;
-}
-
-label {
-  display: block;
-  margin-bottom: 12px;
   font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 20px;
 }
 
-input {
+input[type="url"] {
   width: 100%;
-  padding: 17px;
+  padding: 15px;
+  border: 1px solid #34445f;
+  border-radius: 9px;
   background: #080d18;
   color: white;
-  border: 1px solid #34445f;
-  border-radius: 10px;
-  outline: none;
   font-size: 15px;
-}
-
-input:focus {
-  border-color: #38bdf8;
 }
 
 button {
-  width: 100%;
-  margin-top: 15px;
-  padding: 17px;
-  background: linear-gradient(90deg, #0284c7, #2563eb);
+  padding: 14px;
   border: none;
-  border-radius: 10px;
+  border-radius: 9px;
+  background: #0284c7;
   color: white;
-  font-size: 16px;
   font-weight: bold;
   cursor: pointer;
 }
 
 button:disabled {
-  opacity: 0.6;
+  opacity: .6;
   cursor: wait;
 }
 
-#result {
+.primary {
+  width: 100%;
+  margin-top: 13px;
+}
+
+#linkResult {
   display: none;
-  margin-top: 20px;
-  padding: 18px;
+  padding: 15px;
+  margin-top: 15px;
   background: #0a1729;
-  border: 1px solid #29415f;
-  border-radius: 12px;
-  line-height: 1.8;
+  border-radius: 10px;
+  line-height: 1.7;
   overflow-wrap: anywhere;
 }
 
-.about {
+.upload-area {
+  border: 2px dashed #386080;
+  border-radius: 14px;
+  padding: 30px 15px;
   text-align: center;
-  padding: 55px 20px;
-  background: #0d1728;
-  margin-top: 40px;
+  background: #0b1628;
 }
 
-.about h2 {
-  margin-bottom: 15px;
-}
-
-.about p {
+.upload-area p {
   color: #a8b6ca;
-  max-width: 650px;
-  margin: auto;
-  line-height: 1.8;
+  margin: 10px 0 18px;
+  font-size: 14px;
+}
+
+.upload-button {
+  display: inline-block;
+  background: #0284c7;
+  color: white;
+  padding: 13px 20px;
+  border-radius: 9px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#mediaFile {
+  display: none;
+}
+
+#preview {
+  display: none;
+  margin-top: 22px;
+}
+
+#preview img,
+#preview video {
+  display: block;
+  max-width: 100%;
+  max-height: 420px;
+  margin: 15px auto;
+  border-radius: 12px;
+  background: #000;
+}
+
+.file-info {
+  background: #0a1729;
+  padding: 15px;
+  border-radius: 10px;
+  line-height: 1.9;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.remove-button {
+  width: 100%;
+  margin-top: 12px;
+  background: #b91c1c;
+}
+
+.notice {
+  color: #94a3b8;
+  font-size: 12px;
+  line-height: 1.7;
+  text-align: center;
+  margin: 20px 0;
 }
 
 footer {
   text-align: center;
-  padding: 25px 15px;
-  color: #8291a8;
+  padding: 25px;
+  border-top: 1px solid #263650;
+  color: #8190a8;
   font-size: 13px;
-  border-top: 1px solid #1d2940;
 }
 
-@media(max-width: 650px) {
-  header {
-    padding: 0 5%;
-  }
-
-  nav a {
-    margin-left: 10px;
-    font-size: 12px;
-  }
-
-  .platforms {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .checker {
-    padding: 22px 17px;
+@media(max-width: 550px) {
+  .card {
+    padding: 18px;
   }
 }
 </style>
@@ -252,101 +210,82 @@ footer {
 
 <header>
   <div class="logo">MEDIAX</div>
-
-  <nav>
-    <a href="#home">Home</a>
-    <a href="#platforms">Platforms</a>
-    <a href="#about">About</a>
-  </nav>
+  <span>● Media Hub</span>
 </header>
 
-<section class="hero" id="home">
-  <div class="badge">ALL-IN-ONE MEDIA HUB</div>
-
-  <h1>Everything Media.<br>
-    <span>One Platform.</span>
-  </h1>
-
-  <p>
-    Welcome to MEDIAX. Check supported media links
-    through one simple and easy-to-use platform.
-  </p>
+<section class="hero">
+  <h1>Media <span>Tools</span></h1>
+  <p>Check supported links and preview your own media files.</p>
 </section>
 
 <main class="container">
 
-  <h2 class="section-title" id="platforms">
-    Supported <span>Platforms</span>
-  </h2>
-
-  <div class="platforms">
-
-    <div class="platform">
-      <div class="icon">📸</div>
-      <h3>Instagram</h3>
-      <p>Link checking</p>
-    </div>
-
-    <div class="platform">
-      <div class="icon">📘</div>
-      <h3>Facebook</h3>
-      <p>Link checking</p>
-    </div>
-
-    <div class="platform">
-      <div class="icon">▶️</div>
-      <h3>YouTube</h3>
-      <p>Link checking</p>
-    </div>
-
-    <div class="platform">
-      <div class="icon">💬</div>
-      <h3>WhatsApp</h3>
-      <p>Link checking</p>
-    </div>
-
-  </div>
-
-  <section class="checker">
-
-    <h2>Media Link Checker</h2>
-
+  <section class="card">
+    <h2>🔗 Media Link Checker</h2>
     <p class="subtitle">
-      Paste your supported HTTPS link below.
+      Paste a supported HTTPS link to identify its platform.
     </p>
-
-    <label for="mediaURL">Your Media Link</label>
 
     <input
       type="url"
       id="mediaURL"
-      placeholder="Paste your link here..."
+      placeholder="Paste your media link here..."
     >
 
-    <button id="checkButton" onclick="detectMedia()">
-      Check My Link →
+    <button class="primary" id="checkButton" onclick="detectMedia()">
+      Check Link
     </button>
 
-    <div id="result" role="status" aria-live="polite"></div>
+    <div id="linkResult" role="status" aria-live="polite"></div>
+  </section>
 
+  <section class="card">
+    <h2>📁 Upload Your Media</h2>
+
+    <p class="subtitle">
+      Select an image or video stored on your phone.
+    </p>
+
+    <div class="upload-area">
+      <div style="font-size:40px">📷</div>
+
+      <h3>Select Your File</h3>
+
+      <p>Supported formats: JPG, PNG, GIF, WEBP, MP4, WEBM</p>
+
+      <label for="mediaFile" class="upload-button">
+        Choose Image or Video
+      </label>
+
+      <input
+        type="file"
+        id="mediaFile"
+        accept="image/jpeg,image/png,image/gif,image/webp,video/mp4,video/webm"
+      >
+    </div>
+
+    <div id="preview">
+      <h3>Media Preview</h3>
+
+      <div id="previewContent"></div>
+
+      <div class="file-info" id="fileInfo"></div>
+
+      <button class="remove-button" onclick="removeMedia()">
+        Remove File
+      </button>
+    </div>
+
+    <p class="notice">
+      Your selected file is previewed inside your browser.
+      This version does not upload or store your file on a server.
+    </p>
   </section>
 
 </main>
 
-<section class="about" id="about">
-  <h2>About MEDIAX</h2>
-
-  <p>
-    MEDIAX is an all-in-one media platform concept.
-    Our goal is to make media-related tools simple,
-    accessible and easy to use.
-  </p>
-</section>
-
 <footer>
   © 2026 MEDIAX. All Rights Reserved.
-  <br><br>
-  Use only media you own or have permission to use.
 </footer>
 
 <script>
@@ -355,9 +294,8 @@ const API_URL = RENDER_BASE_URL + "/api/check";
 
 async function detectMedia() {
   const input = document.getElementById("mediaURL");
-  const result = document.getElementById("result");
+  const result = document.getElementById("linkResult");
   const button = document.getElementById("checkButton");
-
   const value = input.value.trim();
 
   result.style.display = "block";
@@ -375,13 +313,13 @@ async function detectMedia() {
       return;
     }
   } catch {
-    result.textContent = "Invalid link. Please check your URL.";
+    result.textContent = "Invalid URL.";
     return;
   }
 
   button.disabled = true;
   button.textContent = "Checking...";
-  result.textContent = "Please wait. Checking your link...";
+  result.textContent = "Connecting to MEDIAX...";
 
   try {
     const response = await fetch(API_URL, {
@@ -396,7 +334,7 @@ async function detectMedia() {
 
     if (!response.ok || !data.success) {
       result.textContent =
-        data.message || "Unable to verify this link.";
+        data.message || "Unable to verify link.";
       return;
     }
 
@@ -406,20 +344,130 @@ async function detectMedia() {
     heading.textContent = "✅ Platform detected: " + data.platform;
 
     const message = document.createElement("p");
-    message.textContent = "Your link was checked successfully.";
+    message.textContent = "Link checked successfully.";
 
-    const notice = document.createElement("p");
-    notice.textContent = "Actual media processing is not connected yet.";
+    result.append(heading, message);
 
-    result.append(heading, message, notice);
-
-  } catch (error) {
-    result.textContent =
-      "Unable to connect to MEDIAX server. Please try again.";
+  } catch {
+    result.textContent = "Unable to connect to MEDIAX server.";
   } finally {
     button.disabled = false;
-    button.textContent = "Check My Link →";
+    button.textContent = "Check Link";
   }
+}
+
+let currentObjectURL = null;
+
+const mediaInput = document.getElementById("mediaFile");
+
+mediaInput.addEventListener("change", function() {
+  const file = this.files[0];
+
+  if (!file) return;
+
+  const allowedTypes = [
+    "image/jpeg",
+    "image/png",
+    "image/gif",
+    "image/webp",
+    "video/mp4",
+    "video/webm"
+  ];
+
+  if (!allowedTypes.includes(file.type)) {
+    alert("This file format is not supported.");
+    this.value = "";
+    return;
+  }
+
+  if (file.size > 50 * 1024 * 1024) {
+    alert("File size must be 50 MB or less.");
+    this.value = "";
+    return;
+  }
+
+  removeMedia();
+
+  currentObjectURL = URL.createObjectURL(file);
+
+  const preview = document.getElementById("preview");
+  const content = document.getElementById("previewContent");
+  const info = document.getElementById("fileInfo");
+
+  preview.style.display = "block";
+  content.replaceChildren();
+
+  const isImage = file.type.startsWith("image/");
+
+  if (isImage) {
+    const image = document.createElement("img");
+    image.src = currentObjectURL;
+    image.alt = "Selected image preview";
+
+    image.onload = function() {
+      info.textContent =
+        "File name: " + file.name +
+        "\nFile type: " + file.type +
+        "\nFile size: " + formatSize(file.size) +
+        "\nImage dimensions: " +
+        image.naturalWidth + " × " + image.naturalHeight;
+    };
+
+    content.appendChild(image);
+
+  } else {
+    const video = document.createElement("video");
+    video.src = currentObjectURL;
+    video.controls = true;
+    video.playsInline = true;
+
+    video.onloadedmetadata = function() {
+      info.textContent =
+        "File name: " + file.name +
+        "\nFile type: " + file.type +
+        "\nFile size: " + formatSize(file.size) +
+        "\nVideo duration: " + formatDuration(video.duration) +
+        "\nVideo dimensions: " +
+        video.videoWidth + " × " + video.videoHeight;
+    };
+
+    content.appendChild(video);
+  }
+
+  if (isImage) {
+    info.textContent =
+      "File name: " + file.name +
+      "\nFile type: " + file.type +
+      "\nFile size: " + formatSize(file.size) +
+      "\nLoading image dimensions...";
+  }
+});
+
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + " Bytes";
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + " KB";
+  return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+}
+
+function formatDuration(seconds) {
+  if (!Number.isFinite(seconds)) return "Unknown";
+
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+
+  return minutes + " min " + remainingSeconds + " sec";
+}
+
+function removeMedia() {
+  if (currentObjectURL) {
+    URL.revokeObjectURL(currentObjectURL);
+    currentObjectURL = null;
+  }
+
+  document.getElementById("preview").style.display = "none";
+  document.getElementById("previewContent").replaceChildren();
+  document.getElementById("fileInfo").textContent = "";
+  document.getElementById("mediaFile").value = "";
 }
 </script>
 
