@@ -8,9 +8,7 @@ const app = express();
 app.use(helmet());
 
 app.use(cors({
-  origin: [
-    "https://cjaydipsinh907-commits.github.io"
-  ],
+  origin: "https://cjaydipsinh907-commits.github.io",
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type"]
 }));
@@ -61,7 +59,12 @@ app.post("/api/check", (req, res) => {
   }
 
   const host = parsed.hostname.toLowerCase();
+  const path = parsed.pathname.toLowerCase();
+
+  const extension = path.match(/\.(mp4|webm|mov|m4v|jpg|jpeg|png|gif|webp)$/);
+
   let platform = null;
+  let mediaType = null;
 
   if (
     host === "instagram.com" ||
@@ -86,19 +89,24 @@ app.post("/api/check", (req, res) => {
     host === "wa.me"
   ) {
     platform = "WhatsApp";
-  }
-
-  if (!platform) {
+  } else if (extension) {
+    platform = "Other Websites";
+    const ext = extension[1];
+    mediaType = ["jpg", "jpeg", "png", "gif", "webp"].includes(ext)
+      ? "Image"
+      : "Video";
+  } else {
     return res.status(400).json({
       success: false,
-      message: "Unsupported platform."
+      message: "Unsupported link. Direct media-file links are currently supported for other websites."
     });
   }
 
-  res.json({
+  return res.json({
     success: true,
     platform,
-    message: "Platform detected successfully.",
+    mediaType,
+    message: "Link checked successfully.",
     downloadAvailable: false
   });
 });
