@@ -4,7 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MEDIAX - Contact</title>
+
 <style>
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: Arial, sans-serif;
   background: #10101a;
@@ -14,22 +19,56 @@ body {
   max-width: 850px;
   margin: auto;
 }
-h1 { color: #a78bfa; }
-a { color: #a78bfa; }
+
+h1 {
+  color: #a78bfa;
+}
+
+a {
+  color: #a78bfa;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.contact-box {
+  background: #1c1c2b;
+  padding: 22px;
+  border-radius: 12px;
+  margin: 25px 0;
+  overflow-wrap: anywhere;
+}
+
+.email {
+  font-weight: bold;
+  font-size: 17px;
+}
 </style>
 </head>
+
 <body>
 
 <h1>Contact MEDIAX</h1>
 
 <p>Thank you for using MEDIAX.</p>
 
-<p>For questions, feedback or reporting a website issue,
-please contact the MEDIAX team.</p>
+<p>
+For questions, feedback, or reporting a website issue,
+please contact the MEDIAX team.
+</p>
 
-<p>Contact email: [chauhanbipinsinh038@gmail.com]</p>
+<div class="contact-box">
+  <p>Contact email:</p>
 
-<a href="index.html">Back to MEDIAX</a>
+  <a class="email"
+     href="mailto:chauhanbipinsinh038@gmail.com">
+    chauhanbipinsinh038@gmail.com
+  </a>
+</div>
+
+<a href="index.html">← Back to MEDIAX</a>
 
 </body>
 </html>
