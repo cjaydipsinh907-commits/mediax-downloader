@@ -1,793 +1,568 @@
 <!DOCTYPE html><html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0b1020">
-<title>MEDIAX - All-in-One Media Platform</title><style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10101c">
+  <title>MEDIAX - All-in-One Media Saver</title>  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-body {
-  font-family: Arial, sans-serif;
-  background: #0b1020;
-  color: white;
-}
+    body {
+      font-family: Arial, sans-serif;
+      background: #10101c;
+      color: #fff;
+      min-height: 100vh;
+    }
 
-header {
-  background: #111a30;
-  padding: 20px;
-  text-align: center;
-  border-bottom: 1px solid #26334e;
-}
+    header {
+      padding: 22px 16px;
+      text-align: center;
+      border-bottom: 1px solid #292940;
+    }
 
-.logo {
-  font-size: 30px;
-  font-weight: 900;
-  color: #62b5ff;
-  letter-spacing: 2px;
-}
+    .logo {
+      font-size: 30px;
+      font-weight: 800;
+      color: #8b7cff;
+      letter-spacing: 2px;
+    }
 
-.tagline {
-  color: #aebbd0;
-  font-size: 13px;
-  margin-top: 6px;
-}
+    header p {
+      color: #aaa;
+      margin-top: 7px;
+      font-size: 13px;
+    }
 
-.container {
-  max-width: 850px;
-  margin: auto;
-  padding: 22px 16px;
-}
+    main {
+      width: 92%;
+      max-width: 650px;
+      margin: 30px auto;
+    }
 
-.hero {
-  text-align: center;
-  padding: 25px 5px;
-}
+    .hero {
+      text-align: center;
+      margin-bottom: 25px;
+    }
 
-.hero h1 {
-  font-size: 28px;
-  margin-bottom: 12px;
-}
+    .hero h1 {
+      font-size: 27px;
+      margin-bottom: 10px;
+    }
 
-.hero p {
-  color: #b8c4d9;
-  line-height: 1.6;
-}
+    .hero p {
+      color: #aaa;
+      line-height: 1.5;
+      font-size: 14px;
+    }
 
-.platforms {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  margin: 24px 0;
-}
+    .platforms {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 25px 0;
+    }
 
-.platform {
-  background: #151f36;
-  border: 1px solid #293954;
-  border-radius: 15px;
-  padding: 18px 8px;
-  text-align: center;
-}
+    .platform {
+      background: #1c1c2e;
+      border: 1px solid #303047;
+      border-radius: 12px;
+      padding: 15px 5px;
+      text-align: center;
+      font-size: 12px;
+      color: #ddd;
+    }
 
-.platform-icon {
-  font-size: 32px;
-  margin-bottom: 9px;
-}
+    .platform span {
+      display: block;
+      font-size: 23px;
+      margin-bottom: 7px;
+    }
 
-.platform h3 {
-  font-size: 15px;
-  margin-bottom: 5px;
-}
+    .card {
+      background: #1b1b2b;
+      border: 1px solid #303047;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
 
-.platform p {
-  font-size: 12px;
-  color: #aebbd0;
-}
+    .card h2 {
+      font-size: 19px;
+      margin-bottom: 15px;
+    }
 
-.box, .media-section, .history-section {
-  background: #151f36;
-  border: 1px solid #293954;
-  border-radius: 16px;
-  padding: 22px;
-  margin-top: 20px;
-}
+    input {
+      width: 100%;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #44445c;
+      outline: none;
+      background: #10101c;
+      color: white;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
 
-.box h2, .media-section h2, .history-section h2 {
-  font-size: 21px;
-  margin-bottom: 10px;
-}
+    input:focus {
+      border-color: #8b7cff;
+    }
 
-.box p {
-  color: #b8c4d9;
-  line-height: 1.5;
-  font-size: 14px;
-}
+    button {
+      width: 100%;
+      padding: 14px;
+      background: #7563f6;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-label {
-  display: block;
-  margin: 18px 0 8px;
-  font-size: 14px;
-}
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
 
-input {
-  width: 100%;
-  padding: 15px;
-  border-radius: 10px;
-  border: 1px solid #40516f;
-  background: #0b1020;
-  color: white;
-  font-size: 15px;
-}
+    .status {
+      display: none;
+      margin-top: 15px;
+      padding: 13px;
+      border-radius: 9px;
+      background: #292940;
+      color: #ddd;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+      font-size: 14px;
+    }
 
-button {
-  width: 100%;
-  padding: 15px;
-  margin-top: 14px;
-  background: #1688ff;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-}
+    .media-preview {
+      width: 100%;
+      max-height: 350px;
+      margin-top: 15px;
+      border-radius: 10px;
+      background: #080810;
+    }
 
-button:disabled {
-  opacity: .6;
-  cursor: wait;
-}
+    .action-link {
+      display: block;
+      text-align: center;
+      padding: 13px;
+      border-radius: 9px;
+      margin-top: 12px;
+      text-decoration: none;
+      font-weight: bold;
+      background: #7563f6;
+      color: white;
+    }
 
-.secondary-button {
-  background: #263b5d;
-}
+    .source-link {
+      background: #303047;
+    }
 
-.clear-button {
-  background: #a93649;
-}
+    .note {
+      font-size: 12px;
+      color: #aaa;
+      line-height: 1.5;
+      margin-top: 15px;
+    }
 
-#result {
-  margin-top: 16px;
-  font-size: 14px;
-  line-height: 1.6;
-  overflow-wrap: anywhere;
-}
+    .history-item {
+      background: #10101c;
+      padding: 12px;
+      border-radius: 9px;
+      margin-top: 10px;
+      font-size: 13px;
+      overflow-wrap: anywhere;
+      color: #ccc;
+    }
 
-.loader {
-  display: none;
-  align-items: center;
-  gap: 10px;
-  margin-top: 16px;
-  color: #75bcff;
-  font-size: 14px;
-}
+    .clear-button {
+      margin-top: 12px;
+      background: #3b3047;
+    }
 
-.spinner {
-  width: 19px;
-  height: 19px;
-  border: 3px solid #344765;
-  border-top-color: #62b5ff;
-  border-radius: 50%;
-  animation: spin .8s linear infinite;
-}
+    footer {
+      text-align: center;
+      padding: 25px 12px;
+      color: #888;
+      font-size: 12px;
+      border-top: 1px solid #292940;
+      margin-top: 35px;
+    }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+    @media (max-width: 400px) {
+      .platforms {
+        grid-template-columns: repeat(2, 1fr);
+      }
 
-.media-section {
-  display: none;
-}
-
-.media-preview {
-  width: 100%;
-  max-height: 450px;
-  background: black;
-  border-radius: 12px;
-  display: block;
-  object-fit: contain;
-  margin-top: 15px;
-}
-
-.download-button, .source-button {
-  display: block;
-  width: 100%;
-  padding: 15px;
-  margin-top: 14px;
-  color: white;
-  border-radius: 10px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.download-button {
-  background: #16a36a;
-}
-
-.source-button {
-  background: #263b5d;
-  font-size: 14px;
-}
-
-.note, .info {
-  margin-top: 16px;
-  color: #aebbd0;
-  font-size: 12px;
-  line-height: 1.7;
-}
-
-.info {
-  text-align: center;
-  margin-top: 22px;
-}
-
-.history-item {
-  background: #0b1020;
-  border: 1px solid #293954;
-  border-radius: 10px;
-  padding: 13px;
-  margin-top: 12px;
-  overflow-wrap: anywhere;
-}
-
-.history-item p {
-  color: #b8c4d9;
-  font-size: 12px;
-  line-height: 1.6;
-  margin-top: 5px;
-}
-
-.history-item button {
-  padding: 10px;
-  font-size: 13px;
-}
-
-.empty-history {
-  color: #aebbd0;
-  font-size: 13px;
-  margin-top: 15px;
-}
-
-footer {
-  margin-top: 35px;
-  padding: 25px;
-  background: #111a30;
-  text-align: center;
-  color: #aebbd0;
-  font-size: 12px;
-}
-
-@media(max-width:420px) {
-  .hero h1 {
-    font-size: 24px;
-  }
-
-  .box, .media-section, .history-section {
-    padding: 17px;
-  }
-}
-</style></head><body><header>
+      .hero h1 {
+        font-size: 23px;
+      }
+    }
+  </style></head><body><header>
   <div class="logo">MEDIAX</div>
-  <div class="tagline">Your All-in-One Media Platform</div>
-</header><main class="container"><section class="hero">
-  <h1>Welcome to MEDIAX</h1>
-  <p>Check supported media links and preview permitted direct image and video files.</p>
-</section><section class="platforms">  <div class="platform">
-    <div class="platform-icon">📸</div>
-    <h3>Instagram</h3>
-    <p>Reels & Posts</p>
-  </div>  <div class="platform">
-    <div class="platform-icon">📘</div>
-    <h3>Facebook</h3>
-    <p>Reels & Posts</p>
-  </div>  <div class="platform">
-    <div class="platform-icon">🟢</div>
-    <h3>WhatsApp</h3>
-    <p>Shared Media Links</p>
-  </div>  <div class="platform">
-    <div class="platform-icon">▶️</div>
-    <h3>YouTube</h3>
-    <p>Permitted media access</p>
-  </div>  <div class="platform">
-    <div class="platform-icon">🌐</div>
-    <h3>Browser</h3>
-    <p>Direct media links</p>
-  </div>  <div class="platform">
-    <div class="platform-icon">🔗</div>
-    <h3>Other Websites</h3>
-    <p>Supported media files</p>
-  </div></section><section class="box">  <h2>Check Your Link</h2>
-  <p>Paste a supported direct image or video URL below.</p>  <form id="checkForm"><label for="mediaLink">Paste Media URL</label>
+  <p>All-in-One Media Link Checker</p>
+</header><main>  <section class="hero">
+    <h1>Media Link Checker</h1>
+    <p>Paste a media link below to identify its platform and check whether it can be previewed.</p>
+  </section>  <section class="platforms">
+    <div class="platform"><span>▶️</span>YouTube</div>
+    <div class="platform"><span>📸</span>Instagram</div>
+    <div class="platform"><span>📘</span>Facebook</div>
+    <div class="platform"><span>💬</span>WhatsApp</div>
+  </section>  <section class="card">
+    <h2>Check Your Link</h2><form id="checkForm">
+  <input
+    type="url"
+    id="mediaLink"
+    placeholder="Paste your media link here..."
+    required
+  >
 
-<input
-  type="url"
-  id="mediaLink"
-  placeholder="https://example.com/video.mp4"
-  maxlength="2048"
-  required
->
+  <button type="submit" id="checkButton">
+    Check Link
+  </button>
+</form>
 
-<button id="checkButton" type="submit">
-  Check Link
-</button>
+<div class="status" id="statusBox" role="status" aria-live="polite"></div>
 
-  </form>  <div class="loader" id="loader" aria-live="polite">
-    <span class="spinner"></span>
-    <span>Checking your link. Please wait...</span>
-  </div>  <div id="result" role="status" aria-live="polite"></div></section><section class="media-section" id="mediaSection">  <h2 id="previewTitle">Media Preview</h2><video
-id="videoPlayer"
-class="media-preview"
-controls
-playsinline
-style="display:none"
+  </section>  <section class="card" id="mediaSection" style="display:none"><h2 id="previewTitle">Media Preview</h2>
 
-«</video>»
+<video
+  id="videoPlayer"
+  class="media-preview"
+  controls
+  playsinline
+  style="display:none"
+></video>
 
 <img
-id="imagePlayer"
-class="media-preview"
-alt="Media preview"
-style="display:none"
-
-«»
+  id="imagePlayer"
+  class="media-preview"
+  alt="Media preview"
+  style="display:none"
+>
 
 <a
-id="downloadButton"
-class="download-button"
-href="#"
-download
-target="_blank"
-rel="noopener noreferrer"
+  id="downloadButton"
+  class="action-link"
+  href="#"
+  download
+  target="_blank"
+  rel="noopener noreferrer"
+  style="display:none"
+>Download Media</a>
 
-«»
+<a
+  id="sourceButton"
+  class="action-link source-link"
+  href="#"
+  target="_blank"
+  rel="noopener noreferrer"
+>Open Media Source</a>
 
-Download Media
+<p class="note">
+  Preview and downloading depend on source permissions, browser support and server configuration.
+</p>
 
-  </a><a
-id="sourceButton"
-class="source-button"
-href="#"
-target="_blank"
-rel="noopener noreferrer"
+  </section>  <section class="card">
+    <h2>Recent History</h2><div id="historyList">
+  <p class="note">Your checked links will appear here.</p>
+</div>
 
-«»
+<button
+  id="clearHistoryButton"
+  class="clear-button"
+  type="button"
+>
+  Clear History
+</button>
 
-Open Media Source
-
-  </a>  <p class="note">
-    Preview and downloading depend on source permissions, browser support and server configuration.
-  </p></section><section class="history-section">  <h2>Recent History</h2>  <p class="note">
-    Your recent checks are saved only in this browser on this device.
-  </p>  <div id="historyList"></div><button
-id="clearHistoryButton"
-class="clear-button"
-type="button"
-
-«»
-
-Clear History
-
-  </button></section><section class="info">
-  Only use media you own or have permission to access.
-  Platform restrictions and copyright rules apply.
-  MEDIAX is an independent project and is not affiliated
-  with Instagram, Facebook, WhatsApp or YouTube.
-</section></main><footer>
-  © 2026 MEDIAX. All rights reserved.
+  </section></main><footer>
+  MEDIAX © 2026 — Use only media you own or have permission to access.
 </footer><script>
-"use strict";
+  const API_URL = "https://mediax-api.onrender.com";
 
-const API_URL = "https://mediax-api.onrender.com";
-const HISTORY_KEY = "mediax_history_v1";
-const MAX_HISTORY = 20;
+  const form = document.getElementById("checkForm");
+  const mediaLink = document.getElementById("mediaLink");
+  const checkButton = document.getElementById("checkButton");
+  const statusBox = document.getElementById("statusBox");
 
-const form = document.getElementById("checkForm");
-const input = document.getElementById("mediaLink");
-const result = document.getElementById("result");
-const button = document.getElementById("checkButton");
-const loader = document.getElementById("loader");
+  const mediaSection = document.getElementById("mediaSection");
+  const videoPlayer = document.getElementById("videoPlayer");
+  const imagePlayer = document.getElementById("imagePlayer");
+  const downloadButton = document.getElementById("downloadButton");
+  const sourceButton = document.getElementById("sourceButton");
 
-const mediaSection = document.getElementById("mediaSection");
-const videoPlayer = document.getElementById("videoPlayer");
-const imagePlayer = document.getElementById("imagePlayer");
-const previewTitle = document.getElementById("previewTitle");
-const downloadButton = document.getElementById("downloadButton");
-const sourceButton = document.getElementById("sourceButton");
+  const historyList = document.getElementById("historyList");
+  const clearHistoryButton = document.getElementById("clearHistoryButton");
 
-const historyList = document.getElementById("historyList");
-const clearHistoryButton = document.getElementById("clearHistoryButton");
-
-function setMessage(message, color) {
-  result.textContent = message;
-  result.style.color = color;
-}
-
-function setLoading(isLoading) {
-  button.disabled = isLoading;
-  loader.style.display = isLoading ? "flex" : "none";
-  button.textContent = isLoading ? "Checking..." : "Check Link";
-}
-
-function clearMedia() {
-  videoPlayer.pause();
-  videoPlayer.removeAttribute("src");
-  videoPlayer.load();
-
-  imagePlayer.removeAttribute("src");
-
-  videoPlayer.style.display = "none";
-  imagePlayer.style.display = "none";
-
-  mediaSection.style.display = "none";
-
-  downloadButton.removeAttribute("href");
-  sourceButton.removeAttribute("href");
-}
-
-function getHistory() {
-  try {
-    const history = JSON.parse(
-      localStorage.getItem(HISTORY_KEY) || "[]"
-    );
-
-    return Array.isArray(history) ? history : [];
-
-  } catch {
-    return [];
+  function showStatus(message) {
+    statusBox.style.display = "block";
+    statusBox.textContent = message;
   }
-}
 
-function saveHistory(item) {
-  try {
+  function hidePreview() {
+    mediaSection.style.display = "none";
+
+    videoPlayer.pause();
+    videoPlayer.removeAttribute("src");
+    videoPlayer.load();
+
+    imagePlayer.removeAttribute("src");
+
+    videoPlayer.style.display = "none";
+    imagePlayer.style.display = "none";
+    downloadButton.style.display = "none";
+    sourceButton.style.display = "none";
+  }
+
+  function getPlatform(url) {
+    const host = new URL(url).hostname.toLowerCase();
+
+    if (host.includes("youtube.com") || host === "youtu.be") {
+      return "YouTube";
+    }
+
+    if (host.includes("instagram.com")) {
+      return "Instagram";
+    }
+
+    if (host.includes("facebook.com") || host === "fb.watch") {
+      return "Facebook";
+    }
+
+    if (host.includes("whatsapp.com") || host === "wa.me") {
+      return "WhatsApp";
+    }
+
+    return "Other";
+  }
+
+  function getHistory() {
+    try {
+      return JSON.parse(localStorage.getItem("mediaxHistory") || "[]");
+    } catch {
+      return [];
+    }
+  }
+
+  function saveHistory(url, platform) {
     const history = getHistory();
 
     history.unshift({
-      url: item.url,
-      platform: item.platform,
-      mediaType: item.mediaType || "Not available",
-      status: item.status,
+      url: url,
+      platform: platform,
       date: new Date().toLocaleString()
     });
 
     localStorage.setItem(
-      HISTORY_KEY,
-      JSON.stringify(history.slice(0, MAX_HISTORY))
+      "mediaxHistory",
+      JSON.stringify(history.slice(0, 10))
     );
 
-    renderHistory();
-
-  } catch {
-    // History saving is optional.
-  }
-}
-
-function renderHistory() {
-  const history = getHistory();
-
-  historyList.replaceChildren();
-
-  if (history.length === 0) {
-    const empty = document.createElement("p");
-    empty.className = "empty-history";
-    empty.textContent = "No recent checks yet.";
-    historyList.appendChild(empty);
-    return;
+    displayHistory();
   }
 
-  history.forEach((item) => {
+  function displayHistory() {
+    const history = getHistory();
+    historyList.replaceChildren();
 
-    const card = document.createElement("div");
-    card.className = "history-item";
+    if (history.length === 0) {
+      const message = document.createElement("p");
+      message.className = "note";
+      message.textContent = "Your checked links will appear here.";
+      historyList.appendChild(message);
+      return;
+    }
 
-    const title = document.createElement("strong");
-    title.textContent = item.platform || "Unknown platform";
+    history.forEach(item => {
+      const box = document.createElement("div");
+      box.className = "history-item";
 
-    const details = document.createElement("p");
+      const platform = document.createElement("strong");
+      platform.textContent = item.platform + " — ";
 
-    details.textContent =
-      "Type: " + (item.mediaType || "Unknown") +
-      " | Status: " + (item.status || "Checked") +
-      " | " + (item.date || "");
+      const link = document.createElement("div");
+      link.textContent = item.url;
 
-    const url = document.createElement("p");
-    url.textContent = item.url;
+      const date = document.createElement("small");
+      date.textContent = item.date;
 
-    const retry = document.createElement("button");
-    retry.type = "button";
-    retry.className = "secondary-button";
-    retry.textContent = "Check This Link Again";
-
-    retry.addEventListener("click", () => {
-      input.value = item.url;
-      form.requestSubmit();
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
+      box.append(platform, link, date);
+      historyList.appendChild(box);
     });
-
-    card.append(title, details, url, retry);
-    historyList.appendChild(card);
-  });
-}
-
-clearHistoryButton.addEventListener("click", () => {
-
-  const confirmed = confirm(
-    "Do you want to clear all MEDIAX history?"
-  );
-
-  if (!confirmed) return;
-
-  localStorage.removeItem(HISTORY_KEY);
-  renderHistory();
-
-  setMessage(
-    "History cleared successfully.",
-    "#6ee7a8"
-  );
-});
-
-function validateInput(value) {
-  let parsed;
-
-  try {
-    parsed = new URL(value);
-  } catch {
-    throw new Error("Please enter a valid URL.");
   }
 
-  if (parsed.protocol !== "https:") {
-    throw new Error("Only HTTPS links are supported.");
+  function showDirectMedia(url) {
+    const cleanUrl = url.split("?")[0].toLowerCase();
+
+    mediaSection.style.display = "block";
+
+    sourceButton.href = url;
+    sourceButton.style.display = "block";
+
+    if (/\.(mp4|webm|ogg|mov|m4v)$/.test(cleanUrl)) {
+      videoPlayer.src = url;
+      videoPlayer.style.display = "block";
+      downloadButton.href = url;
+      downloadButton.style.display = "block";
+      return true;
+    }
+
+    if (/\.(jpg|jpeg|png|gif|webp|avif)$/.test(cleanUrl)) {
+      imagePlayer.src = url;
+      imagePlayer.style.display = "block";
+      downloadButton.href = url;
+      downloadButton.style.display = "block";
+      return true;
+    }
+
+    if (/\.(mp3|wav|m4a|aac|flac|opus)$/.test(cleanUrl)) {
+      const audio = document.createElement("audio");
+      audio.controls = true;
+      audio.src = url;
+      audio.className = "media-preview";
+
+      mediaSection.insertBefore(audio, downloadButton);
+      downloadButton.href = url;
+      downloadButton.style.display = "block";
+      return true;
+    }
+
+    return false;
   }
 
-  return parsed;
-}
-
-async function postJSON(endpoint, data) {
-
-  const response = await fetch(
-    API_URL + endpoint,
-    {
+  async function postJSON(endpoint, data) {
+    const response = await fetch(API_URL + endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(data)
+    });
+
+    let result;
+
+    try {
+      result = await response.json();
+    } catch {
+      throw new Error("Backend returned an invalid response.");
     }
-  );
 
-  let responseData;
+    if (!response.ok) {
+      throw new Error(result.message || result.error || "Request failed.");
+    }
 
-  try {
-    responseData = await response.json();
-  } catch {
-    throw new Error(
-      "The server returned an invalid response."
-    );
+    return result;
   }
 
-  if (!response.ok || !responseData.success) {
-    throw new Error(
-      responseData.message ||
-      "The request could not be completed."
-    );
-  }
+  form.addEventListener("submit", async function(event) {
+    event.preventDefault();
 
-  return responseData;
-}
+    hidePreview();
 
-function showVideo(url) {
+    const url = mediaLink.value.trim();
 
-  previewTitle.textContent = "Video Preview";
-
-  imagePlayer.style.display = "none";
-  imagePlayer.removeAttribute("src");
-
-  videoPlayer.style.display = "block";
-  videoPlayer.src = url;
-  videoPlayer.load();
-
-  downloadButton.href = url;
-  downloadButton.download = "mediax-video";
-  downloadButton.textContent = "Download Video";
-
-  sourceButton.href = url;
-
-  mediaSection.style.display = "block";
-}
-
-function showImage(url) {
-
-  previewTitle.textContent = "Image Preview";
-
-  videoPlayer.pause();
-  videoPlayer.style.display = "none";
-  videoPlayer.removeAttribute("src");
-  videoPlayer.load();
-
-  imagePlayer.style.display = "block";
-  imagePlayer.src = url;
-
-  downloadButton.href = url;
-  downloadButton.download = "mediax-image";
-  downloadButton.textContent = "Download Image";
-
-  sourceButton.href = url;
-
-  mediaSection.style.display = "block";
-}
-
-videoPlayer.addEventListener("error", () => {
-  if (videoPlayer.style.display !== "none") {
-    setMessage(
-      "The video link was recognized, but the browser could not play it. Try opening the source link.",
-      "#ffd479"
-    );
-  }
-});
-
-imagePlayer.addEventListener("error", () => {
-  if (imagePlayer.style.display !== "none") {
-    setMessage(
-      "The image link was recognized, but the image could not be displayed. Check the source link.",
-      "#ffd479"
-    );
-  }
-});
-
-form.addEventListener("submit", async (event) => {
-
-  event.preventDefault();
-
-  clearMedia();
-
-  const mediaUrl = input.value.trim();
-
-  let parsedUrl;
-
-  try {
-    parsedUrl = validateInput(mediaUrl);
-  } catch (error) {
-    setMessage(error.message, "#ff9b9b");
-    return;
-  }
-
-  setLoading(true);
-
-  setMessage(
-    "Connecting to MEDIAX server...",
-    "#75bcff"
-  );
-
-  let platform = "Unknown";
-
-  try {
-
-    const data = await postJSON(
-      "/api/check",
-      {
-        url: parsedUrl.toString()
-      }
-    );
-
-    platform = String(
-      data.platform || "Other Website"
-    );
-
-    const normalizedPlatform = platform.toLowerCase();
-
-    if (
-      normalizedPlatform.includes("youtube") ||
-      normalizedPlatform.includes("instagram") ||
-      normalizedPlatform.includes("facebook") ||
-      normalizedPlatform.includes("whatsapp")
-    ) {
-
-      setMessage(
-        "Platform detected: " + platform +
-        ". Use the platform's permitted viewing or export options.",
-        "#ffd479"
-      );
-
-      saveHistory({
-        url: parsedUrl.toString(),
-        platform,
-        mediaType: "Platform link",
-        status: "Detected"
-      });
-
+    if (!url) {
+      showStatus("Please paste a link first.");
       return;
     }
 
-    setMessage(
-      "Platform detected: " + platform +
-      ". Checking media file...",
-      "#75bcff"
-    );
+    let parsedUrl;
 
-    const media = await postJSON(
-      "/api/media/inspect",
-      {
-        url: parsedUrl.toString()
+    try {
+      parsedUrl = new URL(url);
+
+      if (parsedUrl.protocol !== "https:") {
+        showStatus("Please enter a valid HTTPS link.");
+        return;
       }
-    );
+    } catch {
+      showStatus("Please enter a valid link.");
+      return;
+    }
 
-    const mediaType = String(
-      media.mediaType || ""
-    ).toLowerCase();
+    checkButton.disabled = true;
+    checkButton.textContent = "Checking...";
+    showStatus("Please wait. Checking your link...");
 
-    const previewUrl = media.previewUrl;
+    try {
+      const platform = getPlatform(url);
 
-    if (!previewUrl) {
-      throw new Error(
-        "The server did not provide a preview link."
+      const checkResult = await postJSON("/api/check", {
+        url: url
+      });
+
+      const detectedPlatform =
+        checkResult.platform || checkResult.detectedPlatform || platform;
+
+      saveHistory(url, detectedPlatform);
+
+      if (["YouTube", "Instagram", "Facebook", "WhatsApp"].includes(platform)) {
+        showStatus(
+          "Platform detected: " + platform +
+          " ✅\n\nThis platform may restrict direct downloads. Use its official download or export options for permitted content."
+        );
+
+        return;
+      }
+
+      const inspectResult = await postJSON("/api/media/inspect", {
+        url: url
+      });
+
+      const message =
+        inspectResult.message ||
+        inspectResult.type ||
+        inspectResult.mediaType ||
+        "Link checked successfully.";
+
+      const previewAvailable = showDirectMedia(url);
+
+      if (previewAvailable) {
+        showStatus(
+          "Platform detected: " + detectedPlatform +
+          " ✅\n" + message +
+          "\n\nPreview is ready if the source allows access."
+        );
+      } else {
+        showStatus(
+          "Platform detected: " + detectedPlatform +
+          " ✅\n" + message +
+          "\n\nThis link was checked, but its media type is not supported for preview."
+        );
+      }
+
+    } catch (error) {
+      showStatus(
+        "Could not check this link.\n\n" +
+        (error.message || "Please try again later.") +
+        "\n\nIf the backend is waking up, wait a little and try again."
       );
+    } finally {
+      checkButton.disabled = false;
+      checkButton.textContent = "Check Link";
     }
+  });
 
-    if (mediaType === "video") {
-      showVideo(previewUrl);
+  clearHistoryButton.addEventListener("click", function() {
+    localStorage.removeItem("mediaxHistory");
+    displayHistory();
+  });
 
-    } else if (mediaType === "image") {
-      showImage(previewUrl);
+  videoPlayer.addEventListener("error", function() {
+    showStatus("The video preview could not load. The source may block browser playback.");
+  });
 
-    } else {
-      throw new Error(
-        "This media format is not supported."
-      );
-    }
+  imagePlayer.addEventListener("error", function() {
+    showStatus("The image preview could not load. The source may block access.");
+  });
 
-    setMessage(
-      "Supported " + mediaType +
-      " link found! Preview is ready.",
-      "#6ee7a8"
-    );
-
-    saveHistory({
-      url: parsedUrl.toString(),
-      platform,
-      mediaType,
-      status: "Preview ready"
-    });
-
-    mediaSection.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-
-  } catch (error) {
-
-    let message =
-      error.message || "Unable to check this link.";
-
-    if (
-      error instanceof TypeError &&
-      /fetch/i.test(message)
-    ) {
-      message =
-        "Unable to connect to the MEDIAX server. Please try again later.";
-    }
-
-    setMessage(message, "#ff9b9b");
-
-    saveHistory({
-      url: parsedUrl.toString(),
-      platform,
-      mediaType: "Not available",
-      status: "Failed"
-    });
-
-  } finally {
-    setLoading(false);
-  }
-});
-
-renderHistory();
-
+  displayHistory();
 </script></body>
-  </html>
+</html>
