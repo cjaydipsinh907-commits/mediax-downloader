@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cjaydipsinh907-commits.github.io/mediax-downloader/sitemap.xml
