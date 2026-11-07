@@ -1,3 +1,5 @@
+"use strict";
+
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
@@ -6,31 +8,37 @@ const net = require("node:net");
 
 const app = express();
 
-// Render runs behind a reverse proxy.
-// Trust only the nearest proxy hop.
+app.disable("x-powered-by");
 app.set("trust proxy", 1);
 
 // Security headers
 app.use(helmet());
 
-// Disable framework identification
-app.disable("x-powered-by");
+// CORS
+const allowedOrigins = [
+  "https://cjaydipsinh907-commits.github.io"
+];
 
-// CORS configuration
 app.use(cors({
-  origin: "https://cjaydipsinh907-commits.github.io",
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error("Origin not allowed"));
+  },
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type"],
   maxAge: 600
 }));
 
-// Rate limiting
+// Rate limit API requests
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   limit: 60,
   standardHeaders: "draft-8",
   legacyHeaders: false,
-  handler: (req, res) => {
+  handler(req, res) {
     res.status(429).json({
       success: false,
       message: "Too many requests. Please try again later."
@@ -38,23 +46,22 @@ const apiLimiter = rateLimit({
   }
 });
 
-app.use(apiLimiter);
+app.use("/api", apiLimiter);
 
-// JSON request limit
+// JSON request size limit
 app.use(express.json({
-  limit: "10kb"
+  limit: "10kb",
+  strict: true
 }));
 
-// Homepage
+// Health check
 app.get("/", (req, res) => {
   res.json({
     name: "MEDIAX API",
-    status: "online",
-    message: "Backend is working!"
+    status: "online"
   });
 });
 
-// Health check
 app.get("/health", (req, res) => {
   res.json({
     success: true,
@@ -109,7 +116,7 @@ function validatePublicHttpsUrl(value) {
     return null;
   }
 
-  // Block all direct IP addresses
+  // Block direct IP addresses
   const ipHostname = hostname.replace(/^\[|\]$/g, "");
 
   if (net.isIP(ipHostname) !== 0) {
@@ -119,12 +126,12 @@ function validatePublicHttpsUrl(value) {
   return parsed;
 }
 
-// Match domain or subdomain
+// Match domain and subdomains
 function isHost(host, domain) {
   return host === domain || host.endsWith("." + domain);
 }
 
-// Detect platform
+// Platform detection
 function detectPlatform(parsed) {
   const host = parsed.hostname
     .toLowerCase()
@@ -133,7 +140,6 @@ function detectPlatform(parsed) {
 
   const path = parsed.pathname;
 
-  // YouTube
   if (
     isHost(host, "youtube.com") ||
     host === "youtu.be" ||
@@ -153,7 +159,6 @@ function detectPlatform(parsed) {
     };
   }
 
-  // Instagram
   if (
     isHost(host, "instagram.com") ||
     host === "instagr.am"
@@ -174,7 +179,6 @@ function detectPlatform(parsed) {
     };
   }
 
-  // Facebook
   if (
     isHost(host, "facebook.com") ||
     host === "fb.watch"
@@ -191,7 +195,6 @@ function detectPlatform(parsed) {
     };
   }
 
-  // WhatsApp
   if (
     isHost(host, "whatsapp.com") ||
     host === "wa.me"
@@ -208,7 +211,7 @@ function detectPlatform(parsed) {
   };
 }
 
-// Platform detection API
+// Platform check
 app.post("/api/check", (req, res) => {
   const parsed = validatePublicHttpsUrl(req.body?.url);
 
@@ -227,17 +230,17 @@ app.post("/api/check", (req, res) => {
     contentType: result.contentType,
     url: parsed.toString(),
     downloadAvailable: false,
-    message: result.platform + " link detected successfully."
+    message: "Platform detected successfully."
   });
 });
 
-// Supported direct media extensions
+// Supported media extensions
 const extensions = {
   image: [".jpg", ".jpeg", ".png", ".gif", ".webp"],
   video: [".mp4", ".webm", ".mov", ".m4v"]
 };
 
-// Extract safe media pathname
+// Decode media path safely
 function getMediaPath(parsed) {
   try {
     return decodeURIComponent(parsed.pathname).toLowerCase();
@@ -246,7 +249,7 @@ function getMediaPath(parsed) {
   }
 }
 
-// Direct media inspection API
+// Media inspection
 app.post("/api/media/inspect", (req, res) => {
   const parsed = validatePublicHttpsUrl(req.body?.url);
 
@@ -277,7 +280,7 @@ app.post("/api/media/inspect", (req, res) => {
   if (!imageMatch && !videoMatch) {
     return res.status(400).json({
       success: false,
-      message: "Unsupported media file. A direct media file link is required."
+      message: "Unsupported direct media file."
     });
   }
 
@@ -285,11 +288,11 @@ app.post("/api/media/inspect", (req, res) => {
     success: true,
     mediaType: imageMatch ? "image" : "video",
     previewUrl: parsed.toString(),
-    message: "Direct media link recognized. Preview depends on source permissions."
+    message: "Media link recognized. Source permissions apply."
   });
 });
 
-// Direct video link recognition API
+// Download recognition only
 app.post("/api/media/download-check", (req, res) => {
   const parsed = validatePublicHttpsUrl(req.body?.url);
 
@@ -325,7 +328,7 @@ app.post("/api/media/download-check", (req, res) => {
     mediaType: "video",
     downloadUrl: parsed.toString(),
     downloadAvailable: false,
-    message: "Direct video link recognized. Actual downloading depends on the source website."
+    message: "Video link recognized. Source permissions apply."
   });
 });
 
@@ -359,6 +362,13 @@ app.use((err, req, res, next) => {
     });
   }
 
+  if (err.message === "Origin not allowed") {
+    return res.status(403).json({
+      success: false,
+      message: "Request origin is not allowed."
+    });
+  }
+
   return res.status(500).json({
     success: false,
     message: "Something went wrong. Please try again later."
@@ -369,5 +379,5 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(`MEDIAX API running on port ${PORT}`);
+  console.log("MEDIAX API running on port " + PORT);
 });
