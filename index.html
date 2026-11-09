@@ -19,7 +19,7 @@
 * {box-sizing:border-box}
 body {
   margin:0;
-  font-family:Arial, sans-serif;
+  font-family:Arial,sans-serif;
   background:var(--bg);
   color:var(--text);
 }
@@ -37,10 +37,14 @@ header {
 }
 .logo span {color:#8b70ff}
 button {cursor:pointer}
+button:disabled {
+  opacity:.6;
+  cursor:wait;
+}
 .theme {
   background:var(--card2);
   border:1px solid var(--border);
-  color:white;
+  color:var(--text);
   border-radius:12px;
   padding:10px 14px;
 }
@@ -85,7 +89,7 @@ button {cursor:pointer}
   background:transparent;
   border:0;
   outline:0;
-  color:white;
+  color:var(--text);
   padding:13px;
   font-size:15px;
 }
@@ -163,7 +167,10 @@ button {cursor:pointer}
   object-fit:contain;
 }
 .result h2 {margin:0 0 5px}
-.result p {color:var(--muted);line-height:1.6}
+.result p {
+  color:var(--muted);
+  line-height:1.6;
+}
 .steps {
   display:grid;
   gap:12px;
@@ -191,13 +198,23 @@ button {cursor:pointer}
   color:#9dffbf;
   font-size:13px;
 }
+.backend-status {
+  padding:12px;
+  background:var(--card2);
+  border-radius:10px;
+  font-size:13px;
+  margin-top:15px;
+}
 .local-box {
   margin-top:20px;
   padding:18px;
   border:1px dashed #7865ca;
   border-radius:15px;
 }
-.local-box input {max-width:100%;margin-top:12px}
+.local-box input {
+  max-width:100%;
+  margin-top:12px;
+}
 footer {
   text-align:center;
   padding:35px 15px;
@@ -232,12 +249,16 @@ footer {
   </p>
 
   <div class="search-box">
-    <input id="mediaLink"
+    <input
+      id="mediaLink"
       type="url"
       placeholder="Paste Instagram, Facebook, YouTube link..."
-      aria-label="Paste media link">
+      aria-label="Paste media link"
+    >
 
-    <button onclick="detectPlatform()">Check Link →</button>
+    <button id="checkButton" onclick="detectPlatform()">
+      Check Link →
+    </button>
   </div>
 
   <div class="note">
@@ -293,6 +314,7 @@ footer {
 
     <div class="result-head">
       <img id="platformLogo" src="" alt="Detected platform logo">
+
       <div>
         <h2 id="platformName">Platform</h2>
         <div class="status">✓ Platform detected</div>
@@ -300,6 +322,13 @@ footer {
     </div>
 
     <p id="platformDescription"></p>
+
+    <div
+      class="backend-status"
+      id="backendStatus"
+      role="status"
+      aria-live="polite"
+    ></div>
 
     <h3>How to save your content</h3>
 
@@ -322,6 +351,8 @@ footer {
 </footer>
 
 <script>
+const MEDIAX_API = "https://mediax-downloader-syst.onrender.com";
+
 const platforms = {
   instagram: {
     name:"Instagram",
@@ -397,9 +428,35 @@ const platforms = {
   }
 };
 
-function detectPlatform() {
+/* Connect frontend to Render backend */
+async function checkMediaLink(url) {
+  const response = await fetch(`${MEDIAX_API}/api/check`, {
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body:JSON.stringify({url})
+  });
+
+  let data;
+
+  try {
+    data = await response.json();
+  } catch {
+    throw new Error("Backend returned an invalid response.");
+  }
+
+  if (!response.ok || !data.success) {
+    throw new Error(data.message || "Backend request failed.");
+  }
+
+  return data;
+}
+
+/* Detect platform and check backend */
+async function detectPlatform() {
   const input = document.getElementById("mediaLink").value.trim();
-  const result = document.getElementById("result");
+  const button = document.getElementById("checkButton");
 
   if (!input) {
     alert("Please paste a link first.");
@@ -415,8 +472,8 @@ function detectPlatform() {
     return;
   }
 
-  if (url.protocol !== "https:" && url.protocol !== "http:") {
-    alert("Please enter a valid web link.");
+  if (url.protocol !== "https:") {
+    alert("Please enter a secure HTTPS link.");
     return;
   }
 
@@ -424,35 +481,78 @@ function detectPlatform() {
 
   let key = "";
 
-  if (host === "instagram.com" || host.endsWith(".instagram.com")) {
+  if (
+    host === "instagram.com" ||
+    host.endsWith(".instagram.com")
+  ) {
     key = "instagram";
-  } else if (host === "facebook.com" || host.endsWith(".facebook.com") ||
-             host === "fb.watch") {
+
+  } else if (
+    host === "facebook.com" ||
+    host.endsWith(".facebook.com") ||
+    host === "fb.watch"
+  ) {
     key = "facebook";
-  } else if (host === "youtube.com" || host.endsWith(".youtube.com") ||
-             host === "youtu.be") {
+
+  } else if (
+    host === "youtube.com" ||
+    host.endsWith(".youtube.com") ||
+    host === "youtu.be"
+  ) {
     key = "youtube";
-  } else if (host === "whatsapp.com" || host.endsWith(".whatsapp.com") ||
-             host === "wa.me") {
+
+  } else if (
+    host === "whatsapp.com" ||
+    host.endsWith(".whatsapp.com") ||
+    host === "wa.me"
+  ) {
     key = "whatsapp";
-  } else if (host === "google.com" || host.endsWith(".google.com")) {
+
+  } else if (
+    host === "google.com" ||
+    host.endsWith(".google.com") ||
+    host === "google.co.in" ||
+    host === "google.co.uk"
+  ) {
     key = "google";
-  } else if (host === "google.co.in" || host === "google.co.uk") {
-    key = "google";
+
   } else if (host === "googlechrome.com") {
     key = "chrome";
+
   } else {
     alert("This platform is not recognized yet.");
     return;
   }
 
-  showResult(platforms[key]);
+  button.disabled = true;
+  button.textContent = "Checking...";
+
+  try {
+    const backendResult = await checkMediaLink(input);
+
+    showResult(platforms[key], backendResult);
+
+  } catch (error) {
+    alert("Backend connection error: " + error.message);
+
+  } finally {
+    button.disabled = false;
+    button.textContent = "Check Link →";
+  }
 }
 
-function showResult(data) {
+/* Display result */
+function showResult(data, backendData) {
   document.getElementById("platformLogo").src = data.logo;
   document.getElementById("platformName").textContent = data.name;
-  document.getElementById("platformDescription").textContent = data.description;
+  document.getElementById("platformDescription").textContent =
+    data.description;
+
+  document.getElementById("backendStatus").textContent =
+    "✓ Backend connected: " +
+    backendData.message +
+    " " +
+    (backendData.note || "");
 
   const steps = document.getElementById("steps");
   steps.innerHTML = "";
@@ -476,14 +576,17 @@ function showResult(data) {
     data.local ? "block" : "none";
 
   document.getElementById("result").style.display = "block";
+
   document.getElementById("result").scrollIntoView({
     behavior:"smooth",
     block:"start"
   });
 }
 
+/* Theme switch */
 function toggleTheme() {
-  const dark = getComputedStyle(document.body)
+  const dark =
+    getComputedStyle(document.body)
     .getPropertyValue("--bg").trim() === "#080b14";
 
   if (dark) {
@@ -503,4 +606,4 @@ function toggleTheme() {
 </script>
 
 </body>
-    </html>
+</html>
