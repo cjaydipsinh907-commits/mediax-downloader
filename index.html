@@ -9,12 +9,11 @@
 <style>
 :root {
   --bg:#f5f7ff;
-  --card:#ffffff;
+  --card:#fff;
   --card2:#f0f2fa;
   --text:#172033;
   --muted:#64748b;
   --border:rgba(20,30,60,.10);
-  --accent:#7455ff;
   --shadow:0 8px 30px rgba(30,40,80,.06);
 }
 
@@ -25,26 +24,21 @@
   --text:#f8fafc;
   --muted:#94a3b8;
   --border:rgba(255,255,255,.09);
-  --accent:#8b70ff;
   --shadow:0 8px 30px rgba(0,0,0,.2);
 }
 
-* {
-  box-sizing:border-box;
-}
+* { box-sizing:border-box; }
+
+html { scroll-behavior:smooth; }
 
 body {
   margin:0;
   font-family:Arial,sans-serif;
   background:var(--bg);
   color:var(--text);
-  transition:background .25s,color .25s;
 }
 
-button {
-  cursor:pointer;
-  font-family:inherit;
-}
+button { cursor:pointer; font-family:inherit; }
 
 button:disabled {
   opacity:.55;
@@ -56,8 +50,8 @@ header {
   align-items:center;
   justify-content:space-between;
   padding:18px 6%;
-  border-bottom:1px solid var(--border);
   background:var(--card);
+  border-bottom:1px solid var(--border);
 }
 
 .logo {
@@ -66,15 +60,7 @@ header {
   letter-spacing:2px;
 }
 
-.logo span {
-  color:#8065ff;
-}
-
-.header-right {
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
+.logo span { color:#8065ff; }
 
 .theme {
   background:var(--card2);
@@ -134,7 +120,6 @@ header {
   background:var(--card);
   border:1px solid var(--border);
   border-radius:17px;
-  box-shadow:var(--shadow);
 }
 
 .search-box input {
@@ -159,9 +144,6 @@ header {
 
 .download-area {
   margin-top:13px;
-  display:flex;
-  flex-direction:column;
-  gap:9px;
 }
 
 .download-btn {
@@ -173,12 +155,6 @@ header {
   color:white;
   font-size:15px;
   font-weight:bold;
-}
-
-.download-note {
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.5;
 }
 
 .note {
@@ -194,9 +170,44 @@ header {
 }
 
 .section-title {
-  font-size:24px;
-  margin-bottom:20px;
+  font-size:25px;
+  margin-bottom:12px;
 }
+
+.section-subtitle {
+  color:var(--muted);
+  line-height:1.6;
+  margin-bottom:24px;
+}
+
+/* HOW MEDIAX WORKS */
+
+.how-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+}
+
+.how-card {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:25px;
+  box-shadow:var(--shadow);
+}
+
+.how-icon {
+  font-size:35px;
+  margin-bottom:15px;
+}
+
+.how-card p {
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.7;
+}
+
+/* PLATFORMS */
 
 .platforms {
   display:grid;
@@ -212,6 +223,8 @@ header {
   border-radius:18px;
   transition:.2s;
   box-shadow:var(--shadow);
+  color:var(--text);
+  width:100%;
 }
 
 .platform:hover {
@@ -237,6 +250,90 @@ header {
   font-size:11px;
 }
 
+/* WHATSAPP SAVER */
+
+.whatsapp-section {
+  display:none;
+  margin-top:45px;
+  background:var(--card);
+  border:1px solid #8068ff;
+  border-radius:20px;
+  padding:25px;
+  box-shadow:var(--shadow);
+}
+
+.whatsapp-heading {
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.whatsapp-heading img {
+  width:48px;
+  height:48px;
+}
+
+.whatsapp-section p {
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.file-picker {
+  display:block;
+  width:100%;
+  padding:15px;
+  margin-top:18px;
+  background:var(--card2);
+  color:var(--text);
+  border:1px dashed #8068ff;
+  border-radius:12px;
+}
+
+.preview-area {
+  display:none;
+  margin-top:20px;
+  text-align:center;
+  background:var(--card2);
+  padding:15px;
+  border-radius:15px;
+}
+
+.preview-area img,
+.preview-area video {
+  display:block;
+  max-width:100%;
+  max-height:350px;
+  margin:0 auto;
+  border-radius:12px;
+}
+
+.file-name {
+  font-size:13px;
+  overflow-wrap:anywhere;
+}
+
+.local-download {
+  width:100%;
+  margin-top:15px;
+  padding:14px;
+  border:0;
+  border-radius:10px;
+  background:#16a36a;
+  color:white;
+  font-weight:bold;
+}
+
+.close-button {
+  margin-top:12px;
+  padding:11px 18px;
+  border:1px solid var(--border);
+  background:var(--card2);
+  color:var(--text);
+  border-radius:10px;
+}
+
+/* RESULT */
+
 .result {
   display:none;
   margin-top:30px;
@@ -244,24 +341,17 @@ header {
   background:var(--card);
   border:1px solid #8068ff;
   border-radius:20px;
-  box-shadow:var(--shadow);
 }
 
 .result-head {
   display:flex;
   align-items:center;
   gap:15px;
-  margin-bottom:18px;
 }
 
 .result-head img {
   width:48px;
   height:48px;
-  object-fit:contain;
-}
-
-.result h2 {
-  margin:0 0 5px;
 }
 
 .result p {
@@ -273,10 +363,6 @@ header {
   color:#16a36a;
   font-size:13px;
   font-weight:bold;
-}
-
-[data-theme="dark"] .status {
-  color:#9dffbf;
 }
 
 .backend-status {
@@ -316,29 +402,6 @@ header {
   font-weight:bold;
 }
 
-.local-box {
-  margin-top:20px;
-  padding:18px;
-  border:1px dashed #7865ca;
-  border-radius:15px;
-}
-
-.local-box input {
-  max-width:100%;
-  margin-top:12px;
-  color:var(--text);
-}
-
-.local-download {
-  margin-top:12px;
-  padding:12px 18px;
-  border:0;
-  border-radius:10px;
-  background:#16a36a;
-  color:white;
-  font-weight:bold;
-}
-
 footer {
   text-align:center;
   padding:35px 15px;
@@ -349,29 +412,12 @@ footer {
 }
 
 @media(max-width:550px) {
-  header {
-    padding:16px 5%;
-  }
-
-  .hero {
-    padding-top:45px;
-  }
-
-  .container {
-    width:92%;
-  }
-
-  .search-box {
-    flex-direction:column;
-  }
-
-  .search-box button {
-    padding:14px;
-  }
-
-  .result {
-    padding:18px;
-  }
+  header { padding:16px 5%; }
+  .hero { padding-top:45px; }
+  .container { width:92%; }
+  .search-box { flex-direction:column; }
+  .search-box button { padding:14px; }
+  .whatsapp-section { padding:18px; }
 }
 </style>
 </head>
@@ -379,25 +425,20 @@ footer {
 <body>
 
 <header>
-
   <div class="logo">MEDIA<span>X</span></div>
 
-  <div class="header-right">
-    <button class="theme" id="themeButton" onclick="toggleTheme()">
-      🌙 Dark Mode
-    </button>
-  </div>
-
+  <button class="theme" id="themeButton" onclick="toggleTheme()">
+    🌙 Dark Mode
+  </button>
 </header>
+
+<!-- HERO -->
 
 <section class="hero">
 
   <div class="badge">✦ ALL-IN-ONE MEDIA PLATFORM</div>
 
-  <h1>
-    Your Media.<br>
-    <span>Your Way.</span>
-  </h1>
+  <h1>Your Media.<br><span>Your Way.</span></h1>
 
   <p>
     Paste a media link, identify its platform<br>
@@ -412,7 +453,6 @@ footer {
         id="mediaLink"
         type="url"
         placeholder="Paste Instagram, Facebook, YouTube link..."
-        aria-label="Paste media link"
       >
 
       <button id="checkButton" onclick="detectPlatform()">
@@ -421,76 +461,172 @@ footer {
 
     </div>
 
-    <!-- DOWNLOAD OPTION -->
     <div class="download-area">
 
-      <button
-        class="download-btn"
-        id="downloadButton"
-        disabled
-        title="Download integration is not connected yet"
-      >
+      <button class="download-btn" id="downloadButton" disabled>
         ⬇ Download
       </button>
 
-      <div class="download-note">
-        Check your link first. Authorized downloading will be
-        enabled after the download service is integrated.
-      </div>
+      <p class="note">
+        Authorized downloading integrations are under development.
+      </p>
 
     </div>
 
   </div>
 
-  <div class="note">
+  <p class="note">
     Only use content you own or have permission to save.
-  </div>
+  </p>
 
 </section>
 
 <main class="container">
 
-  <h2 class="section-title">Supported Platforms</h2>
+  <!-- HOW MEDIAX WORKS -->
 
-  <div class="platforms">
+  <section>
 
-    <div class="platform">
-      <img src="https://cdn.simpleicons.org/instagram/E4405F" alt="Instagram">
-      <h3>Instagram</h3>
-      <p>Reels · Posts · Media</p>
+    <h2 class="section-title">How MediaX Works</h2>
+
+    <p class="section-subtitle">
+      Save your permitted media in a few simple steps.
+    </p>
+
+    <div class="how-grid">
+
+      <div class="how-card">
+        <div class="how-icon">🔗</div>
+        <h3>1. Paste Your Link</h3>
+        <p>Paste a supported media link into MEDIAX.</p>
+      </div>
+
+      <div class="how-card">
+        <div class="how-icon">🔍</div>
+        <h3>2. Identify Platform</h3>
+        <p>MEDIAX checks the link and identifies its platform.</p>
+      </div>
+
+      <div class="how-card">
+        <div class="how-icon">⬇️</div>
+        <h3>3. Save Your Media</h3>
+        <p>Use supported official saving options or select your own media.</p>
+      </div>
+
     </div>
 
-    <div class="platform">
-      <img src="https://cdn.simpleicons.org/facebook/1877F2" alt="Facebook">
-      <h3>Facebook</h3>
-      <p>Videos · Posts</p>
+  </section>
+
+  <!-- PLATFORMS -->
+
+  <section style="margin-top:55px">
+
+    <h2 class="section-title">Supported Platforms</h2>
+
+    <p class="section-subtitle">
+      Select a platform to explore its available features.
+    </p>
+
+    <div class="platforms">
+
+      <button class="platform" onclick="showPlatform('instagram')">
+        <img src="https://cdn.simpleicons.org/instagram/E4405F" alt="Instagram">
+        <h3>Instagram</h3>
+        <p>Reels · Posts · Media</p>
+      </button>
+
+      <button class="platform" onclick="showPlatform('facebook')">
+        <img src="https://cdn.simpleicons.org/facebook/1877F2" alt="Facebook">
+        <h3>Facebook</h3>
+        <p>Videos · Posts</p>
+      </button>
+
+      <!-- WHATSAPP LOGO CLICK -->
+
+      <button class="platform" onclick="openWhatsAppSaver()">
+        <img src="https://cdn.simpleicons.org/whatsapp/25D366" alt="WhatsApp">
+        <h3>WhatsApp</h3>
+        <p>Tap to open Media Saver</p>
+      </button>
+
+      <button class="platform" onclick="showPlatform('youtube')">
+        <img src="https://cdn.simpleicons.org/youtube/FF0033" alt="YouTube">
+        <h3>YouTube</h3>
+        <p>Videos · Shorts</p>
+      </button>
+
+      <button class="platform" onclick="showPlatform('google')">
+        <img src="https://cdn.simpleicons.org/google/4285F4" alt="Google">
+        <h3>Google</h3>
+        <p>Search · Web</p>
+      </button>
+
+      <button class="platform" onclick="showPlatform('chrome')">
+        <img src="https://cdn.simpleicons.org/googlechrome/4285F4" alt="Chrome">
+        <h3>Chrome</h3>
+        <p>Web Browser</p>
+      </button>
+
     </div>
 
-    <div class="platform">
+  </section>
+
+  <!-- WHATSAPP MEDIA SAVER: HIDDEN INITIALLY -->
+
+  <section class="whatsapp-section" id="whatsappSaver">
+
+    <div class="whatsapp-heading">
+
       <img src="https://cdn.simpleicons.org/whatsapp/25D366" alt="WhatsApp">
-      <h3>WhatsApp</h3>
-      <p>Status · Local Media</p>
+
+      <div>
+        <h2 style="margin:0">WhatsApp Media Saver</h2>
+        <span class="status">✓ Ready to select media</span>
+      </div>
+
     </div>
 
-    <div class="platform">
-      <img src="https://cdn.simpleicons.org/youtube/FF0033" alt="YouTube">
-      <h3>YouTube</h3>
-      <p>Videos · Shorts</p>
+    <p>
+      Select a photo or video already saved on your device.
+      Preview it and download your selected file.
+    </p>
+
+    <p class="note">
+      First save your permitted WhatsApp Status or chat media
+      to your phone. Then select it below.
+    </p>
+
+    <input
+      class="file-picker"
+      type="file"
+      id="localFile"
+      accept="image/*,video/*"
+    >
+
+    <div class="preview-area" id="previewArea">
+
+      <div id="mediaPreview"></div>
+
+      <p class="file-name" id="fileName"></p>
+
+      <button
+        class="local-download"
+        id="localDownloadButton"
+        onclick="downloadLocalFile()"
+        disabled
+      >
+        ⬇ Download Selected Media
+      </button>
+
     </div>
 
-    <div class="platform">
-      <img src="https://cdn.simpleicons.org/google/4285F4" alt="Google">
-      <h3>Google</h3>
-      <p>Search · Web</p>
-    </div>
+    <button class="close-button" onclick="closeWhatsAppSaver()">
+      ✕ Close WhatsApp Saver
+    </button>
 
-    <div class="platform">
-      <img src="https://cdn.simpleicons.org/googlechrome/4285F4" alt="Chrome">
-      <h3>Chrome</h3>
-      <p>Web Browser</p>
-    </div>
+  </section>
 
-  </div>
+  <!-- PLATFORM RESULT -->
 
   <section class="result" id="result">
 
@@ -500,67 +636,27 @@ footer {
 
       <div>
         <h2 id="platformName">Platform</h2>
-        <div class="status">✓ Platform detected</div>
+        <div class="status">✓ Platform selected</div>
       </div>
 
     </div>
 
     <p id="platformDescription"></p>
 
-    <div class="backend-status" id="backendStatus" role="status">
-    </div>
+    <div class="backend-status" id="backendStatus"></div>
 
     <h3>How to save your content</h3>
 
     <div class="steps" id="steps"></div>
-
-    <div class="local-box" id="localBox" style="display:none">
-
-      <h3>Select your own media file</h3>
-
-      <p>Choose a photo or video stored on your device.</p>
-
-      <input
-        type="file"
-        id="localFile"
-        accept="image/*,video/*"
-      >
-
-      <br>
-
-      <button
-        class="local-download"
-        id="localDownloadButton"
-        onclick="downloadLocalFile()"
-        disabled
-      >
-        ⬇ Download Selected File
-      </button>
-
-      <p class="note">
-        This option works with files selected from your device.
-        Nothing is uploaded to MEDIAX.
-      </p>
-
-    </div>
 
   </section>
 
 </main>
 
 <footer>
-
   <p>© 2026 MEDIAX. All rights reserved.</p>
-
-  <p>
-    MEDIAX is an independent project and is not affiliated
-    with these platforms.
-  </p>
-
-  <p>
-    Only authorized media saving is supported.
-  </p>
-
+  <p>MEDIAX is an independent project and is not affiliated with these platforms.</p>
+  <p>Only authorized media saving is supported.</p>
 </footer>
 
 <script>
@@ -568,7 +664,40 @@ footer {
 const MEDIAX_API =
   "https://mediax-downloader-syst.onrender.com";
 
-/* PLATFORM INFORMATION */
+
+/* THEME */
+
+function applyTheme(theme) {
+
+  document.documentElement.setAttribute("data-theme", theme);
+
+  document.getElementById("themeButton").textContent =
+    theme === "dark" ? "☀ Light Mode" : "🌙 Dark Mode";
+
+  document.querySelector('meta[name="theme-color"]').content =
+    theme === "dark" ? "#080b14" : "#f5f7ff";
+
+  localStorage.setItem("mediax-theme", theme);
+
+}
+
+applyTheme(
+  localStorage.getItem("mediax-theme") === "dark"
+    ? "dark"
+    : "light"
+);
+
+function toggleTheme() {
+
+  const current =
+    document.documentElement.getAttribute("data-theme");
+
+  applyTheme(current === "dark" ? "light" : "dark");
+
+}
+
+
+/* PLATFORM DATA */
 
 const platforms = {
 
@@ -577,47 +706,34 @@ const platforms = {
     logo:"https://cdn.simpleicons.org/instagram/E4405F",
     description:"Instagram link detected. Save only media you own or have permission to use.",
     steps:[
-      "Open the Instagram app or official website.",
+      "Open Instagram.",
       "Find the post or Reel you are allowed to save.",
-      "Use Instagram's available Save or download options.",
-      "Follow creator-provided authorized download instructions."
+      "Check the official saving options.",
+      "Follow authorized download instructions."
     ]
   },
 
   facebook: {
     name:"Facebook",
     logo:"https://cdn.simpleicons.org/facebook/1877F2",
-    description:"Facebook link detected. Saving options depend on the post and its permissions.",
+    description:"Facebook link detected. Saving options depend on post permissions.",
     steps:[
       "Open the post in Facebook.",
-      "Check the post's available options.",
-      "Use the official Save option or creator-provided download.",
-      "Respect the creator's privacy and permissions."
+      "Check the available options.",
+      "Use official saving options.",
+      "Respect creator permissions."
     ]
-  },
-
-  whatsapp: {
-    name:"WhatsApp",
-    logo:"https://cdn.simpleicons.org/whatsapp/25D366",
-    description:"WhatsApp detected. You can select your own permitted media file.",
-    steps:[
-      "Open WhatsApp on your device.",
-      "Use media shared with you or content you own.",
-      "Select your permitted photo or video below.",
-      "Download the selected local file."
-    ],
-    local:true
   },
 
   youtube: {
     name:"YouTube",
     logo:"https://cdn.simpleicons.org/youtube/FF0033",
-    description:"YouTube link detected. Use YouTube's official features and respect video rights.",
+    description:"YouTube link detected. Use YouTube's official features.",
     steps:[
       "Open the video in YouTube.",
-      "Check whether the creator provides an authorized download.",
-      "Use YouTube's official download feature where available.",
-      "Do not copy or redistribute videos without permission."
+      "Check creator-provided download options.",
+      "Use official download features where available.",
+      "Respect video rights."
     ]
   },
 
@@ -627,82 +743,107 @@ const platforms = {
     description:"Google link detected. Google is a search and web services platform.",
     steps:[
       "Open the Google result.",
-      "Visit the original website hosting the media.",
-      "Check the website's download and permission options.",
-      "Save only content you are allowed to use."
+      "Visit the original website.",
+      "Check its download options.",
+      "Save only permitted content."
     ]
   },
 
   chrome: {
     name:"Chrome",
     logo:"https://cdn.simpleicons.org/googlechrome/4285F4",
-    description:"Chrome detected. Chrome is a web browser, not a media hosting platform.",
+    description:"Chrome is a web browser, not a media hosting platform.",
     steps:[
-      "Open the original media website in Chrome.",
-      "Check the website's official download option.",
-      "Follow the website's instructions.",
-      "Respect copyright and privacy restrictions."
+      "Open the original media website.",
+      "Check its official download option.",
+      "Follow its instructions.",
+      "Respect copyright and privacy."
     ]
   }
 
 };
 
 
-/* LIGHT / DARK THEME */
+/* OPEN WHATSAPP SAVER WHEN LOGO IS TAPPED */
 
-function applyTheme(theme) {
+function openWhatsAppSaver() {
 
-  document.documentElement.setAttribute(
-    "data-theme",
-    theme
-  );
+  document.getElementById("result").style.display = "none";
 
-  const button = document.getElementById("themeButton");
+  const saver = document.getElementById("whatsappSaver");
 
-  if (theme === "dark") {
+  saver.style.display = "block";
 
-    button.textContent = "☀ Light Mode";
-
-  } else {
-
-    button.textContent = "🌙 Dark Mode";
-
-  }
-
-  const meta = document.querySelector(
-    'meta[name="theme-color"]'
-  );
-
-  meta.content =
-    theme === "dark" ? "#080b14" : "#f5f7ff";
-
-  localStorage.setItem("mediax-theme", theme);
+  saver.scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
 
 }
 
 
-/* WHITE MODE IS THE DEFAULT */
+/* CLOSE WHATSAPP SAVER */
 
-const savedTheme = localStorage.getItem("mediax-theme");
+function closeWhatsAppSaver() {
 
-applyTheme(
-  savedTheme === "dark" ? "dark" : "light"
-);
-
-
-function toggleTheme() {
-
-  const current =
-    document.documentElement.getAttribute("data-theme");
-
-  applyTheme(
-    current === "dark" ? "light" : "dark"
-  );
+  document.getElementById("whatsappSaver").style.display = "none";
 
 }
 
 
-/* BACKEND CONNECTION */
+/* SHOW OTHER PLATFORM INFORMATION */
+
+function showPlatform(key) {
+
+  closeWhatsAppSaver();
+
+  const data = platforms[key];
+
+  document.getElementById("platformLogo").src = data.logo;
+
+  document.getElementById("platformName").textContent = data.name;
+
+  document.getElementById("platformDescription").textContent =
+    data.description;
+
+  document.getElementById("backendStatus").textContent =
+    "Platform information selected. Use official saving options.";
+
+  const steps = document.getElementById("steps");
+
+  steps.innerHTML = "";
+
+  data.steps.forEach((step,index) => {
+
+    const item = document.createElement("div");
+    item.className = "step";
+
+    const number = document.createElement("div");
+    number.className = "number";
+    number.textContent = index + 1;
+
+    const text = document.createElement("div");
+    text.textContent = step;
+
+    item.append(number,text);
+
+    steps.appendChild(item);
+
+  });
+
+  const result = document.getElementById("result");
+
+  result.style.display = "block";
+
+  result.scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
+
+}
+
+
+/* BACKEND LINK CHECK */
 
 async function checkMediaLink(url) {
 
@@ -710,33 +851,17 @@ async function checkMediaLink(url) {
     `${MEDIAX_API}/api/check`,
     {
       method:"POST",
-
       headers:{
         "Content-Type":"application/json"
       },
-
       body:JSON.stringify({url})
     }
   );
 
-  let data;
-
-  try {
-
-    data = await response.json();
-
-  } catch {
-
-    throw new Error("Invalid backend response.");
-
-  }
+  const data = await response.json();
 
   if (!response.ok || !data.success) {
-
-    throw new Error(
-      data.message || "Backend request failed."
-    );
-
+    throw new Error(data.message || "Backend request failed.");
   }
 
   return data;
@@ -744,7 +869,7 @@ async function checkMediaLink(url) {
 }
 
 
-/* PLATFORM DETECTION */
+/* DETECT PLATFORM FROM URL */
 
 function detectPlatformKey(url) {
 
@@ -752,49 +877,30 @@ function detectPlatformKey(url) {
     .toLowerCase()
     .replace(/^www\./, "");
 
-  if (
-    host === "instagram.com" ||
-    host.endsWith(".instagram.com")
-  ) {
+  if (host === "instagram.com" || host.endsWith(".instagram.com"))
     return "instagram";
-  }
 
   if (
     host === "facebook.com" ||
     host.endsWith(".facebook.com") ||
     host === "fb.watch"
-  ) {
-    return "facebook";
-  }
+  ) return "facebook";
 
   if (
     host === "youtube.com" ||
     host.endsWith(".youtube.com") ||
     host === "youtu.be"
-  ) {
-    return "youtube";
-  }
-
-  if (
-    host === "whatsapp.com" ||
-    host.endsWith(".whatsapp.com") ||
-    host === "wa.me"
-  ) {
-    return "whatsapp";
-  }
+  ) return "youtube";
 
   if (
     host === "google.com" ||
     host.endsWith(".google.com") ||
     host === "google.co.in" ||
     host === "google.co.uk"
-  ) {
-    return "google";
-  }
+  ) return "google";
 
-  if (host === "googlechrome.com") {
+  if (host === "googlechrome.com")
     return "chrome";
-  }
 
   return null;
 
@@ -805,76 +911,62 @@ function detectPlatformKey(url) {
 
 async function detectPlatform() {
 
-  const input = document
-    .getElementById("mediaLink")
-    .value.trim();
+  const input = document.getElementById("mediaLink").value.trim();
 
   const button = document.getElementById("checkButton");
 
-  const downloadButton =
-    document.getElementById("downloadButton");
-
   if (!input) {
-
     alert("Please paste a link first.");
-
     return;
-
   }
 
   let url;
 
   try {
-
     url = new URL(input);
-
   } catch {
-
-    alert("Please enter a valid full link, including https://");
-
+    alert("Please enter a valid full HTTPS link.");
     return;
-
   }
 
   if (url.protocol !== "https:") {
-
-    alert("Please enter a secure HTTPS link.");
-
+    alert("Please use a secure HTTPS link.");
     return;
-
   }
 
   const key = detectPlatformKey(url);
 
   if (!key) {
-
     alert("This platform is not supported yet.");
-
     return;
-
   }
 
   button.disabled = true;
   button.textContent = "Checking...";
 
-  downloadButton.disabled = true;
-
   try {
 
     const backendData = await checkMediaLink(input);
 
-    const data = platforms[key];
-
     if (
       backendData.platform &&
-      backendData.platform.toLowerCase() !== data.name.toLowerCase()
+      backendData.platform.toLowerCase() !==
+      platforms[key].name.toLowerCase()
     ) {
-      throw new Error("Frontend and backend platform results do not match.");
+      throw new Error("Platform results do not match.");
     }
 
-    showResult(data, backendData);
+    showPlatform(key);
 
-  } catch (error) {
+    document.getElementById("backendStatus").textContent =
+      "✓ Backend connected | " +
+      (backendData.platform || platforms[key].name) +
+      " | " +
+      (backendData.contentType || "Content identified") +
+      " | " +
+      (backendData.note || "Link analyzed successfully.");
+
+  } catch(error) {
 
     alert("Connection error: " + error.message);
 
@@ -888,131 +980,79 @@ async function detectPlatform() {
 }
 
 
-/* DISPLAY RESULT */
-
-function showResult(data, backendData) {
-
-  document.getElementById("platformLogo").src =
-    data.logo;
-
-  document.getElementById("platformName").textContent =
-    data.name;
-
-  document.getElementById("platformDescription").textContent =
-    data.description;
-
-  document.getElementById("backendStatus").textContent =
-    "✓ Backend connected | " +
-    backendData.platform +
-    " | " +
-    backendData.contentType +
-    " | " +
-    backendData.note;
-
-  const steps = document.getElementById("steps");
-
-  steps.innerHTML = "";
-
-  data.steps.forEach((step,index) => {
-
-    const item = document.createElement("div");
-
-    item.className = "step";
-
-    const number = document.createElement("div");
-
-    number.className = "number";
-
-    number.textContent = index + 1;
-
-    const text = document.createElement("div");
-
-    text.textContent = step;
-
-    item.append(number,text);
-
-    steps.appendChild(item);
-
-  });
-
-  document.getElementById("localBox").style.display =
-    data.local ? "block" : "none";
-
-  document.getElementById("result").style.display =
-    "block";
-
-  document.getElementById("result").scrollIntoView({
-    behavior:"smooth",
-    block:"start"
-  });
-
-}
-
-
-/* LOCAL FILE DOWNLOAD */
+/* WHATSAPP FILE PREVIEW */
 
 const localFileInput =
   document.getElementById("localFile");
 
+const previewArea =
+  document.getElementById("previewArea");
+
+const mediaPreview =
+  document.getElementById("mediaPreview");
+
+const fileName =
+  document.getElementById("fileName");
+
 const localDownloadButton =
   document.getElementById("localDownloadButton");
 
+let selectedFile = null;
+let previewURL = null;
+
+
 localFileInput.addEventListener("change", function() {
 
-  localDownloadButton.disabled =
-    !this.files || this.files.length === 0;
+  const file = this.files && this.files[0];
 
-});
+  selectedFile = null;
 
+  localDownloadButton.disabled = true;
 
-function downloadLocalFile() {
+  if (previewURL) {
+    URL.revokeObjectURL(previewURL);
+    previewURL = null;
+  }
 
-  const file = localFileInput.files[0];
+  mediaPreview.innerHTML = "";
+  previewArea.style.display = "none";
 
-  if (!file) {
+  if (!file) return;
 
-    alert("Please select a file first.");
-
+  if (
+    !file.type.startsWith("image/") &&
+    !file.type.startsWith("video/")
+  ) {
+    alert("Please select an image or video.");
+    this.value = "";
     return;
+  }
+
+  selectedFile = file;
+
+  previewURL = URL.createObjectURL(file);
+
+  if (file.type.startsWith("image/")) {
+
+    const image = document.createElement("img");
+
+    image.src = previewURL;
+    image.alt = "Selected image preview";
+
+    mediaPreview.appendChild(image);
+
+  } else {
+
+    const video = document.createElement("video");
+
+    video.src = previewURL;
+    video.controls = true;
+    video.playsInline = true;
+
+    mediaPreview.appendChild(video);
 
   }
 
-  const objectURL = URL.createObjectURL(file);
+  fileName.textContent = "Selected: " + file.name;
 
-  const link = document.createElement("a");
-
-  link.href = objectURL;
-
-  link.download = file.name;
-
-  document.body.appendChild(link);
-
-  link.click();
-
-  link.remove();
-
-  setTimeout(() => {
-    URL.revokeObjectURL(objectURL);
-  }, 1000);
-
-}
-
-
-/* ENTER KEY SUPPORT */
-
-document
-  .getElementById("mediaLink")
-  .addEventListener("keydown", function(event) {
-
-    if (event.key === "Enter") {
-
-      detectPlatform();
-
-    }
-
-  });
-
-</script>
-
-</body>
-</html>
+  preview
