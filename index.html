@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b14">
+<title>MEDIAX — All-in-One Media Saver</title>
+
+<style>
+:root {
+  --bg:#080b14;
+  --card:#111827;
+  --card2:#172033;
+  --text:#f8fafc;
+  --muted:#94a3b8;
+  --accent:#7c5cff;
+  --border:rgba(255,255,255,.09);
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:20px 6%;
+  border-bottom:1px solid var(--border);
+}
+.logo {
+  font-size:25px;
+  font-weight:900;
+  letter-spacing:2px;
+}
+.logo span {color:#8b70ff}
+button {cursor:pointer}
+.theme {
+  background:var(--card2);
+  border:1px solid var(--border);
+  color:white;
+  border-radius:12px;
+  padding:10px 14px;
+}
+.hero {
+  text-align:center;
+  padding:65px 18px 35px;
+}
+.badge {
+  display:inline-block;
+  background:#211b42;
+  color:#b9aaff;
+  padding:9px 16px;
+  border-radius:30px;
+  font-size:12px;
+}
+.hero h1 {
+  font-size:clamp(34px,6vw,58px);
+  margin:22px 0 12px;
+}
+.hero h1 span {
+  background:linear-gradient(90deg,#8b70ff,#35c9ff);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+.hero p {
+  color:var(--muted);
+  line-height:1.7;
+}
+.search-box {
+  max-width:720px;
+  margin:30px auto 0;
+  padding:9px;
+  display:flex;
+  gap:8px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:17px;
+}
+.search-box input {
+  flex:1;
+  min-width:0;
+  background:transparent;
+  border:0;
+  outline:0;
+  color:white;
+  padding:13px;
+  font-size:15px;
+}
+.search-box button {
+  border:0;
+  border-radius:12px;
+  background:linear-gradient(120deg,#7455ff,#398cff);
+  color:white;
+  padding:14px 22px;
+  font-weight:bold;
+}
+.note {
+  color:var(--muted);
+  font-size:12px;
+  margin-top:12px;
+}
+.container {
+  width:88%;
+  max-width:1100px;
+  margin:35px auto;
+}
+.section-title {
+  font-size:23px;
+  margin-bottom:18px;
+}
+.platforms {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(145px,1fr));
+  gap:15px;
+}
+.platform {
+  background:var(--card);
+  border:1px solid var(--border);
+  padding:22px 12px;
+  text-align:center;
+  border-radius:18px;
+  transition:.2s;
+}
+.platform:hover {
+  transform:translateY(-4px);
+  border-color:#8068ff;
+}
+.platform img {
+  width:43px;
+  height:43px;
+  object-fit:contain;
+  margin-bottom:12px;
+}
+.platform h3 {
+  margin:5px 0;
+  font-size:15px;
+}
+.platform p {
+  margin:5px 0;
+  color:var(--muted);
+  font-size:11px;
+}
+.result {
+  display:none;
+  margin-top:30px;
+  padding:25px;
+  background:var(--card);
+  border:1px solid #5742a6;
+  border-radius:20px;
+}
+.result-head {
+  display:flex;
+  align-items:center;
+  gap:15px;
+  margin-bottom:20px;
+}
+.result-head img {
+  width:48px;
+  height:48px;
+  object-fit:contain;
+}
+.result h2 {margin:0 0 5px}
+.result p {color:var(--muted);line-height:1.6}
+.steps {
+  display:grid;
+  gap:12px;
+  margin-top:20px;
+}
+.step {
+  background:var(--card2);
+  padding:16px;
+  border-radius:13px;
+  display:flex;
+  gap:13px;
+  line-height:1.5;
+}
+.number {
+  background:#7055e9;
+  width:28px;
+  height:28px;
+  min-width:28px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  font-weight:bold;
+}
+.status {
+  color:#9dffbf;
+  font-size:13px;
+}
+.local-box {
+  margin-top:20px;
+  padding:18px;
+  border:1px dashed #7865ca;
+  border-radius:15px;
+}
+.local-box input {max-width:100%;margin-top:12px}
+footer {
+  text-align:center;
+  padding:35px 15px;
+  color:var(--muted);
+  border-top:1px solid var(--border);
+  font-size:12px;
+}
+@media(max-width:550px) {
+  header {padding:16px 5%}
+  .hero {padding-top:45px}
+  .container {width:92%}
+  .search-box button {padding:12px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">MEDIA<span>X</span></div>
+  <button class="theme" onclick="toggleTheme()">☀ / ☾</button>
+</header>
+
+<section class="hero">
+  <div class="badge">✦ ALL-IN-ONE MEDIA PLATFORM</div>
+
+  <h1>Your Media.<br><span>Your Way.</span></h1>
+
+  <p>
+    Paste a media link, identify its platform<br>
+    and discover how to save your permitted content.
+  </p>
+
+  <div class="search-box">
+    <input id="mediaLink"
+      type="url"
+      placeholder="Paste Instagram, Facebook, YouTube link..."
+      aria-label="Paste media link">
+
+    <button onclick="detectPlatform()">Check Link →</button>
+  </div>
+
+  <div class="note">
+    Only use content you own or have permission to save.
+  </div>
+</section>
+
+<main class="container">
+
+  <h2 class="section-title">Supported Platforms</h2>
+
+  <div class="platforms">
+
+    <div class="platform">
+      <img src="https://cdn.simpleicons.org/instagram/E4405F" alt="Instagram">
+      <h3>Instagram</h3>
+      <p>Reels · Posts · Media</p>
+    </div>
+
+    <div class="platform">
+      <img src="https://cdn.simpleicons.org/facebook/1877F2" alt="Facebook">
+      <h3>Facebook</h3>
+      <p>Videos · Posts</p>
+    </div>
+
+    <div class="platform">
+      <img src="https://cdn.simpleicons.org/whatsapp/25D366" alt="WhatsApp">
+      <h3>WhatsApp</h3>
+      <p>Status · Local Media</p>
+    </div>
+
+    <div class="platform">
+      <img src="https://cdn.simpleicons.org/youtube/FF0033" alt="YouTube">
+      <h3>YouTube</h3>
+      <p>Videos · Shorts</p>
+    </div>
+
+    <div class="platform">
+      <img src="https://cdn.simpleicons.org/google/4285F4" alt="Google">
+      <h3>Google</h3>
+      <p>Search · Web</p>
+    </div>
+
+    <div class="platform">
+      <img src="https://cdn.simpleicons.org/googlechrome/4285F4" alt="Chrome">
+      <h3>Chrome</h3>
+      <p>Web Browser</p>
+    </div>
+
+  </div>
+
+  <section class="result" id="result">
+
+    <div class="result-head">
+      <img id="platformLogo" src="" alt="Detected platform logo">
+      <div>
+        <h2 id="platformName">Platform</h2>
+        <div class="status">✓ Platform detected</div>
+      </div>
+    </div>
+
+    <p id="platformDescription"></p>
+
+    <h3>How to save your content</h3>
+
+    <div class="steps" id="steps"></div>
+
+    <div class="local-box" id="localBox" style="display:none">
+      <h3>Select your own media file</h3>
+      <p>Choose a photo or video stored on your device.</p>
+      <input type="file" accept="image/*,video/*">
+      <p class="note">This demo only selects a local file. It does not upload it.</p>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  <p>© 2026 MEDIAX. All rights reserved.</p>
+  <p>MEDIAX is an independent project and is not affiliated with these platforms.</p>
+</footer>
+
+<script>
+const platforms = {
+  instagram: {
+    name:"Instagram",
+    logo:"https://cdn.simpleicons.org/instagram/E4405F",
+    description:"Instagram link detected. Save only media you own or have permission to use.",
+    steps:[
+      "Open the Instagram app or official website.",
+      "Find the post or Reel you are allowed to save.",
+      "Use Instagram's available Save or download options.",
+      "If the creator provides an authorized download, follow their instructions."
+    ]
+  },
+
+  facebook: {
+    name:"Facebook",
+    logo:"https://cdn.simpleicons.org/facebook/1877F2",
+    description:"Facebook link detected. Availability of saving options depends on the post and its permissions.",
+    steps:[
+      "Open the post in Facebook.",
+      "Check the post's available options.",
+      "Use the official Save option or creator-provided download.",
+      "Respect the creator's privacy and permissions."
+    ]
+  },
+
+  whatsapp: {
+    name:"WhatsApp",
+    logo:"https://cdn.simpleicons.org/whatsapp/25D366",
+    description:"WhatsApp detected. Status media is generally saved through your device and WhatsApp's own features, not a public URL.",
+    steps:[
+      "Open WhatsApp on your device.",
+      "Ask the sender or creator for permission if needed.",
+      "Use the media they share with you.",
+      "Select your own permitted photo or video below."
+    ],
+    local:true
+  },
+
+  youtube: {
+    name:"YouTube",
+    logo:"https://cdn.simpleicons.org/youtube/FF0033",
+    description:"YouTube link detected. Use YouTube's official features and respect video rights.",
+    steps:[
+      "Open the video in YouTube.",
+      "Check whether the creator has provided an authorized download.",
+      "Use YouTube's official download feature where available.",
+      "Do not copy or redistribute videos without permission."
+    ]
+  },
+
+  google: {
+    name:"Google",
+    logo:"https://cdn.simpleicons.org/google/4285F4",
+    description:"Google link detected. Google is a search and web services platform.",
+    steps:[
+      "Open the Google result.",
+      "Visit the original website hosting the media.",
+      "Check the website's download and permission options.",
+      "Save only content you are allowed to use."
+    ]
+  },
+
+  chrome: {
+    name:"Chrome",
+    logo:"https://cdn.simpleicons.org/googlechrome/4285F4",
+    description:"Chrome detected. Chrome is a web browser, not a media hosting platform.",
+    steps:[
+      "Open the original media website in Chrome.",
+      "Check the website's official download option.",
+      "Follow the website's instructions.",
+      "Respect copyright and privacy restrictions."
+    ]
+  }
+};
+
+function detectPlatform() {
+  const input = document.getElementById("mediaLink").value.trim();
+  const result = document.getElementById("result");
+
+  if (!input) {
+    alert("Please paste a link first.");
+    return;
+  }
+
+  let url;
+
+  try {
+    url = new URL(input);
+  } catch {
+    alert("Please enter a valid full link, including https://");
+    return;
+  }
+
+  if (url.protocol !== "https:" && url.protocol !== "http:") {
+    alert("Please enter a valid web link.");
+    return;
+  }
+
+  const host = url.hostname.toLowerCase().replace(/^www\./, "");
+
+  let key = "";
+
+  if (host === "instagram.com" || host.endsWith(".instagram.com")) {
+    key = "instagram";
+  } else if (host === "facebook.com" || host.endsWith(".facebook.com") ||
+             host === "fb.watch") {
+    key = "facebook";
+  } else if (host === "youtube.com" || host.endsWith(".youtube.com") ||
+             host === "youtu.be") {
+    key = "youtube";
+  } else if (host === "whatsapp.com" || host.endsWith(".whatsapp.com") ||
+             host === "wa.me") {
+    key = "whatsapp";
+  } else if (host === "google.com" || host.endsWith(".google.com")) {
+    key = "google";
+  } else if (host === "google.co.in" || host === "google.co.uk") {
+    key = "google";
+  } else if (host === "googlechrome.com") {
+    key = "chrome";
+  } else {
+    alert("This platform is not recognized yet.");
+    return;
+  }
+
+  showResult(platforms[key]);
+}
+
+function showResult(data) {
+  document.getElementById("platformLogo").src = data.logo;
+  document.getElementById("platformName").textContent = data.name;
+  document.getElementById("platformDescription").textContent = data.description;
+
+  const steps = document.getElementById("steps");
+  steps.innerHTML = "";
+
+  data.steps.forEach((step, index) => {
+    const item = document.createElement("div");
+    item.className = "step";
+
+    const number = document.createElement("div");
+    number.className = "number";
+    number.textContent = index + 1;
+
+    const text = document.createElement("div");
+    text.textContent = step;
+
+    item.append(number, text);
+    steps.appendChild(item);
+  });
+
+  document.getElementById("localBox").style.display =
+    data.local ? "block" : "none";
+
+  document.getElementById("result").style.display = "block";
+  document.getElementById("result").scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
+}
+
+function toggleTheme() {
+  const dark = getComputedStyle(document.body)
+    .getPropertyValue("--bg").trim() === "#080b14";
+
+  if (dark) {
+    document.documentElement.style.setProperty("--bg","#f4f6fb");
+    document.documentElement.style.setProperty("--card","#ffffff");
+    document.documentElement.style.setProperty("--card2","#edf0f8");
+    document.documentElement.style.setProperty("--text","#111827");
+    document.documentElement.style.setProperty("--muted","#64748b");
+  } else {
+    document.documentElement.style.setProperty("--bg","#080b14");
+    document.documentElement.style.setProperty("--card","#111827");
+    document.documentElement.style.setProperty("--card2","#172033");
+    document.documentElement.style.setProperty("--text","#f8fafc");
+    document.documentElement.style.setProperty("--muted","#94a3b8");
+  }
+}
+</script>
+
+</body>
+    </html>
